@@ -1,4 +1,4 @@
-﻿namespace Laserfiche.OAuth.Client.ClientCredentials.Util
+﻿namespace Laserfiche.Oauth.Api.Client.Util
 {
     internal static class OAuthUtil
     {

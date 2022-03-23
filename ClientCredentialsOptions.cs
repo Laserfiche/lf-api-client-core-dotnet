@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using System.Collections.Generic;
 
-namespace Laserfiche.OAuth.Client.ClientCredentials
+namespace Laserfiche.Oauth.Api.Client
 {
     public class ClientCredentialsOptions : IClientCredentialsOptions
     {

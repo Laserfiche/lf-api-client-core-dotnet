@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace Laserfiche.OAuth.Client.ClientCredentials
+namespace Laserfiche.Oauth.Api.Client
 {
     public class ClientCredentialsTokenRequest
     {

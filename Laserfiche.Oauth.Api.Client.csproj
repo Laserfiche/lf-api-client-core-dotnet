@@ -1,8 +1,8 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <Description>.NET client library that enables an application to support the OAuth 2.0 Client Credentials flow.</Description>
-    <PackageId>Laserfiche.OAuth.Client.ClientCredentials</PackageId>
+    <PackageId>Laserfiche.Oauth.Api.Client</PackageId>
     <Authors>Laserfiche</Authors>
     <Company>Laserfiche</Company>
     <PackageProjectUrl>https://www.laserfiche.com/</PackageProjectUrl>
@@ -10,12 +10,12 @@
     <PackageTags>OAuth</PackageTags>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <NoWarn>$(NoWarn);1591</NoWarn>
-    <AssemblyName>Laserfiche.OAuth.Client.ClientCredentials</AssemblyName>
-    <RootNamespace>Laserfiche.OAuth.Client.ClientCredentials</RootNamespace>
-    <Product>Laserfiche.OAuth.Client.ClientCredentials</Product>
-    <Copyright>Copyright 2021 Laserfiche</Copyright>
+    <AssemblyName>Laserfiche.Oauth.Api.Client</AssemblyName>
+    <RootNamespace>Laserfiche.Oauth.Api.Client</RootNamespace>
+    <Product>Laserfiche.Oauth.Api.Client</Product>
+    <Copyright>Copyright 2022 Laserfiche</Copyright>
     <ApplicationIcon></ApplicationIcon>
-    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageIcon>logo.png</PackageIcon>
     <PackageIconUrl />
 	<IncludeSymbols>true</IncludeSymbols>

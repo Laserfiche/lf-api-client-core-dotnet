@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.32228.343
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Laserfiche.OAuth.Client.ClientCredentials", "Laserfiche.OAuth.Client.ClientCredentials.csproj", "{B823DDF0-D683-4685-ABA2-515F4445D531}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Laserfiche.Oauth.Api.Client", "Laserfiche.Oauth.Api.Client.csproj", "{B823DDF0-D683-4685-ABA2-515F4445D531}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

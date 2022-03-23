@@ -1,7 +1,7 @@
 ﻿using Microsoft.IdentityModel.JsonWebTokens;
 using System.Threading.Tasks;
 
-namespace Laserfiche.OAuth.Client.ClientCredentials
+namespace Laserfiche.Oauth.Api.Client
 {
     public interface IClientCredentialsHandler
     {

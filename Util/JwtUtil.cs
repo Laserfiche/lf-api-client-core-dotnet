@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Security.Claims;
 using System.Security.Cryptography;
 
-namespace Laserfiche.OAuth.Client.ClientCredentials.Util
+namespace Laserfiche.Oauth.Api.Client.Util
 {
     internal static class JwtUtil
     {

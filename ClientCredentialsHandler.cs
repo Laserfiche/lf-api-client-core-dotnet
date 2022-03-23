@@ -1,4 +1,4 @@
-﻿using Laserfiche.OAuth.Client.ClientCredentials.Util;
+﻿using Laserfiche.Oauth.Api.Client.Util;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Newtonsoft.Json.Linq;
@@ -7,7 +7,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
-namespace Laserfiche.OAuth.Client.ClientCredentials
+namespace Laserfiche.Oauth.Api.Client
 {
     public class ClientCredentialsHandler : IClientCredentialsHandler
     {
