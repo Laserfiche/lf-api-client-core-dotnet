@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Laserfiche.Oauth.Api.Client
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Laserfiche.OAuth.Client.ClientCredentials.IntegrationTest", "tests\integration\Laserfiche.OAuth.Client.ClientCredentials.IntegrationTest.csproj", "{A2CA5D42-FDB4-4CF3-949E-64B9570D53A2}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Laserfiche.OAuth.Client.ClientCredentials.UnitTest", "tests\unit\Laserfiche.OAuth.Client.ClientCredentials.UnitTest.csproj", "{DD5EF380-51BC-4625-B9AF-32306A97736A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{A2CA5D42-FDB4-4CF3-949E-64B9570D53A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A2CA5D42-FDB4-4CF3-949E-64B9570D53A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A2CA5D42-FDB4-4CF3-949E-64B9570D53A2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DD5EF380-51BC-4625-B9AF-32306A97736A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DD5EF380-51BC-4625-B9AF-32306A97736A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DD5EF380-51BC-4625-B9AF-32306A97736A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DD5EF380-51BC-4625-B9AF-32306A97736A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
