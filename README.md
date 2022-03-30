@@ -17,6 +17,9 @@ Technically you could use any editors you like. But it's more convenient if you 
 ### Build
 `dotnet build --no-restore`
 
+### Release Build
+`dotnet build --configuration Release --no-restore`
+
 ### Run Unit Tests
 `dotnet test --verbosity normal --filter Laserfiche.OAuth.Client.ClientCredentials.UnitTest`
 
