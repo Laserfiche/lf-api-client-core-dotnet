@@ -11,7 +11,15 @@ namespace Laserfiche.OAuth.Client.ClientCredentials.IntegrationTest
 
         public BaseTest()
         {
-            ExtractConfigurationFromJson();
+            var testConfig = Environment.GetEnvironmentVariable("TEST_CONFIG_DEV_A_CA");
+            
+            // GitHub secret will be passed in as environment variable. If it doesn't exist,
+            // we will fallback to reading the JSON file.
+            if (testConfig == null) {
+                ExtractConfigurationFromJson();
+            } else {
+                Configuration = JsonConvert.DeserializeObject<ClientCredentialsOptions>(testConfig);
+            }
         }
 
         private void ExtractConfigurationFromJson()
