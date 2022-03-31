@@ -5,6 +5,7 @@
     <PackageId>Laserfiche.Oauth.Api.Client</PackageId>
     <Authors>Laserfiche</Authors>
     <Company>Laserfiche</Company>
+    <Version>1.0.0</Version>
     <PackageProjectUrl>https://www.laserfiche.com/</PackageProjectUrl>
     <TargetFrameworks>netstandard2.0;netstandard2.1;net6.0</TargetFrameworks>
     <PackageTags>OAuth</PackageTags>
