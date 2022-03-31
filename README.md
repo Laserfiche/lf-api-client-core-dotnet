@@ -11,6 +11,8 @@
   You could also just run with GitHhub actions and the JSON file is handled automatically.
 - tests/unit contains unit tests. You can run them locally without any setup. It will also be run when you make a PR.
 
+For more detailed documentation, see the Laserfiche Developer [site](https://developer.laserfiche.com/guide_oauth-service.html).
+
 ## How to contribute
 Technically you could use any editors you like. But it's more convenient if you are using either Visual Studio Code or Visual Studio. Here is a few useful commands for building and testing the app.
 
@@ -20,8 +22,11 @@ Technically you could use any editors you like. But it's more convenient if you 
 ### Release Build
 `dotnet build --configuration Release --no-restore`
 
+### Make a Nuget Package
+`dotnet pack` (in the same directly where the `.csproj` file resides)
+
 ### Run Unit Tests
 `dotnet test --verbosity normal --filter Laserfiche.OAuth.Client.ClientCredentials.UnitTest`
 
 ### Run Integration Tests
-`dotnet test --no-build --verbosity normal --filter Laserfiche.OAuth.Client.ClientCredentials.IntegrationTest`
+`dotnet test --verbosity normal --filter Laserfiche.OAuth.Client.ClientCredentials.IntegrationTest`
