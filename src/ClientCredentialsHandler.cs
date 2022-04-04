@@ -1,114 +1,94 @@
 ﻿using Laserfiche.Oauth.Api.Client.Util;
-using Microsoft.Extensions.Logging;
-using Microsoft.IdentityModel.JsonWebTokens;
-using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 using System;
+using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Laserfiche.Oauth.Api.Client
 {
     public class ClientCredentialsHandler : IClientCredentialsHandler
     {
-        private HttpClient _httpClient;
-
-        private readonly ILogger _logger;
+        public HttpClient HttpClient { get; private set; }
 
         public IClientCredentialsOptions Configuration { set; get; }
 
-        public ClientCredentialsHandler(IClientCredentialsOptions configuration, IHttpClientFactory httpClientFactory = null, ILoggerFactory loggerFactory = null)
+        public static async Task<IClientCredentialsHandler> CreateFromAccessKeyAsync(string accessKeyFilePath, IHttpClientFactory httpClientFactory = null)
         {
-            _logger = loggerFactory?.CreateLogger(this.GetType().FullName);
+            using (FileStream fileStream = File.Open(accessKeyFilePath, FileMode.Open))
+            {
+                using (StreamReader streamReader = new StreamReader(fileStream))
+                {
+                    string content = await streamReader.ReadToEndAsync();
+                    var configuration = JsonConvert.DeserializeObject<ClientCredentialsOptions>(content);
+                    return new ClientCredentialsHandler(configuration, httpClientFactory);
+                }
+            }
+        }
 
+        public ClientCredentialsHandler(IClientCredentialsOptions configuration, IHttpClientFactory httpClientFactory = null)
+        {
+            SetupClientCredentialsHandler(configuration, httpClientFactory);
+        }
+
+        private void SetupClientCredentialsHandler(IClientCredentialsOptions configuration, IHttpClientFactory httpClientFactory = null)
+        {
             if (configuration == null)
             {
                 var nullConfigException = new ArgumentNullException(nameof(configuration));
-                _logger?.LogError(nullConfigException.Message);
                 throw nullConfigException;
             }
 
-            var (isValid, whyInvalid) = configuration.IsValid();
-            if (!isValid)
-            {
-                var invalidConfigException = new ArgumentException(string.Join("\n", whyInvalid));
-                _logger?.LogError(invalidConfigException.Message);
-                throw invalidConfigException;
-            }
+            configuration.IsValid();
             Configuration = configuration;
-            
+
             if (httpClientFactory != null)
             {
-                _httpClient = httpClientFactory.CreateClient();
-            } else
-            {
-                ConfigureHttpClient();
+                HttpClient = httpClientFactory.CreateClient();
             }
-        }
-        
-        private void ConfigureHttpClient()
-        {
-            if (_httpClient == null)
+            else
             {
-                _httpClient = new HttpClient(new HttpClientHandler()
+                HttpClient = new HttpClient(new HttpClientHandler()
                 {
-                    AllowAutoRedirect = true,
+                    AllowAutoRedirect = false,
                     UseCookies = false,
                 });
             }
         }
 
-        public async Task<string> GetAccessToken()
+        public async Task<(string accessToken, string refreshToken)> GetAccessTokenAsync(CancellationToken cancellationToken = default)
         {
-            // Generate auth header
-            var authHeader = $"Bearer {JwtUtil.CreateClientCredentialsAuthorizationJwt(Configuration)}";
-
-            // Get token from oauth
-            var jwt = await RequestAccessToken(authHeader);
-
-            return jwt;
+            return await RequestAccessTokenAsync(cancellationToken);
         }
 
-        public async Task<JsonWebToken> GetAccessTokenAsJWT()
+        public async Task<(string accessToken, string refreshToken)> RefreshAccessTokenAsync(string refreshToken, CancellationToken cancellationToken = default)
         {
-            string access_token = await GetAccessToken();
-            var jwt = JwtUtil.ReadJWT(access_token);
-            return jwt;
+            return await RequestAccessTokenAsync(cancellationToken);
         }
 
-        private async Task<string> RequestAccessToken(string authHeader)
+        private async Task<(string accessToken, string refreshToken)> RequestAccessTokenAsync(CancellationToken cancellationToken = default)
         {
-            var request = new HttpRequestMessage(HttpMethod.Post, OAuthUtil.GetOauthUri("Token", Configuration))
+            var request = new HttpRequestMessage(HttpMethod.Post, DomainUtil.GetOauthTokenUri(Configuration.Domain))
             {
-                Content = ClientCredentialsUtil.RequestToFormUrlEncodedContent(new ClientCredentialsTokenRequest() {})
+                Content = ClientCredentialsUtil.RequestToFormUrlEncodedContent(new ClientCredentialsTokenRequest() { })
             };
+            var authHeader = $"Bearer {JwtUtil.CreateClientCredentialsAuthorizationJwt(Configuration)}";
             request.Headers.Authorization = AuthenticationHeaderValue.Parse(authHeader);
-            var response = await _httpClient.SendAsync(request);
-            var data = await ClientCredentialsUtil.ResponseToDynamic(response);
 
-            var json = data as JObject;
-            if (json != null)
+            var response = await HttpClient.SendAsync(request, cancellationToken);
+
+            var content = await response.Content.ReadAsStringAsync();
+            if (response.StatusCode == System.Net.HttpStatusCode.OK)
             {
-                var status = string.Empty;
-                if (json["status"] != null)
-                {
-                    status = json["status"].Value<string>();
-                }
-
-                if (status == "401")
-                {
-                    var ex401 = new ArgumentException(Resources.Strings.ACCESS_TOKEN_RETRIEVAL_FAILED_401);
-                    _logger?.LogError(ex401.Message);
-                    throw ex401;
-                } else if (status == "404")
-                {
-                    var ex404 = new ArgumentException(Resources.Strings.ACCESS_TOKEN_RETRIEVAL_FAILED_404);
-                    _logger?.LogError(ex404.Message);
-                    throw ex404;
-                }
+                var oauthResponse = JsonConvert.DeserializeObject<OAuthResponse>(content);
+                return (oauthResponse.AccessToken, string.Empty);
             }
-
-            return (string)data.access_token;
+            else
+            {
+                throw ClientCredentialsUtil.GetStandardErrorException(content, response.StatusCode);
+            }
         }
     }
 }

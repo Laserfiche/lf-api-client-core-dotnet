@@ -117,22 +117,22 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ACCESS_TOKEN_RETRIEVAL_FAILED_401" xml:space="preserve">
-    <value>Access token retrieval failed due to incorrect client ID or failed authentication.</value>
+  <data name="INVALID_ACCESS_KEY" xml:space="preserve">
+    <value>The access key is invalid or null.</value>
   </data>
-  <data name="ACCESS_TOKEN_RETRIEVAL_FAILED_404" xml:space="preserve">
-    <value>Access token retrieval failed because application registration with the provided client ID does not exist. Double check the account ID.</value>
-  </data>
-  <data name="INVALID_BASE_ADDRESS" xml:space="preserve">
-    <value>The base address either not set or incorrect.</value>
+  <data name="INVALID_ACCOUNT_ID" xml:space="preserve">
+    <value>The account ID is either not set or incorrect.</value>
   </data>
   <data name="INVALID_CLIENT_ID" xml:space="preserve">
     <value>The client ID is either not set or incorrect.</value>
   </data>
+  <data name="INVALID_DOMAIN" xml:space="preserve">
+    <value>The domain is either not set or incorrect.</value>
+  </data>
   <data name="INVALID_SERVICE_PRINCIPAL_KEY" xml:space="preserve">
     <value>The service principal key is either not set or incorrect.</value>
   </data>
-  <data name="INVALID_SIGNING_KEY" xml:space="preserve">
-    <value>The signing key is invalid or null.</value>
+  <data name="UNABLE_TO_READ_RESPONSE" xml:space="preserve">
+    <value>Unable to read the oauth response.</value>
   </data>
 </root>

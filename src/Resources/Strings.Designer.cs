@@ -61,29 +61,20 @@ namespace Laserfiche.Oauth.Api.Client.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Access token retrieval failed due to incorrect client ID or failed authentication..
+        ///   Looks up a localized string similar to The access key is invalid or null..
         /// </summary>
-        public static string ACCESS_TOKEN_RETRIEVAL_FAILED_401 {
+        public static string INVALID_ACCESS_KEY {
             get {
-                return ResourceManager.GetString("ACCESS_TOKEN_RETRIEVAL_FAILED_401", resourceCulture);
+                return ResourceManager.GetString("INVALID_ACCESS_KEY", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Access token retrieval failed because application registration with the provided client ID does not exist. Double check the account ID..
+        ///   Looks up a localized string similar to The account ID is either not set or incorrect..
         /// </summary>
-        public static string ACCESS_TOKEN_RETRIEVAL_FAILED_404 {
+        public static string INVALID_ACCOUNT_ID {
             get {
-                return ResourceManager.GetString("ACCESS_TOKEN_RETRIEVAL_FAILED_404", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The base address either not set or incorrect..
-        /// </summary>
-        public static string INVALID_BASE_ADDRESS {
-            get {
-                return ResourceManager.GetString("INVALID_BASE_ADDRESS", resourceCulture);
+                return ResourceManager.GetString("INVALID_ACCOUNT_ID", resourceCulture);
             }
         }
         
@@ -97,6 +88,15 @@ namespace Laserfiche.Oauth.Api.Client.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The domain is either not set or incorrect..
+        /// </summary>
+        public static string INVALID_DOMAIN {
+            get {
+                return ResourceManager.GetString("INVALID_DOMAIN", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The service principal key is either not set or incorrect..
         /// </summary>
         public static string INVALID_SERVICE_PRINCIPAL_KEY {
@@ -106,11 +106,11 @@ namespace Laserfiche.Oauth.Api.Client.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The signing key is invalid or null..
+        ///   Looks up a localized string similar to Unable to read the oauth response..
         /// </summary>
-        public static string INVALID_SIGNING_KEY {
+        public static string UNABLE_TO_READ_RESPONSE {
             get {
-                return ResourceManager.GetString("INVALID_SIGNING_KEY", resourceCulture);
+                return ResourceManager.GetString("UNABLE_TO_READ_RESPONSE", resourceCulture);
             }
         }
     }
