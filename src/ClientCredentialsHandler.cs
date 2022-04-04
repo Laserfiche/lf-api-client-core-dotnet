@@ -11,7 +11,7 @@ namespace Laserfiche.Oauth.Api.Client
 {
     public class ClientCredentialsHandler : IClientCredentialsHandler
     {
-        public HttpClient HttpClient { get; private set; }
+        private HttpClient _httpClient { get; set; }
 
         public IClientCredentialsOptions Configuration { set; get; }
 
@@ -46,11 +46,11 @@ namespace Laserfiche.Oauth.Api.Client
 
             if (httpClientFactory != null)
             {
-                HttpClient = httpClientFactory.CreateClient();
+                _httpClient = httpClientFactory.CreateClient();
             }
             else
             {
-                HttpClient = new HttpClient(new HttpClientHandler()
+                _httpClient = new HttpClient(new HttpClientHandler()
                 {
                     AllowAutoRedirect = false,
                     UseCookies = false,
@@ -77,7 +77,7 @@ namespace Laserfiche.Oauth.Api.Client
             var authHeader = $"Bearer {JwtUtil.CreateClientCredentialsAuthorizationJwt(Configuration)}";
             request.Headers.Authorization = AuthenticationHeaderValue.Parse(authHeader);
 
-            var response = await HttpClient.SendAsync(request, cancellationToken);
+            var response = await _httpClient.SendAsync(request, cancellationToken);
 
             var content = await response.Content.ReadAsStringAsync();
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
