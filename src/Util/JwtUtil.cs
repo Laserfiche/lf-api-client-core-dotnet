@@ -21,7 +21,7 @@ namespace Laserfiche.Oauth.Api.Client.Util
                     new Claim("client_id", config.ClientId),
                     new Claim("client_secret", config.ServicePrincipalKey),
                 };
-            return CreateSignedJwt(claims, config.SigningKey, audience, validTo);
+            return CreateSignedJwt(claims, config.AccessKey, audience, validTo);
         }
 
         private static SigningCredentials GetSigningCredentials(JsonWebKey key)

@@ -7,39 +7,40 @@ using System.Threading.Tasks;
 namespace Laserfiche.OAuth.Client.ClientCredentials.IntegrationTest
 {
     [TestClass]
-    public class GetAccessTokenTest : BaseTest
+    public class RefreshAccessTokenAsyncTests : BaseTest
     {
         [TestMethod]
-        public async Task GetAccessToken()
+        public async Task RefreshAccessTokenAsync()
         {
             // Initialize an instance of the handler
             ClientCredentialsHandler handler = new ClientCredentialsHandler(Configuration);
 
-            // Get access token for that application
-            var accessToken = await handler.GetAccessToken();
+            // Get tokens for that application
+            (string accessToken, string refreshToken) = await handler.RefreshAccessTokenAsync("");
             Assert.IsNotNull(accessToken);
+            Assert.AreEqual(string.Empty, refreshToken);
         }
 
         [TestMethod]
-        public async Task GetAccessAsync_WrongBaseAddress()
+        public async Task RefreshAccessTokenAsync_WrongDomain()
         {
             // Initialize an instance of the handler
             ClientCredentialsHandler handler = new ClientCredentialsHandler(Configuration);
-            handler.Configuration.BaseAddress = "https://some.random.string"; // Wrong base address.
+            handler.Configuration.Domain = "some.random.string";
 
-            // Expect failed attempt to get access token since the base address is wrong
-            await Assert.ThrowsExceptionAsync<HttpRequestException>(async () => await handler.GetAccessToken());
+            // Expect failed attempt to refresh access token since the domain is wrong
+            await Assert.ThrowsExceptionAsync<HttpRequestException>(async () => await handler.RefreshAccessTokenAsync(""));
         }
 
         [TestMethod]
-        public async Task GetAccessAsync_WrongServicePrincipalKey()
+        public async Task RefreshAccessTokenAsync_WrongServicePrincipalKey()
         {
             // Initialize an instance of the handler
             ClientCredentialsHandler handler = new ClientCredentialsHandler(Configuration);
             handler.Configuration.ServicePrincipalKey = "a wrong service principal key";
 
-            // Expect the retrieval of access token to fail due to incorrect service principal key
-            await Assert.ThrowsExceptionAsync<ArgumentException>(async () => await handler.GetAccessToken());
+            // Expect the refresh access token to fail due to incorrect service principal key
+            await Assert.ThrowsExceptionAsync<Exception>(async () => await handler.RefreshAccessTokenAsync(""));
         }
     }
 }

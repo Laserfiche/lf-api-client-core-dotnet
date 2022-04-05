@@ -1,11 +1,12 @@
 ﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.Http;
-using System.Threading.Tasks;
 
 namespace Laserfiche.Oauth.Api.Client.Util
 {
-    public static class ClientCredentialsUtil
+    internal static class ClientCredentialsUtil
     {
         internal static FormUrlEncodedContent RequestToFormUrlEncodedContent(object obj)
         {
@@ -14,11 +15,55 @@ namespace Laserfiche.Oauth.Api.Client.Util
             return new FormUrlEncodedContent(kvp);
         }
 
-        internal static async Task<dynamic> ResponseToDynamic(HttpResponseMessage response, JsonSerializerSettings settings = null)
+        internal static void IsValid(this IClientCredentialsOptions configuration)
         {
-            var content = await response.Content.ReadAsStringAsync();
-            dynamic data = settings != null ? JsonConvert.DeserializeObject(content, settings) : JsonConvert.DeserializeObject(content);
-            return data;
+            if (string.IsNullOrEmpty(configuration.AccountId))
+            {
+                throw new ArgumentException(Resources.Strings.INVALID_ACCOUNT_ID, nameof(configuration.AccountId));
+            }
+
+            if (string.IsNullOrEmpty(configuration.Domain))
+            {
+                throw new ArgumentException(Resources.Strings.INVALID_DOMAIN, nameof(configuration.Domain));
+            }
+
+            if (string.IsNullOrEmpty(configuration.ClientId))
+            {
+                throw new ArgumentException(Resources.Strings.INVALID_CLIENT_ID, nameof(configuration.ClientId));
+            }
+
+            if (string.IsNullOrEmpty(configuration.ServicePrincipalKey))
+            {
+                throw new ArgumentException(Resources.Strings.INVALID_SERVICE_PRINCIPAL_KEY, nameof(configuration.ServicePrincipalKey));
+            }
+
+            bool isValidSigningKey = configuration.AccessKey != null && configuration.AccessKey.KeySize != 0;
+            if (!isValidSigningKey)
+            {
+                throw new ArgumentException(Resources.Strings.INVALID_ACCESS_KEY, nameof(configuration.AccessKey));
+            }
+        }
+
+        internal static Exception GetStandardErrorException(string responseContent, HttpStatusCode responseStatusCode)
+        {
+            var oauthProblemDetails = JsonConvert.DeserializeObject<OAuthProblemDetails>(responseContent);
+
+            if (oauthProblemDetails is null)
+            {
+                var exception = new Exception(Resources.Strings.UNABLE_TO_READ_RESPONSE);
+                exception.Data[nameof(oauthProblemDetails.Status)] = responseStatusCode.ToString();
+                return exception;
+            }
+            else
+            {
+                var exception = new Exception(oauthProblemDetails.ToString());
+                exception.Data[nameof(oauthProblemDetails.Type)] = oauthProblemDetails.Type.ToString();
+                exception.Data[nameof(oauthProblemDetails.Title)] = oauthProblemDetails.Title.ToString();
+                exception.Data[nameof(oauthProblemDetails.Status)] = oauthProblemDetails.Status.ToString();
+                exception.Data[nameof(oauthProblemDetails.Instance)] = oauthProblemDetails.Instance.ToString();
+                exception.Data[nameof(oauthProblemDetails.OperationId)] = oauthProblemDetails.OperationId.ToString();
+                return exception;
+            }
         }
     }
 }

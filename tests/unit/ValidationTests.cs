@@ -1,5 +1,4 @@
 ﻿using Laserfiche.Oauth.Api.Client;
-using I18n = Laserfiche.Oauth.Api.Client.Resources;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 
@@ -8,17 +7,83 @@ namespace Laserfiche.OAuth.Client.ClientCredentials.UnitTest
     [TestClass]
     public class ValidationTests
     {
+        private const string ACCOUNT_ID = "fake.account.id";
+        private const string DOMAIN = "fake.domain";
+        private const string CLIENT_ID = "fake.client.id";
+        private const string SERVICE_PRINCIPAL_KEY = "fake.sp.key";
+        private const string ACCESS_KEY = @"{
+	            ""kty"": ""EC"",
+                ""crv"": ""P-256"",
+                ""use"": ""sig"",
+	            ""kid"": ""YbcQaVGKoqiSmD2LwIrNRWk2y10oLYqDN5rymQyafwc"",
+	            ""x"": ""oO6bmvSrJmSVzw72aJdKdH08Rw3LOKBsbN8-p9e-i2I"",
+	            ""y"": ""TSg5da4l2ThYI__W34_3rLoUyoAZ-atb4cCELHTcstM"",
+	            ""d"": ""Q2J9YzSI_p98uMlt-MvFAi5VkzcFzQ-ThE2VRtv1g-Y""
+            }";
+
         [TestMethod]
-        public void AllFieldsNeedToBeFilled()
+        public void HandlerConfigurationMissingAccountId()
         {
-            IClientCredentialsOptions config = new ClientCredentialsOptions();
-            var (isValid, reasons) = config.IsValid();
-            Assert.IsFalse(isValid);
-            Assert.AreEqual(4, reasons.Count);
-            Assert.AreEqual(reasons[0], I18n.Strings.INVALID_BASE_ADDRESS);
-            Assert.AreEqual(reasons[1], I18n.Strings.INVALID_CLIENT_ID);
-            Assert.AreEqual(reasons[2], I18n.Strings.INVALID_SERVICE_PRINCIPAL_KEY);
-            Assert.AreEqual(reasons[3], I18n.Strings.INVALID_SIGNING_KEY);
+            IClientCredentialsOptions config = new ClientCredentialsOptions()
+            {
+                Domain = DOMAIN,
+                ClientId = CLIENT_ID,
+                ServicePrincipalKey = SERVICE_PRINCIPAL_KEY,
+                AccessKey = new Microsoft.IdentityModel.Tokens.JsonWebKey(ACCESS_KEY)
+            };
+            Assert.ThrowsException<ArgumentException>(() => new ClientCredentialsHandler(config));
+        }
+
+        [TestMethod]
+        public void HandlerConfigurationMissingDomain()
+        {
+            IClientCredentialsOptions config = new ClientCredentialsOptions()
+            {
+                AccountId = ACCOUNT_ID,
+                ClientId = CLIENT_ID,
+                ServicePrincipalKey = SERVICE_PRINCIPAL_KEY,
+                AccessKey = new Microsoft.IdentityModel.Tokens.JsonWebKey(ACCESS_KEY)
+            };
+            Assert.ThrowsException<ArgumentException>(() => new ClientCredentialsHandler(config));
+        }
+
+        [TestMethod]
+        public void HandlerConfigurationMissingClientId()
+        {
+            IClientCredentialsOptions config = new ClientCredentialsOptions()
+            {
+                AccountId = ACCOUNT_ID,
+                Domain = DOMAIN,
+                ServicePrincipalKey = SERVICE_PRINCIPAL_KEY,
+                AccessKey = new Microsoft.IdentityModel.Tokens.JsonWebKey(ACCESS_KEY)
+            };
+            Assert.ThrowsException<ArgumentException>(() => new ClientCredentialsHandler(config));
+        }
+
+        [TestMethod]
+        public void HandlerConfigurationMissingServicePrincipalKey()
+        {
+            IClientCredentialsOptions config = new ClientCredentialsOptions()
+            {
+                AccountId = ACCOUNT_ID,
+                Domain = DOMAIN,
+                ClientId = CLIENT_ID,
+                AccessKey = new Microsoft.IdentityModel.Tokens.JsonWebKey(ACCESS_KEY)
+            };
+            Assert.ThrowsException<ArgumentException>(() => new ClientCredentialsHandler(config));
+        }
+
+        [TestMethod]
+        public void HandlerConfigurationMissingAccesskey()
+        {
+            IClientCredentialsOptions config = new ClientCredentialsOptions()
+            {
+                AccountId = ACCOUNT_ID,
+                Domain = DOMAIN,
+                ClientId = CLIENT_ID,
+                ServicePrincipalKey = SERVICE_PRINCIPAL_KEY
+            };
+            Assert.ThrowsException<ArgumentException>(() => new ClientCredentialsHandler(config));
         }
 
         [TestMethod]

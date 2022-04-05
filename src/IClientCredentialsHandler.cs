@@ -1,20 +1,28 @@
-﻿using Microsoft.IdentityModel.JsonWebTokens;
+﻿using System.Threading;
 using System.Threading.Tasks;
 
 namespace Laserfiche.Oauth.Api.Client
 {
     public interface IClientCredentialsHandler
     {
+        /// <summary>
+        /// The configuration for the <see cref="IClientCredentialsHandler"/>.
+        /// </summary>
         IClientCredentialsOptions Configuration { set; get; }
+
         /// <summary>
-        /// Get access token as string
+        /// Gets a new oauth access token.
         /// </summary>
-        /// <returns></returns>
-        Task<string> GetAccessToken();
+        /// <param name="cancellationToken">The cancellation token to cancel operation.</param>
+        /// <returns>An access token and a refresh token.</returns>
+        Task<(string accessToken, string refreshToken)> GetAccessTokenAsync(CancellationToken cancellationToken = default);
+
         /// <summary>
-        /// Get access token in JsonWebToken format
+        /// Refresh the oauth access token.
         /// </summary>
-        /// <returns></returns>
-        Task<JsonWebToken> GetAccessTokenAsJWT();
+        /// <param name="refreshToken">The refresh token.</param>
+        /// <param name="cancellationToken">The cancellation token to cancel operation.</param>
+        /// <returns>An access token and a refresh token.</returns>
+        Task<(string accessToken, string refreshToken)> RefreshAccessTokenAsync(string refreshToken, CancellationToken cancellationToken = default);
     }
 }
