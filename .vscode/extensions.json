@@ -1,0 +1,7 @@
+{
+	"recommendations": [
+		"jorgeserrano.vscode-csharp-snippets",
+        "logerfo.sln-support",
+        "ms-dotnettools.csharp",
+	]
+}
