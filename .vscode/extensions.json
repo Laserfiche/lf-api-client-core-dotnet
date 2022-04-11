@@ -1,7 +1,7 @@
 {
 	"recommendations": [
 		"jorgeserrano.vscode-csharp-snippets",
-        "logerfo.sln-support",
+        "fernandoescolar.vscode-solution-explorer",
         "ms-dotnettools.csharp",
 	]
 }
