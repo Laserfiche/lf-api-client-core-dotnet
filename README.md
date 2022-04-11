@@ -25,6 +25,9 @@ Technically you could use any editors you like. But it's more convenient if you 
 ### Make a Nuget Package
 `dotnet pack` (in the same directly where the `.csproj` file resides)
 
+### Add a Nuget Pacakge in a Local Directory
+`dotnet add package {package_id} --source {absolute_path_to_folder_containing_nupkg}`
+
 ### Run Unit Tests
 `dotnet test --verbosity normal --filter Laserfiche.OAuth.Client.ClientCredentials.UnitTest`
 
