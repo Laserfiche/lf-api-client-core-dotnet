@@ -1,6 +1,6 @@
 # A workflow that builds and packages the project and push newly built package to nuget.org.
 
-name: Publish to Nuget.org
+name: Publish to Nuget
 
 # Controls when the workflow will run
 on:
@@ -20,6 +20,8 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
-      run: dotnet build --no-restore
+      run: dotnet build --no-restore --configuration Release
+    - name: Debug
+      run: pwd
     - name: Publish to Nuget.org
       run: dotnet nuget push *.nupkg --api-key ${{secrets.NUGET_KEY}} --source https://api.nuget.org/v3/index.json
