@@ -1,4 +1,4 @@
-name: .NET
+name: Run Integration Tests
 
 on:
   push:
