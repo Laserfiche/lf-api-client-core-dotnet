@@ -1,6 +1,6 @@
 # A workflow that builds and packages the project and push newly built package to nuget.org.
 
-name: Pack & Publish to Nuget.org
+name: Publish to Nuget.org
 
 # Controls when the workflow will run
 on:
