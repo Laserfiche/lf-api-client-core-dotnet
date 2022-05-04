@@ -13,34 +13,36 @@ namespace Laserfiche.OAuth.Client.ClientCredentials.IntegrationTest
         public async Task RefreshAccessTokenAsync()
         {
             // Initialize an instance of the handler
-            ClientCredentialsHandler handler = new ClientCredentialsHandler(Configuration);
+            TokenApiClient handler = new(Configuration);
 
             // Get tokens for that application
-            (string accessToken, string refreshToken) = await handler.RefreshAccessTokenAsync("");
-            Assert.IsNotNull(accessToken);
-            Assert.AreEqual(string.Empty, refreshToken);
+            var tokenResponse = await handler.RefreshAccessTokenAsync("");
+            Assert.IsNotNull(tokenResponse);
+            Assert.IsNotNull(tokenResponse.RefreshToken);
+            Assert.IsNotNull(tokenResponse.ExpiresIn);
+            Assert.IsNotNull(tokenResponse.TokenType);
         }
 
         [TestMethod]
         public async Task RefreshAccessTokenAsync_WrongDomain()
         {
             // Initialize an instance of the handler
-            ClientCredentialsHandler handler = new ClientCredentialsHandler(Configuration);
-            handler.Configuration.Domain = "some.random.string";
+            TokenApiClient client = new(Configuration);
+            client.Configuration.Domain = "some.random.string";
 
             // Expect failed attempt to refresh access token since the domain is wrong
-            await Assert.ThrowsExceptionAsync<HttpRequestException>(async () => await handler.RefreshAccessTokenAsync(""));
+            await Assert.ThrowsExceptionAsync<HttpRequestException>(async () => await client.RefreshAccessTokenAsync(""));
         }
 
         [TestMethod]
         public async Task RefreshAccessTokenAsync_WrongServicePrincipalKey()
         {
             // Initialize an instance of the handler
-            ClientCredentialsHandler handler = new ClientCredentialsHandler(Configuration);
-            handler.Configuration.ServicePrincipalKey = "a wrong service principal key";
+            TokenApiClient client = new(Configuration);
+            client.Configuration.ServicePrincipalKey = "a wrong service principal key";
 
             // Expect the refresh access token to fail due to incorrect service principal key
-            await Assert.ThrowsExceptionAsync<Exception>(async () => await handler.RefreshAccessTokenAsync(""));
+            await Assert.ThrowsExceptionAsync<Exception>(async () => await client.RefreshAccessTokenAsync(""));
         }
     }
 }
