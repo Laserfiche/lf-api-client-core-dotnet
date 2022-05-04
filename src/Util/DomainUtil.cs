@@ -1,13 +1,14 @@
 ﻿namespace Laserfiche.Oauth.Api.Client.Util
 {
-    public static class DomainUtil
+    // Can we make it internal 
+    internal static class DomainUtil
     {
         /// <summary>
         /// Returns the Laserfiche domain using the Laserfiche account id.
         /// </summary>
         /// <param name="accountId">The Laserfiche account id.</param>
         /// <returns>The Laserfiche domain.</returns>
-        public static string GetDomainFromAccountId(string accountId)
+        internal static string GetDomainFromAccountId(string accountId)
         {
             if (accountId?.Length == 10)
             {
@@ -28,7 +29,7 @@
         /// </summary>
         /// <param name="domain">The Laserfiche domain.</param>
         /// <returns>The OAuth base uri.</returns>
-        public static string GetOauthBaseUri(string domain)
+        internal static string GetOauthBaseUri(string domain)
         {
             if (string.IsNullOrWhiteSpace(domain))
                 domain = "laserfiche.com";
@@ -40,7 +41,7 @@
         /// </summary>
         /// <param name="domain">The Laserfiche domain.</param>
         /// <returns>The OAuth token uri.</returns>
-        public static string GetOauthTokenUri(string domain)
+        internal static string GetOauthTokenUri(string domain)
         {
             return $"{GetOauthBaseUri(domain)}/Token";
         }

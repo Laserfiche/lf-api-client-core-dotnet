@@ -9,13 +9,13 @@ using System.Threading.Tasks;
 
 namespace Laserfiche.Oauth.Api.Client
 {
-    public class ClientCredentialsHandler : IClientCredentialsHandler
+    public class TokenApiClient : ITokenApiClient
     {
         private HttpClient _httpClient { get; set; }
 
-        public IClientCredentialsOptions Configuration { set; get; }
+        public ClientCredentialsOptions Configuration { set; get; }
 
-        public static async Task<IClientCredentialsHandler> CreateFromAccessKeyAsync(string accessKeyFilePath, IHttpClientFactory httpClientFactory = null)
+        public static async Task<TokenApiClient> CreateFromAccessKeyAsync(string accessKeyFilePath, IHttpClientFactory httpClientFactory = null)
         {
             using (FileStream fileStream = File.Open(accessKeyFilePath, FileMode.Open))
             {
@@ -23,17 +23,17 @@ namespace Laserfiche.Oauth.Api.Client
                 {
                     string content = await streamReader.ReadToEndAsync();
                     var configuration = JsonConvert.DeserializeObject<ClientCredentialsOptions>(content);
-                    return new ClientCredentialsHandler(configuration, httpClientFactory);
+                    return new TokenApiClient(configuration, httpClientFactory);
                 }
             }
         }
 
-        public ClientCredentialsHandler(IClientCredentialsOptions configuration, IHttpClientFactory httpClientFactory = null)
+        public TokenApiClient(ClientCredentialsOptions configuration, IHttpClientFactory httpClientFactory = null)
         {
             SetupClientCredentialsHandler(configuration, httpClientFactory);
         }
 
-        private void SetupClientCredentialsHandler(IClientCredentialsOptions configuration, IHttpClientFactory httpClientFactory = null)
+        private void SetupClientCredentialsHandler(ClientCredentialsOptions configuration, IHttpClientFactory httpClientFactory = null)
         {
             if (configuration == null)
             {
@@ -58,17 +58,17 @@ namespace Laserfiche.Oauth.Api.Client
             }
         }
 
-        public async Task<(string accessToken, string refreshToken)> GetAccessTokenAsync(CancellationToken cancellationToken = default)
+        public async Task<TokenResponse> GetAccessTokenAsync(CancellationToken cancellationToken = default)
         {
             return await RequestAccessTokenAsync(cancellationToken);
         }
 
-        public async Task<(string accessToken, string refreshToken)> RefreshAccessTokenAsync(string refreshToken, CancellationToken cancellationToken = default)
+        public async Task<TokenResponse> RefreshAccessTokenAsync(string refreshToken, CancellationToken cancellationToken = default)
         {
             return await RequestAccessTokenAsync(cancellationToken);
         }
 
-        private async Task<(string accessToken, string refreshToken)> RequestAccessTokenAsync(CancellationToken cancellationToken = default)
+        private async Task<TokenResponse> RequestAccessTokenAsync(CancellationToken cancellationToken = default)
         {
             var request = new HttpRequestMessage(HttpMethod.Post, DomainUtil.GetOauthTokenUri(Configuration.Domain))
             {
@@ -82,8 +82,7 @@ namespace Laserfiche.Oauth.Api.Client
             var content = await response.Content.ReadAsStringAsync();
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
             {
-                var oauthResponse = JsonConvert.DeserializeObject<OAuthResponse>(content);
-                return (oauthResponse.AccessToken, string.Empty);
+                return JsonConvert.DeserializeObject<TokenResponse>(content);
             }
             else
             {

@@ -2,7 +2,7 @@
 
 namespace Laserfiche.Oauth.Api.Client
 {
-    public class OAuthProblemDetails
+    internal class OAuthProblemDetails
     {
         [JsonProperty("type")]
         public string Type { get; set; }

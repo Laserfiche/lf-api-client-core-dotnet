@@ -2,7 +2,7 @@
 
 namespace Laserfiche.Oauth.Api.Client
 {
-    public class OAuthResponse
+    public class TokenResponse
     {
         [JsonProperty("access_token")]
         public string AccessToken { get; set; }

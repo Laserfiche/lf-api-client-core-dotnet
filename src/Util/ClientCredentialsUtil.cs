@@ -15,7 +15,7 @@ namespace Laserfiche.Oauth.Api.Client.Util
             return new FormUrlEncodedContent(kvp);
         }
 
-        internal static void IsValid(this IClientCredentialsOptions configuration)
+        internal static void IsValid(this ClientCredentialsOptions configuration)
         {
             if (string.IsNullOrEmpty(configuration.AccountId))
             {
@@ -37,10 +37,10 @@ namespace Laserfiche.Oauth.Api.Client.Util
                 throw new ArgumentException(Resources.Strings.INVALID_SERVICE_PRINCIPAL_KEY, nameof(configuration.ServicePrincipalKey));
             }
 
-            bool isValidSigningKey = configuration.AccessKey != null && configuration.AccessKey.KeySize != 0;
+            bool isValidSigningKey = configuration.Jwk != null && configuration.Jwk.KeySize != 0;
             if (!isValidSigningKey)
             {
-                throw new ArgumentException(Resources.Strings.INVALID_ACCESS_KEY, nameof(configuration.AccessKey));
+                throw new ArgumentException(Resources.Strings.INVALID_ACCESS_KEY, nameof(configuration.Jwk));
             }
         }
 
