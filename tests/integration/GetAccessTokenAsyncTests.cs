@@ -13,10 +13,10 @@ namespace Laserfiche.OAuth.Client.ClientCredentials.IntegrationTest
         public async Task GetAccessTokenAsync()
         {
             // Initialize an instance of the handler
-            TokenApiClient handler = new(Configuration);
+            TokenApiClient client = new(Configuration);
 
             // Get tokens for that application
-            var tokenResponse = await handler.GetAccessTokenAsync();
+            var tokenResponse = await client.GetAccessTokenAsync();
             Assert.IsNotNull(tokenResponse);
             Assert.IsNotNull(tokenResponse.AccessToken);
             Assert.IsNotNull(tokenResponse.RefreshToken);
