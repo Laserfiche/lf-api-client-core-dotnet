@@ -31,7 +31,7 @@ namespace Laserfiche.OAuth.Client.ClientCredentials.UnitTest
         ITokenApiClient client;
         Mock<IHttpClientFactory> mockHttpClientFactory;
         Mock<HttpMessageHandler> mockHttpMessageHandler;
-        Mock<ClientCredentialsOptions> mockConfig;
+        ClientCredentialsOptions options;
         HttpClient httpClient;
         JsonWebKey accessKey;
 
@@ -40,16 +40,17 @@ namespace Laserfiche.OAuth.Client.ClientCredentials.UnitTest
         {
             mockHttpClientFactory = new Mock<IHttpClientFactory>();
             mockHttpMessageHandler = new Mock<HttpMessageHandler>();
-            mockConfig = new Mock<ClientCredentialsOptions>();
             httpClient = new HttpClient(mockHttpMessageHandler.Object);
+            options = new ClientCredentialsOptions();
             accessKey = new JsonWebKey(ACCESS_KEY);
 
             // Populate the handler configuration with fake information
-            mockConfig.Setup(mock => mock.CustomerId).Returns(CUSTOMER_ID);
-            mockConfig.Setup(mock => mock.Domain).Returns(DOMAIN);
-            mockConfig.Setup(mock => mock.ClientId).Returns(CLIENT_ID);
-            mockConfig.Setup(mock => mock.ServicePrincipalKey).Returns(SERVICE_PRINCIPAL_KEY);
-            mockConfig.Setup(mock => mock.Jwk).Returns(accessKey);
+            options.CustomerId = CUSTOMER_ID;
+            options.Domain = DOMAIN;
+            options.ClientId = CLIENT_ID;
+            options.ServicePrincipalKey = SERVICE_PRINCIPAL_KEY;
+            options.Jwk = accessKey;
+
 
             // When called, it gives a stubbed HttpClient
             mockHttpClientFactory.Setup(mock => mock.CreateClient(It.IsAny<string>())).Returns(httpClient);
@@ -69,7 +70,7 @@ namespace Laserfiche.OAuth.Client.ClientCredentials.UnitTest
                 .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
                 .ReturnsAsync(accessTokenResponse);
 
-            client = new TokenApiClient(mockConfig.Object, mockHttpClientFactory.Object);
+            client = new TokenApiClient(options, mockHttpClientFactory.Object);
             Assert.IsNotNull(client.GetAccessTokenAsync());
         }
 
@@ -94,7 +95,7 @@ namespace Laserfiche.OAuth.Client.ClientCredentials.UnitTest
                 .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
                 .ReturnsAsync(accessTokenResponse);
 
-            client = new TokenApiClient(mockConfig.Object, mockHttpClientFactory.Object);
+            client = new TokenApiClient(options, mockHttpClientFactory.Object);
             var exception = await Assert.ThrowsExceptionAsync<Exception>(async () => await client.GetAccessTokenAsync());
             Assert.AreEqual(exception.Data["Type"], responseContent.Type);
             Assert.AreEqual(exception.Data["Title"], responseContent.Title);
@@ -117,7 +118,7 @@ namespace Laserfiche.OAuth.Client.ClientCredentials.UnitTest
                 .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
                 .ReturnsAsync(accessTokenResponse);
 
-            client = new TokenApiClient(mockConfig.Object, mockHttpClientFactory.Object);
+            client = new TokenApiClient(options, mockHttpClientFactory.Object);
             Assert.IsNotNull(client.RefreshAccessTokenAsync(""));
         }
 
@@ -142,7 +143,7 @@ namespace Laserfiche.OAuth.Client.ClientCredentials.UnitTest
                 .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
                 .ReturnsAsync(accessTokenResponse);
 
-            client = new TokenApiClient(mockConfig.Object, mockHttpClientFactory.Object);
+            client = new TokenApiClient(options, mockHttpClientFactory.Object);
             var exception = await Assert.ThrowsExceptionAsync<Exception>(async () => await client.RefreshAccessTokenAsync(""));
             Assert.AreEqual(exception.Data["Type"], responseContent.Type);
             Assert.AreEqual(exception.Data["Title"], responseContent.Title);
