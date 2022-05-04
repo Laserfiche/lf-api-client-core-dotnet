@@ -19,7 +19,7 @@ namespace Laserfiche.Oauth.Api.Client.Util
         {
             if (string.IsNullOrEmpty(configuration.CustomerId))
             {
-                throw new ArgumentException(Resources.Strings.INVALID_ACCOUNT_ID, nameof(configuration.CustomerId));
+                throw new ArgumentException(Resources.Strings.INVALID_CUSTOMER_ID, nameof(configuration.CustomerId));
             }
 
             if (string.IsNullOrEmpty(configuration.Domain))
