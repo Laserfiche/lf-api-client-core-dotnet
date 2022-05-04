@@ -24,72 +24,72 @@ namespace Laserfiche.OAuth.Client.ClientCredentials.UnitTest
         [TestMethod]
         public void HandlerConfigurationMissingAccountId()
         {
-            IClientCredentialsOptions config = new ClientCredentialsOptions()
+            ClientCredentialsOptions config = new ClientCredentialsOptions()
             {
                 Domain = DOMAIN,
                 ClientId = CLIENT_ID,
                 ServicePrincipalKey = SERVICE_PRINCIPAL_KEY,
-                AccessKey = new Microsoft.IdentityModel.Tokens.JsonWebKey(ACCESS_KEY)
+                Jwk = new Microsoft.IdentityModel.Tokens.JsonWebKey(ACCESS_KEY)
             };
-            Assert.ThrowsException<ArgumentException>(() => new ClientCredentialsHandler(config));
+            Assert.ThrowsException<ArgumentException>(() => new TokenApiClient(config));
         }
 
         [TestMethod]
         public void HandlerConfigurationMissingDomain()
         {
-            IClientCredentialsOptions config = new ClientCredentialsOptions()
+            ClientCredentialsOptions config = new ClientCredentialsOptions()
             {
-                AccountId = ACCOUNT_ID,
+                CustomerId = ACCOUNT_ID,
                 ClientId = CLIENT_ID,
                 ServicePrincipalKey = SERVICE_PRINCIPAL_KEY,
-                AccessKey = new Microsoft.IdentityModel.Tokens.JsonWebKey(ACCESS_KEY)
+                Jwk = new Microsoft.IdentityModel.Tokens.JsonWebKey(ACCESS_KEY)
             };
-            Assert.ThrowsException<ArgumentException>(() => new ClientCredentialsHandler(config));
+            Assert.ThrowsException<ArgumentException>(() => new TokenApiClient(config));
         }
 
         [TestMethod]
         public void HandlerConfigurationMissingClientId()
         {
-            IClientCredentialsOptions config = new ClientCredentialsOptions()
+            ClientCredentialsOptions config = new ClientCredentialsOptions()
             {
-                AccountId = ACCOUNT_ID,
+                CustomerId = ACCOUNT_ID,
                 Domain = DOMAIN,
                 ServicePrincipalKey = SERVICE_PRINCIPAL_KEY,
-                AccessKey = new Microsoft.IdentityModel.Tokens.JsonWebKey(ACCESS_KEY)
+                Jwk = new Microsoft.IdentityModel.Tokens.JsonWebKey(ACCESS_KEY)
             };
-            Assert.ThrowsException<ArgumentException>(() => new ClientCredentialsHandler(config));
+            Assert.ThrowsException<ArgumentException>(() => new TokenApiClient(config));
         }
 
         [TestMethod]
         public void HandlerConfigurationMissingServicePrincipalKey()
         {
-            IClientCredentialsOptions config = new ClientCredentialsOptions()
+            ClientCredentialsOptions config = new ClientCredentialsOptions()
             {
-                AccountId = ACCOUNT_ID,
+                CustomerId = ACCOUNT_ID,
                 Domain = DOMAIN,
                 ClientId = CLIENT_ID,
-                AccessKey = new Microsoft.IdentityModel.Tokens.JsonWebKey(ACCESS_KEY)
+                Jwk = new Microsoft.IdentityModel.Tokens.JsonWebKey(ACCESS_KEY)
             };
-            Assert.ThrowsException<ArgumentException>(() => new ClientCredentialsHandler(config));
+            Assert.ThrowsException<ArgumentException>(() => new TokenApiClient(config));
         }
 
         [TestMethod]
         public void HandlerConfigurationMissingAccesskey()
         {
-            IClientCredentialsOptions config = new ClientCredentialsOptions()
+            ClientCredentialsOptions config = new ClientCredentialsOptions()
             {
-                AccountId = ACCOUNT_ID,
+                CustomerId = ACCOUNT_ID,
                 Domain = DOMAIN,
                 ClientId = CLIENT_ID,
                 ServicePrincipalKey = SERVICE_PRINCIPAL_KEY
             };
-            Assert.ThrowsException<ArgumentException>(() => new ClientCredentialsHandler(config));
+            Assert.ThrowsException<ArgumentException>(() => new TokenApiClient(config));
         }
 
         [TestMethod]
         public void HandlerConfigurationCannotBeNull()
         {
-            var ex = Assert.ThrowsException<ArgumentNullException>(() => new ClientCredentialsHandler(null));
+            var ex = Assert.ThrowsException<ArgumentNullException>(() => new TokenApiClient(null));
             Assert.AreEqual(ex.Message, new ArgumentNullException("configuration").Message);
         }
     }
