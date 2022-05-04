@@ -120,8 +120,8 @@
   <data name="INVALID_ACCESS_KEY" xml:space="preserve">
     <value>The access key is invalid or null.</value>
   </data>
-  <data name="INVALID_ACCOUNT_ID" xml:space="preserve">
-    <value>The account ID is either not set or incorrect.</value>
+  <data name="INVALID_CUSTOMER_ID" xml:space="preserve">
+    <value>The customer ID is either not set or incorrect.</value>
   </data>
   <data name="INVALID_CLIENT_ID" xml:space="preserve">
     <value>The client ID is either not set or incorrect.</value>

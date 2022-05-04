@@ -70,20 +70,20 @@ namespace Laserfiche.Oauth.Api.Client.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The account ID is either not set or incorrect..
-        /// </summary>
-        public static string INVALID_ACCOUNT_ID {
-            get {
-                return ResourceManager.GetString("INVALID_ACCOUNT_ID", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to The client ID is either not set or incorrect..
         /// </summary>
         public static string INVALID_CLIENT_ID {
             get {
                 return ResourceManager.GetString("INVALID_CLIENT_ID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The customer ID is either not set or incorrect..
+        /// </summary>
+        public static string INVALID_CUSTOMER_ID {
+            get {
+                return ResourceManager.GetString("INVALID_CUSTOMER_ID", resourceCulture);
             }
         }
         

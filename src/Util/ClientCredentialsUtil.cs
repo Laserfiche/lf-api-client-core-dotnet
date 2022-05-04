@@ -17,9 +17,9 @@ namespace Laserfiche.Oauth.Api.Client.Util
 
         internal static void IsValid(this ClientCredentialsOptions configuration)
         {
-            if (string.IsNullOrEmpty(configuration.AccountId))
+            if (string.IsNullOrEmpty(configuration.CustomerId))
             {
-                throw new ArgumentException(Resources.Strings.INVALID_ACCOUNT_ID, nameof(configuration.AccountId));
+                throw new ArgumentException(Resources.Strings.INVALID_ACCOUNT_ID, nameof(configuration.CustomerId));
             }
 
             if (string.IsNullOrEmpty(configuration.Domain))
