@@ -49,6 +49,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+      <_Parameter1>Laserfiche.OAuth.Client.ClientCredentials.UnitTest</_Parameter1>
+    </AssemblyAttribute>
+</ItemGroup>
+
+  <ItemGroup>
     <None Include="./logo.png">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
