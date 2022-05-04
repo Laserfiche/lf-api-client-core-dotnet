@@ -13,19 +13,22 @@ namespace Laserfiche.OAuth.Client.ClientCredentials.IntegrationTest
         public async Task GetAccessTokenAsync()
         {
             // Initialize an instance of the handler
-            ClientCredentialsHandler handler = new ClientCredentialsHandler(Configuration);
+            TokenApiClient handler = new(Configuration);
 
             // Get tokens for that application
-            (string accessToken, string refreshToken) = await handler.GetAccessTokenAsync();
-            Assert.IsNotNull(accessToken);
-            Assert.AreEqual(string.Empty, refreshToken);
+            var tokenResponse = await handler.GetAccessTokenAsync();
+            Assert.IsNotNull(tokenResponse);
+            Assert.IsNotNull(tokenResponse.AccessToken);
+            Assert.IsNotNull(tokenResponse.RefreshToken);
+            Assert.IsNotNull(tokenResponse.ExpiresIn);
+            Assert.IsNotNull(tokenResponse.TokenType);
         }
 
         [TestMethod]
         public async Task GetAccessTokenAsync_WrongDomain()
         {
             // Initialize an instance of the handler
-            ClientCredentialsHandler handler = new ClientCredentialsHandler(Configuration);
+            TokenApiClient handler = new(Configuration);
             handler.Configuration.Domain = "some.random.string";
 
             // Expect failed attempt to get access token since the domain is wrong
@@ -36,7 +39,7 @@ namespace Laserfiche.OAuth.Client.ClientCredentials.IntegrationTest
         public async Task GetAccessTokenAsync_WrongServicePrincipalKey()
         {
             // Initialize an instance of the handler
-            ClientCredentialsHandler handler = new ClientCredentialsHandler(Configuration);
+            TokenApiClient handler = new(Configuration);
             handler.Configuration.ServicePrincipalKey = "a wrong service principal key";
 
             // Expect the retrieval of access token to fail due to incorrect service principal key
