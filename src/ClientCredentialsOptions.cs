@@ -5,7 +5,7 @@ namespace Laserfiche.Oauth.Api.Client
 {
     public class ClientCredentialsOptions
     {
-        [JsonProperty("csid")]
+        [JsonProperty("customerId")]
         public string CustomerId { set; get; }
 
         [JsonProperty("domain")]
