@@ -33,7 +33,7 @@ namespace Laserfiche.OAuth.Client.ClientCredentials.UnitTest
         Mock<HttpMessageHandler> mockHttpMessageHandler;
         ClientCredentialsOptions options;
         HttpClient httpClient;
-        JsonWebKey accessKey;
+        JsonWebKey jwk;
 
         [TestInitialize]
         public void Setup()
@@ -42,14 +42,14 @@ namespace Laserfiche.OAuth.Client.ClientCredentials.UnitTest
             mockHttpMessageHandler = new Mock<HttpMessageHandler>();
             httpClient = new HttpClient(mockHttpMessageHandler.Object);
             options = new ClientCredentialsOptions();
-            accessKey = new JsonWebKey(ACCESS_KEY);
+            jwk = new JsonWebKey(ACCESS_KEY);
 
             // Populate the handler configuration with fake information
-            options.CustomerId = CUSTOMER_ID;
-            options.Domain = DOMAIN;
-            options.ClientId = CLIENT_ID;
+            options.AccessKey.CustomerId = CUSTOMER_ID;
+            options.AccessKey.Domain = DOMAIN;
+            options.AccessKey.ClientId = CLIENT_ID;
             options.ServicePrincipalKey = SERVICE_PRINCIPAL_KEY;
-            options.Jwk = accessKey;
+            options.AccessKey.Jwk = jwk;
 
 
             // When called, it gives a stubbed HttpClient
@@ -70,7 +70,7 @@ namespace Laserfiche.OAuth.Client.ClientCredentials.UnitTest
                 .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
                 .ReturnsAsync(accessTokenResponse);
 
-            client = new TokenApiClient(options, mockHttpClientFactory.Object);
+            client = new ClientCredentialsClient(options, mockHttpClientFactory.Object);
             Assert.IsNotNull(client.GetAccessTokenAsync());
         }
 
@@ -95,7 +95,7 @@ namespace Laserfiche.OAuth.Client.ClientCredentials.UnitTest
                 .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
                 .ReturnsAsync(accessTokenResponse);
 
-            client = new TokenApiClient(options, mockHttpClientFactory.Object);
+            client = new ClientCredentialsClient(options, mockHttpClientFactory.Object);
             var exception = await Assert.ThrowsExceptionAsync<Exception>(async () => await client.GetAccessTokenAsync());
             Assert.AreEqual(exception.Data["Type"], responseContent.Type);
             Assert.AreEqual(exception.Data["Title"], responseContent.Title);
@@ -118,7 +118,7 @@ namespace Laserfiche.OAuth.Client.ClientCredentials.UnitTest
                 .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
                 .ReturnsAsync(accessTokenResponse);
 
-            client = new TokenApiClient(options, mockHttpClientFactory.Object);
+            client = new ClientCredentialsClient(options, mockHttpClientFactory.Object);
             Assert.IsNotNull(client.RefreshAccessTokenAsync(""));
         }
 
@@ -143,7 +143,7 @@ namespace Laserfiche.OAuth.Client.ClientCredentials.UnitTest
                 .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
                 .ReturnsAsync(accessTokenResponse);
 
-            client = new TokenApiClient(options, mockHttpClientFactory.Object);
+            client = new ClientCredentialsClient(options, mockHttpClientFactory.Object);
             var exception = await Assert.ThrowsExceptionAsync<Exception>(async () => await client.RefreshAccessTokenAsync(""));
             Assert.AreEqual(exception.Data["Type"], responseContent.Type);
             Assert.AreEqual(exception.Data["Title"], responseContent.Title);

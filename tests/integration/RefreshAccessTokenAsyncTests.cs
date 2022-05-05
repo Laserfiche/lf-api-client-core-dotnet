@@ -37,7 +37,7 @@ namespace Laserfiche.OAuth.Client.ClientCredentials.IntegrationTest
         {
             // Initialize an instance of the handler
             ClientCredentialsClient client = new(Configuration);
-            client.Configuration.Domain = "some.random.string";
+            client.Configuration.AccessKey.Domain = "some.random.string";
 
             // Expect failed attempt to refresh access token since the domain is wrong
             await Assert.ThrowsExceptionAsync<HttpRequestException>(async () => await client.RefreshAccessTokenAsync(""));

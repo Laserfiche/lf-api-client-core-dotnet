@@ -79,7 +79,7 @@ namespace Laserfiche.Oauth.Api.Client
 
         private async Task<TokenResponse> RequestAccessTokenAsync(CancellationToken cancellationToken = default)
         {
-            var request = new HttpRequestMessage(HttpMethod.Post, DomainUtil.GetOauthTokenUri(Configuration.Domain))
+            var request = new HttpRequestMessage(HttpMethod.Post, DomainUtil.GetOauthTokenUri(Configuration.AccessKey.Domain))
             {
                 Content = ClientCredentialsUtil.RequestToFormUrlEncodedContent(new ClientCredentialsTokenRequest() { })
             };
