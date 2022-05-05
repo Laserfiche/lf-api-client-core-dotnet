@@ -33,7 +33,6 @@ namespace Laserfiche.OAuth.Client.ClientCredentials.UnitTest
         Mock<HttpMessageHandler> mockHttpMessageHandler;
         ClientCredentialsOptions options;
         HttpClient httpClient;
-        JsonWebKey jwk;
 
         [TestInitialize]
         public void Setup()
@@ -41,16 +40,17 @@ namespace Laserfiche.OAuth.Client.ClientCredentials.UnitTest
             mockHttpClientFactory = new Mock<IHttpClientFactory>();
             mockHttpMessageHandler = new Mock<HttpMessageHandler>();
             httpClient = new HttpClient(mockHttpMessageHandler.Object);
-            options = new ClientCredentialsOptions();
-            jwk = new JsonWebKey(ACCESS_KEY);
-
-            // Populate the handler configuration with fake information
-            options.AccessKey.CustomerId = CUSTOMER_ID;
-            options.AccessKey.Domain = DOMAIN;
-            options.AccessKey.ClientId = CLIENT_ID;
-            options.ServicePrincipalKey = SERVICE_PRINCIPAL_KEY;
-            options.AccessKey.Jwk = jwk;
-
+            options = new ClientCredentialsOptions()
+            {
+                ServicePrincipalKey = SERVICE_PRINCIPAL_KEY,
+                AccessKey = new AccessKey()
+                {
+                    CustomerId = CUSTOMER_ID,
+                    Domain = DOMAIN,
+                    ClientId = CLIENT_ID,
+                    Jwk = new JsonWebKey(ACCESS_KEY)
+                }
+            };
 
             // When called, it gives a stubbed HttpClient
             mockHttpClientFactory.Setup(mock => mock.CreateClient(It.IsAny<string>())).Returns(httpClient);
