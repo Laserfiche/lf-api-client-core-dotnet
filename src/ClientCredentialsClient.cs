@@ -9,13 +9,13 @@ using System.Threading.Tasks;
 
 namespace Laserfiche.Oauth.Api.Client
 {
-    public class TokenApiClient : ITokenApiClient
+    public class ClientCredentialsClient : ITokenApiClient
     {
         private HttpClient _httpClient { get; set; }
 
         public ClientCredentialsOptions Configuration { set; get; }
 
-        public static async Task<TokenApiClient> CreateFromAccessKeyAsync(string accessKeyFilePath, IHttpClientFactory httpClientFactory = null)
+        public static async Task<ClientCredentialsClient> CreateFromAccessKeyAsync(string accessKeyFilePath, IHttpClientFactory httpClientFactory = null)
         {
             using (FileStream fileStream = File.Open(accessKeyFilePath, FileMode.Open))
             {
@@ -23,12 +23,12 @@ namespace Laserfiche.Oauth.Api.Client
                 {
                     string content = await streamReader.ReadToEndAsync();
                     var configuration = JsonConvert.DeserializeObject<ClientCredentialsOptions>(content);
-                    return new TokenApiClient(configuration, httpClientFactory);
+                    return new ClientCredentialsClient(configuration, httpClientFactory);
                 }
             }
         }
 
-        public TokenApiClient(ClientCredentialsOptions configuration, IHttpClientFactory httpClientFactory = null)
+        public ClientCredentialsClient(ClientCredentialsOptions configuration, IHttpClientFactory httpClientFactory = null)
         {
             SetupClientCredentialsHandler(configuration, httpClientFactory);
         }
@@ -63,16 +63,18 @@ namespace Laserfiche.Oauth.Api.Client
             return await RequestAccessTokenAsync(cancellationToken);
         }
 
+        /// <summary>
+        /// Note, the client credentials flow doesn't have a concept of refresh token. But the user can still pass in a
+        /// refresh token, e.g., from the previous result of calling GetAccessTokenAsync
+        /// (i.e., TokenResponse.RefreshToken). TokenResponse.RefreshToken will be null but since this method doesn't
+        /// even read that value, we still maintain a uniformity of "using refresh token to get access token" procedure.
+        /// </summary>
+        /// <param name="refreshToken"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
         public async Task<TokenResponse> RefreshAccessTokenAsync(string refreshToken, CancellationToken cancellationToken = default)
         {
-            var tokenResponse = await RequestAccessTokenAsync(cancellationToken);
-
-            // Client credentials flow doesn't really have a concept of refresh token, but the access token will
-            // eventually expire. So we swap the two fields.
-            tokenResponse.RefreshToken = tokenResponse.AccessToken;
-            tokenResponse.AccessToken = null;
-            
-            return tokenResponse;
+            return await RequestAccessTokenAsync(cancellationToken);
         }
 
         private async Task<TokenResponse> RequestAccessTokenAsync(CancellationToken cancellationToken = default)
