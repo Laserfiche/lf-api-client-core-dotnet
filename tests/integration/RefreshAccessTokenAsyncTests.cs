@@ -18,6 +18,7 @@ namespace Laserfiche.OAuth.Client.ClientCredentials.IntegrationTest
             // Get tokens for that application
             var tokenResponse = await handler.RefreshAccessTokenAsync("");
             Assert.IsNotNull(tokenResponse);
+            Assert.IsNull(tokenResponse.AccessToken);
             Assert.IsNotNull(tokenResponse.RefreshToken);
             Assert.IsNotNull(tokenResponse.ExpiresIn);
             Assert.IsNotNull(tokenResponse.TokenType);

@@ -65,7 +65,14 @@ namespace Laserfiche.Oauth.Api.Client
 
         public async Task<TokenResponse> RefreshAccessTokenAsync(string refreshToken, CancellationToken cancellationToken = default)
         {
-            return await RequestAccessTokenAsync(cancellationToken);
+            var tokenResponse = await RequestAccessTokenAsync(cancellationToken);
+
+            // Client credentials flow doesn't really have a concept of refresh token, but the access token will
+            // eventually expire. So we swap the two fields.
+            tokenResponse.RefreshToken = tokenResponse.AccessToken;
+            tokenResponse.AccessToken = null;
+            
+            return tokenResponse;
         }
 
         private async Task<TokenResponse> RequestAccessTokenAsync(CancellationToken cancellationToken = default)
