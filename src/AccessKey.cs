@@ -11,10 +11,10 @@ namespace Laserfiche.Oauth.Api.Client
         [JsonProperty("domain")]
         public string Domain { set; get; }
 
-        [JsonProperty("client_id")]
+        [JsonProperty("clientId")]
         public string ClientId { set; get; }
 
-        [JsonProperty("accessKey")]
+        [JsonProperty("jwk")]
         public JsonWebKey Jwk { set; get; }
     }
 }
