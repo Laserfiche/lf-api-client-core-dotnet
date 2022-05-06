@@ -9,31 +9,51 @@ namespace Laserfiche.OAuth.Client.ClientCredentials.IntegrationTest
     {
         public ClientCredentialsOptions Configuration { get; set; }
 
+        private readonly string ACCESS_KEY = "TEST_CONFIG_DEV_A_CA";
+
+        private readonly string SERVICE_PRINCIPAL = "TEST_CONFIG_SP_DEV_A_CA";
+
         public BaseTest()
         {
-            var testConfig = Environment.GetEnvironmentVariable("TEST_CONFIG_DEV_A_CA");
-            
-            // GitHub secret will be passed in as environment variable. If it doesn't exist,
-            // we will fallback to reading the JSON file.
-            if (testConfig == null) {
-                ExtractConfigurationFromJson();
-            } else {
-                Configuration = JsonConvert.DeserializeObject<ClientCredentialsOptions>(testConfig);
+            var servicePrincipal = Environment.GetEnvironmentVariable(SERVICE_PRINCIPAL);
+            if (servicePrincipal == null)
+            {
+                servicePrincipal = ReadJsonFromFile<ServicePrincipalConfig>(SERVICE_PRINCIPAL).Value;
             }
-        }
 
-        private void ExtractConfigurationFromJson()
+            AccessKey accessKey;
+            var accessKeyStr = Environment.GetEnvironmentVariable(ACCESS_KEY);
+            if (accessKeyStr == null)
+            {
+                accessKey = ReadJsonFromFile<AccessKey>(ACCESS_KEY);
+            } else
+            {
+                accessKey = JsonConvert.DeserializeObject<AccessKey>(accessKeyStr);
+            }
+
+            Configuration = new()
+            {
+                ServicePrincipalKey = servicePrincipal,
+                AccessKey = accessKey
+            };
+        }
+        private static T ReadJsonFromFile<T>(string fileName)
         {
-            string testingConfig;
+            string config;
             try
             {
-                testingConfig = File.ReadAllText(Path.Combine(Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName, "DEV_A_CA.json"));
+                config = File.ReadAllText(Path.Combine(Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName, $"{fileName}.json"));
             }
             catch (Exception)
             {
-                throw new Exception("Cannot load TestingConfig.json");
+                throw new Exception($"Cannot load {fileName}");
             }
-            Configuration = JsonConvert.DeserializeObject<ClientCredentialsOptions>(testingConfig);
+            return JsonConvert.DeserializeObject<T>(config);
         }
+    }
+
+    internal class ServicePrincipalConfig
+    {
+        public string Value { get; set; }
     }
 }
