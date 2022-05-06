@@ -9,9 +9,9 @@ namespace Laserfiche.OAuth.Client.ClientCredentials.IntegrationTest
     {
         public ClientCredentialsOptions Configuration { get; set; }
 
-        private readonly string ACCESS_KEY = "TEST_CONFIG_DEV_A_CA";
+        private readonly string ACCESS_KEY = "DEV_A_CA";
 
-        private readonly string SERVICE_PRINCIPAL = "TEST_CONFIG_SP_DEV_A_CA";
+        private readonly string SERVICE_PRINCIPAL = "SP_DEV_A_CA";
 
         public BaseTest()
         {
