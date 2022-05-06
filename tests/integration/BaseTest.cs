@@ -1,6 +1,7 @@
 ﻿using Laserfiche.Oauth.Api.Client;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace Laserfiche.OAuth.Client.ClientCredentials.IntegrationTest
@@ -9,31 +10,48 @@ namespace Laserfiche.OAuth.Client.ClientCredentials.IntegrationTest
     {
         public ClientCredentialsOptions Configuration { get; set; }
 
+        private const string SP_KEY = "SERVICE_PRINCIPAL_KEY";
+
+        private const string ACCESS_KEY = "ACCESS_KEY";
+
+        private const string ENV_TEST_CONFIG = "TEST_CONFIG";
+
         public BaseTest()
         {
-            var testConfig = Environment.GetEnvironmentVariable("TEST_CONFIG_DEV_A_CA");
-            
-            // GitHub secret will be passed in as environment variable. If it doesn't exist,
-            // we will fallback to reading the JSON file.
-            if (testConfig == null) {
-                ExtractConfigurationFromJson();
-            } else {
-                Configuration = JsonConvert.DeserializeObject<ClientCredentialsOptions>(testConfig);
+            if (Environment.GetEnvironmentVariable(ENV_TEST_CONFIG) == null)
+            {
+                SourceTestConfigFromFile("TestConfig");
+            } else
+            {
+                var config = Environment.GetEnvironmentVariable(ENV_TEST_CONFIG);
+                var env = DotNetEnv.Env.LoadContents(config);
+                CreateAndPopulateTestConfig(env);
             }
         }
 
-        private void ExtractConfigurationFromJson()
+        private void SourceTestConfigFromFile(string fileName)
         {
-            string testingConfig;
-            try
+            var path = Path.Combine(Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName, $"{fileName}.env");
+            var env = DotNetEnv.Env.Load(path);
+            CreateAndPopulateTestConfig(env);
+        }
+
+        private void CreateAndPopulateTestConfig(IEnumerable<KeyValuePair<string, string>> env)
+        {
+            Configuration = new();
+
+            foreach (var kv in env)
             {
-                testingConfig = File.ReadAllText(Path.Combine(Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName, "DEV_A_CA.json"));
+                switch (kv.Key)
+                {
+                    case SP_KEY:
+                        Configuration.ServicePrincipalKey = kv.Value;
+                        break;
+                    case ACCESS_KEY:
+                        Configuration.AccessKey = JsonConvert.DeserializeObject<AccessKey>(kv.Value);
+                        break;
+                }
             }
-            catch (Exception)
-            {
-                throw new Exception("Cannot load TestingConfig.json");
-            }
-            Configuration = JsonConvert.DeserializeObject<ClientCredentialsOptions>(testingConfig);
         }
     }
 }

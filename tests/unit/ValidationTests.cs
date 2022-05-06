@@ -1,5 +1,6 @@
 ﻿using Laserfiche.Oauth.Api.Client;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.IdentityModel.Tokens;
 using System;
 
 namespace Laserfiche.OAuth.Client.ClientCredentials.UnitTest
@@ -7,11 +8,11 @@ namespace Laserfiche.OAuth.Client.ClientCredentials.UnitTest
     [TestClass]
     public class ValidationTests
     {
-        private const string ACCOUNT_ID = "fake.account.id";
+        private const string CUSTOMER_ID = "fake.account.id";
         private const string DOMAIN = "fake.domain";
         private const string CLIENT_ID = "fake.client.id";
         private const string SERVICE_PRINCIPAL_KEY = "fake.sp.key";
-        private const string ACCESS_KEY = @"{
+        private const string JWK = @"{
 	            ""kty"": ""EC"",
                 ""crv"": ""P-256"",
                 ""use"": ""sig"",
@@ -22,74 +23,89 @@ namespace Laserfiche.OAuth.Client.ClientCredentials.UnitTest
             }";
 
         [TestMethod]
-        public void HandlerConfigurationMissingAccountId()
+        public void HandlerConfigurationMissingCustomerId()
         {
-            IClientCredentialsOptions config = new ClientCredentialsOptions()
+            ClientCredentialsOptions config = new()
             {
-                Domain = DOMAIN,
-                ClientId = CLIENT_ID,
+                AccessKey = new()
+                {
+                    Domain = DOMAIN,
+                    ClientId = CLIENT_ID,
+                    Jwk = new JsonWebKey(JWK)
+                },
                 ServicePrincipalKey = SERVICE_PRINCIPAL_KEY,
-                AccessKey = new Microsoft.IdentityModel.Tokens.JsonWebKey(ACCESS_KEY)
             };
-            Assert.ThrowsException<ArgumentException>(() => new ClientCredentialsHandler(config));
+            Assert.ThrowsException<ArgumentException>(() => new ClientCredentialsClient(config));
         }
 
         [TestMethod]
         public void HandlerConfigurationMissingDomain()
         {
-            IClientCredentialsOptions config = new ClientCredentialsOptions()
+            ClientCredentialsOptions config = new()
             {
-                AccountId = ACCOUNT_ID,
-                ClientId = CLIENT_ID,
+                AccessKey = new()
+                {
+                    CustomerId = CUSTOMER_ID,
+                    ClientId = CLIENT_ID,
+                    Jwk = new JsonWebKey(JWK)
+                },
                 ServicePrincipalKey = SERVICE_PRINCIPAL_KEY,
-                AccessKey = new Microsoft.IdentityModel.Tokens.JsonWebKey(ACCESS_KEY)
             };
-            Assert.ThrowsException<ArgumentException>(() => new ClientCredentialsHandler(config));
+            Assert.ThrowsException<ArgumentException>(() => new ClientCredentialsClient(config));
         }
 
         [TestMethod]
         public void HandlerConfigurationMissingClientId()
         {
-            IClientCredentialsOptions config = new ClientCredentialsOptions()
+            ClientCredentialsOptions config = new()
             {
-                AccountId = ACCOUNT_ID,
-                Domain = DOMAIN,
+                AccessKey = new()
+                {
+                    Domain = DOMAIN,
+                    ClientId = CLIENT_ID,
+                    Jwk = new JsonWebKey(JWK)
+                },
                 ServicePrincipalKey = SERVICE_PRINCIPAL_KEY,
-                AccessKey = new Microsoft.IdentityModel.Tokens.JsonWebKey(ACCESS_KEY)
             };
-            Assert.ThrowsException<ArgumentException>(() => new ClientCredentialsHandler(config));
+            Assert.ThrowsException<ArgumentException>(() => new ClientCredentialsClient(config));
         }
 
         [TestMethod]
         public void HandlerConfigurationMissingServicePrincipalKey()
         {
-            IClientCredentialsOptions config = new ClientCredentialsOptions()
+            ClientCredentialsOptions config = new()
             {
-                AccountId = ACCOUNT_ID,
-                Domain = DOMAIN,
-                ClientId = CLIENT_ID,
-                AccessKey = new Microsoft.IdentityModel.Tokens.JsonWebKey(ACCESS_KEY)
+                AccessKey = new()
+                {
+                    CustomerId = CUSTOMER_ID,
+                    Domain = DOMAIN,
+                    ClientId = CLIENT_ID,
+                    Jwk = new JsonWebKey(JWK)
+                },
             };
-            Assert.ThrowsException<ArgumentException>(() => new ClientCredentialsHandler(config));
+            Assert.ThrowsException<ArgumentException>(() => new ClientCredentialsClient(config));
         }
 
         [TestMethod]
         public void HandlerConfigurationMissingAccesskey()
         {
-            IClientCredentialsOptions config = new ClientCredentialsOptions()
+            ClientCredentialsOptions config = new()
             {
-                AccountId = ACCOUNT_ID,
-                Domain = DOMAIN,
-                ClientId = CLIENT_ID,
-                ServicePrincipalKey = SERVICE_PRINCIPAL_KEY
+                AccessKey = new()
+                {
+                    CustomerId = CUSTOMER_ID,
+                    Domain = DOMAIN,
+                    ClientId = CLIENT_ID,
+                },
+                ServicePrincipalKey = SERVICE_PRINCIPAL_KEY,
             };
-            Assert.ThrowsException<ArgumentException>(() => new ClientCredentialsHandler(config));
+            Assert.ThrowsException<ArgumentException>(() => new ClientCredentialsClient(config));
         }
 
         [TestMethod]
         public void HandlerConfigurationCannotBeNull()
         {
-            var ex = Assert.ThrowsException<ArgumentNullException>(() => new ClientCredentialsHandler(null));
+            var ex = Assert.ThrowsException<ArgumentNullException>(() => new ClientCredentialsClient(null));
             Assert.AreEqual(ex.Message, new ArgumentNullException("configuration").Message);
         }
     }
