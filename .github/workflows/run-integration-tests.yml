@@ -25,7 +25,7 @@ jobs:
       run: dotnet test --no-build --verbosity normal --filter Laserfiche.OAuth.Client.ClientCredentials.UnitTest
     - name: Run integration tests
       env:
-        TEST_CONFIG_DEV_A_CA: ${{ secrets.TEST_CONFIG_DEV_A_CA }}
         TEST_CONFIG_SP_DEV_A_CA: ${{ secrets.TEST_CONFIG_SP_DEV_A_CA }}
+        TEST_CONFIG_DEV_A_CA: ${{ secrets.TEST_CONFIG_DEV_A_CA }}
       run:
         dotnet test --no-build --verbosity normal --filter Laserfiche.OAuth.Client.ClientCredentials.IntegrationTest
