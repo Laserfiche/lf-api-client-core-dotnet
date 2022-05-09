@@ -15,6 +15,11 @@ namespace Laserfiche.Oauth.Api.Client
     /// </summary>
     public partial class TokenApiClient : ITokenApiClient
     {
+        private readonly HttpClient _httpClient;
+
+        public IAuthorizeClient AuthorizeClient { get; }
+        public ITokenClient TokenClient { get; }
+
         // The authorization endpoint should be global and well known. So, ClientCredentialsOption doesn't need to be passed in. But our current backend is reginal.
         public TokenApiClient(string regionalDomain)
         {
@@ -24,14 +29,18 @@ namespace Laserfiche.Oauth.Api.Client
                 UseCookies = false,
             });
             _httpClient.BaseAddress = new Uri(DomainUtil.GetOauthBaseUri(regionalDomain));
+
+            AuthorizeClient = new AuthorizeClient(_httpClient);
+            TokenClient = new TokenClient(_httpClient);
         }
 
         public async Task<SwaggerResponse<GetAccessTokenResponse>> GetAccessTokenAsync(string servicePrincipalKey, AccessKey accessKey, CancellationToken cancellationToken = default)
         {
-            var response = await TokenAsync(new GetAccessTokenRequest()
+            string bearerAuth = $"Bearer {JwtUtil.CreateClientCredentialsAuthorizationJwt(servicePrincipalKey, accessKey)}";
+            var response = await TokenClient.TokenAsync(new GetAccessTokenRequest()
             {
                 Grant_type = "client_credentials",
-            }); // TODO: we will need to find a way to pass in the auth header somewhere which can be drived from spKey and accessKey
+            }, bearerAuth);
             return response;
         }
 
@@ -46,7 +55,7 @@ namespace Laserfiche.Oauth.Api.Client
         /// <returns></returns>
         public async Task<SwaggerResponse<GetAccessTokenResponse>> RefreshAccessTokenAsync(string refreshToken, CancellationToken cancellationToken = default)
         {
-            var response = await TokenAsync(new GetAccessTokenRequest()
+            var response = await TokenClient.TokenAsync(new GetAccessTokenRequest()
             {
                 Grant_type = "client_credentials",
             }); // TODO: we will need to find a way to pass in the auth header somewhere which can be drived from spKey and accessKey

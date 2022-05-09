@@ -14,14 +14,14 @@ namespace Laserfiche.Oauth.Api.Client.Util
             return new JsonWebTokenHandler().ReadJsonWebToken(jwt);
         }
 
-        internal static string CreateClientCredentialsAuthorizationJwt(ClientCredentialsOptions config, string audience = "laserfiche.com", DateTime? validTo = null)
+        internal static string CreateClientCredentialsAuthorizationJwt(string servicePrincipalKey, AccessKey accessKey, string audience = "laserfiche.com", DateTime? validTo = null)
         {
             var claims = new[]
                 {
-                    new Claim("client_id", config.AccessKey.ClientId),
-                    new Claim("client_secret", config.ServicePrincipalKey),
+                    new Claim("client_id", accessKey.ClientId),
+                    new Claim("client_secret", servicePrincipalKey),
                 };
-            return CreateSignedJwt(claims, config.AccessKey.Jwk, audience, validTo);
+            return CreateSignedJwt(claims, accessKey.Jwk, audience, validTo);
         }
 
         private static SigningCredentials GetSigningCredentials(JsonWebKey key)
