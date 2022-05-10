@@ -21,8 +21,6 @@ jobs:
       run: dotnet restore
     - name: Packaging
       run: dotnet pack --configuration release
-    - name: Publish to Nuget.org
-      run: dotnet nuget push ./src/bin/Release/*.nupkg --api-key ${{secrets.NUGET_KEY}} --source https://api.nuget.org/v3/index.json
     - name: Install doxygen
       run: apt-get install doxygen
     - name: Check doxygen version
