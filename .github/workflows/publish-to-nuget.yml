@@ -30,13 +30,13 @@ jobs:
     - name: Generate doxygen config
       run: doxygen -g doxygen.conf
     - name: Rewrite doxygen config
-      run: sed -i 's|PROJECT_NAME           =|PROJECT_NAME           = lf-oauth-api-client-dotnet|i' doxygen.conf
+      run: sed -i 's|"My Project"|lf-oauth-api-client-dotnet|i' doxygen.conf
     - name: Rewrite doxygen config
       run: sed -i 's|PROJECT_BRIEF          =|PROJECT_BRIEF          = ".NET implementation of various OAuth 2.0 flows for secure and easy access to Laserfiche APIs."|i' doxygen.conf
     - name: Rewrite doxygen config
       run: sed -i 's|PROJECT_LOGO           =|PROJECT_LOGO           = logo.png|i' doxygen.conf
     - name: Rewrite doxygen config
-      run: sed -i 's|OUTPUT_DIRECTORY       =|OUTPUT_DIRECTORY       = "./docs_temp/${GITHUB_REF##*/}/"|i' doxygen.conf
+      run: sed -i "s|OUTPUT_DIRECTORY       =|OUTPUT_DIRECTORY       = ./docs_temp/${GITHUB_REF##*/}/|i" doxygen.conf
     - name: Rewrite doxygen config
       run: sed -i 's|RECURSIVE              = NO|RECURSIVE              = YES|i' doxygen.conf
     - name: Check rewrite
