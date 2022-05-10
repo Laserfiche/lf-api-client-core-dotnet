@@ -29,6 +29,10 @@ jobs:
       run: doxygen --version
     - name: Create temporary directory
       run: mkdir -p ./docs_temp/${GITHUB_REF##*/}
+    - name: Delete doxygen config
+      run: rm -f doxygen.conf
+    - name: Create new doxygen.conf from backup
+      run: cp doxygen.conf.backup doxygen.conf
     - name: Rewrite doxygen config
       run: sed -i 's/GITHUB_REPO_BRANCH_NAME/${GITHUB_REF##*/}/i' doxygen.conf
     - name: Check rewrite
