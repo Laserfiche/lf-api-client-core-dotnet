@@ -1,7 +1,8 @@
-﻿using Laserfiche.Oauth.Api.Client;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.IdentityModel.Tokens;
 using System;
+using Laserfiche.Oauth.Api.Client;
+using Laserfiche.Oauth.Api.Client.Util;
 
 namespace Laserfiche.OAuth.Client.ClientCredentials.UnitTest
 {
@@ -11,7 +12,6 @@ namespace Laserfiche.OAuth.Client.ClientCredentials.UnitTest
         private const string CUSTOMER_ID = "fake.account.id";
         private const string DOMAIN = "fake.domain";
         private const string CLIENT_ID = "fake.client.id";
-        private const string SERVICE_PRINCIPAL_KEY = "fake.sp.key";
         private const string JWK = @"{
 	            ""kty"": ""EC"",
                 ""crv"": ""P-256"",
@@ -25,88 +25,37 @@ namespace Laserfiche.OAuth.Client.ClientCredentials.UnitTest
         [TestMethod]
         public void HandlerConfigurationMissingCustomerId()
         {
-            ClientCredentialsOptions config = new()
+            AccessKey accessKey = new()
             {
-                AccessKey = new()
-                {
-                    Domain = DOMAIN,
-                    ClientId = CLIENT_ID,
-                    Jwk = new JsonWebKey(JWK)
-                },
-                ServicePrincipalKey = SERVICE_PRINCIPAL_KEY,
+                Domain = DOMAIN,
+                ClientId = CLIENT_ID,
+                Jwk = new JsonWebKey(JWK)
             };
-            Assert.ThrowsException<ArgumentException>(() => new ClientCredentialsClient(config));
+            Assert.ThrowsException<ArgumentException>(() => accessKey.IsValid());
         }
 
         [TestMethod]
         public void HandlerConfigurationMissingDomain()
         {
-            ClientCredentialsOptions config = new()
+            AccessKey accessKey = new()
             {
-                AccessKey = new()
-                {
-                    CustomerId = CUSTOMER_ID,
-                    ClientId = CLIENT_ID,
-                    Jwk = new JsonWebKey(JWK)
-                },
-                ServicePrincipalKey = SERVICE_PRINCIPAL_KEY,
+                CustomerId = CUSTOMER_ID,
+                ClientId = CLIENT_ID,
+                Jwk = new JsonWebKey(JWK)
             };
-            Assert.ThrowsException<ArgumentException>(() => new ClientCredentialsClient(config));
+            Assert.ThrowsException<ArgumentException>(() => accessKey.IsValid());
         }
 
         [TestMethod]
         public void HandlerConfigurationMissingClientId()
         {
-            ClientCredentialsOptions config = new()
+            AccessKey accessKey = new()
             {
-                AccessKey = new()
-                {
-                    Domain = DOMAIN,
-                    ClientId = CLIENT_ID,
-                    Jwk = new JsonWebKey(JWK)
-                },
-                ServicePrincipalKey = SERVICE_PRINCIPAL_KEY,
+                Domain = DOMAIN,
+                CustomerId = CUSTOMER_ID,
+                Jwk = new JsonWebKey(JWK)
             };
-            Assert.ThrowsException<ArgumentException>(() => new ClientCredentialsClient(config));
-        }
-
-        [TestMethod]
-        public void HandlerConfigurationMissingServicePrincipalKey()
-        {
-            ClientCredentialsOptions config = new()
-            {
-                AccessKey = new()
-                {
-                    CustomerId = CUSTOMER_ID,
-                    Domain = DOMAIN,
-                    ClientId = CLIENT_ID,
-                    Jwk = new JsonWebKey(JWK)
-                },
-            };
-            Assert.ThrowsException<ArgumentException>(() => new ClientCredentialsClient(config));
-        }
-
-        [TestMethod]
-        public void HandlerConfigurationMissingAccesskey()
-        {
-            ClientCredentialsOptions config = new()
-            {
-                AccessKey = new()
-                {
-                    CustomerId = CUSTOMER_ID,
-                    Domain = DOMAIN,
-                    ClientId = CLIENT_ID,
-                },
-                ServicePrincipalKey = SERVICE_PRINCIPAL_KEY,
-            };
-            Assert.ThrowsException<ArgumentException>(() => new ClientCredentialsClient(config));
-        }
-
-        [TestMethod]
-        public void HandlerConfigurationCannotBeNull()
-        {
-            var ex = Assert.ThrowsException<ArgumentNullException>(() => new ClientCredentialsClient(null));
-            Assert.AreEqual(ex.Message, new ArgumentNullException("configuration").Message);
+            Assert.ThrowsException<ArgumentException>(() => accessKey.IsValid());
         }
     }
 }
