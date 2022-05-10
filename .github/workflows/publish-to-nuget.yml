@@ -23,3 +23,27 @@ jobs:
       run: dotnet pack --configuration release
     - name: Publish to Nuget.org
       run: dotnet nuget push ./src/bin/Release/*.nupkg --api-key ${{secrets.NUGET_KEY}} --source https://api.nuget.org/v3/index.json
+    - name: Install doxygen
+      run: apt-get install doxygen
+    - name: Check doxygen version
+      run: doxygen --version
+    - name: Create temporary directory
+      run: mkdir -p ./docs_temp/${GITHUB_REF##*/}
+    - name: Rewrite doxygen config
+      run: sed -i 's/GITHUB_REPO_BRANCH_NAME/${GITHUB_REF##*/}/i' doxygen.conf
+    - name: Check rewrite
+      run: head -n 100 doxygen.conf
+    - name: Generate doxygen docs
+      run: doxygen doxygen.conf
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-west-2 # Use your bucket region here
+    - name: Upload docs to S3 bucket
+      run: aws s3 sync ./docs_temp/${GITHUB_REF##*/}/ s3://apiserver-publish-client-library-docs/${GITHUB_REPOSITORY##*/}/docs/${GITHUB_REF##*/} --delete
+    - name: delete temporary directory
+      run: rm -r ./docs_temp
+      
+  
