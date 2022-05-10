@@ -22,7 +22,7 @@ jobs:
     - name: Packaging
       run: dotnet pack --configuration release
     - name: Install doxygen
-      run: apt-get install doxygen
+      run: sudo apt-get install doxygen
     - name: Check doxygen version
       run: doxygen --version
     - name: Create temporary directory
