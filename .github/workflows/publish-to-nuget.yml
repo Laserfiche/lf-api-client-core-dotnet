@@ -32,15 +32,14 @@ jobs:
     - name: Rewrite doxygen config
       run: sed -i 's|"My Project"|lf-oauth-api-client-dotnet|i' doxygen.conf
     - name: Rewrite doxygen config
-      run: sed -i 's|PROJECT_BRIEF          =|PROJECT_BRIEF          = ".NET implementation of various OAuth 2.0 flows for secure and easy access to Laserfiche APIs."|i' doxygen.conf
-    - name: Rewrite doxygen config
-      run: sed -i 's|PROJECT_LOGO           =|PROJECT_LOGO           = logo.png|i' doxygen.conf
-    - name: Rewrite doxygen config
-      run: sed -i "s|OUTPUT_DIRECTORY       =|OUTPUT_DIRECTORY       = ./docs_temp/${GITHUB_REF##*/}/|i" doxygen.conf
-    - name: Rewrite doxygen config
-      run: sed -i 's|RECURSIVE              = NO|RECURSIVE              = YES|i' doxygen.conf
+      run: |
+        sed -i 's|PROJECT_BRIEF          =|PROJECT_BRIEF          = ".NET implementation of various OAuth 2.0 flows for secure and easy access to Laserfiche APIs."|i' doxygen.conf
+        sed -i 's|PROJECT_LOGO           =|PROJECT_LOGO           = logo.png|i' doxygen.conf
+        sed -i "s|OUTPUT_DIRECTORY       =|OUTPUT_DIRECTORY       = ./docs_temp/${GITHUB_REF##*/}/|i" doxygen.conf
+        sed -i 's|RECURSIVE              = NO|RECURSIVE              = YES|i' doxygen.conf
+        sed -i 's|GENERATE_LATEX         = YES|GENERATE_LATEX         = NO|i' doxygen.conf
     - name: Check rewrite
-      run: head -n 100 doxygen.conf
+      run: head -n 200 doxygen.conf
     - name: Generate doxygen docs
       run: doxygen doxygen.conf
     - name: Configure AWS credentials
