@@ -31,23 +31,5 @@ namespace Laserfiche.Oauth.Api.Client
             }, bearerAuth);
             return response;
         }
-
-        /// <summary>
-        /// Note, the client credentials flow doesn't have a concept of refresh token. But the user can still pass in a
-        /// refresh token, e.g., from the previous result of calling GetAccessTokenAsync
-        /// (i.e., TokenResponse.RefreshToken). TokenResponse.RefreshToken will be null but since this method doesn't
-        /// even read that value, we still maintain a uniformity of "using refresh token to get access token" procedure.
-        /// </summary>
-        /// <param name="refreshToken"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        public async Task<SwaggerResponse<GetAccessTokenResponse>> RefreshAccessTokenAsync(string refreshToken, CancellationToken cancellationToken = default)
-        {
-            var response = await TokenAsync(new GetAccessTokenRequest()
-            {
-                Grant_type = "client_credentials",
-            }); // TODO: we will need to find a way to pass in the auth header somewhere which can be drived from spKey and accessKey
-            return response;
-        }
     }
 }
