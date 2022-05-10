@@ -8,7 +8,9 @@ namespace Laserfiche.OAuth.Client.ClientCredentials.IntegrationTest
 {
     public class BaseTest
     {
-        public ClientCredentialsOptions Configuration { get; set; }
+        public AccessKey AccessKey { get; set; }
+
+        public string ServicePrincipalKey { get; set; }
 
         private const string SP_KEY = "SERVICE_PRINCIPAL_KEY";
 
@@ -38,17 +40,15 @@ namespace Laserfiche.OAuth.Client.ClientCredentials.IntegrationTest
 
         private void CreateAndPopulateTestConfig(IEnumerable<KeyValuePair<string, string>> env)
         {
-            Configuration = new();
-
             foreach (var kv in env)
             {
                 switch (kv.Key)
                 {
                     case SP_KEY:
-                        Configuration.ServicePrincipalKey = kv.Value;
+                        ServicePrincipalKey = kv.Value;
                         break;
                     case ACCESS_KEY:
-                        Configuration.AccessKey = JsonConvert.DeserializeObject<AccessKey>(kv.Value);
+                        AccessKey = JsonConvert.DeserializeObject<AccessKey>(kv.Value);
                         break;
                 }
             }
