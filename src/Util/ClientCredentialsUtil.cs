@@ -15,32 +15,27 @@ namespace Laserfiche.Oauth.Api.Client.Util
             return new FormUrlEncodedContent(kvp);
         }
 
-        internal static void IsValid(this ClientCredentialsOptions configuration)
+        internal static void IsValid(this AccessKey accessKey)
         {
-            if (string.IsNullOrEmpty(configuration.AccessKey.CustomerId))
+            if (string.IsNullOrEmpty(accessKey.CustomerId))
             {
-                throw new ArgumentException(Resources.Strings.INVALID_CUSTOMER_ID, nameof(configuration.AccessKey.CustomerId));
+                throw new ArgumentException(Resources.Strings.INVALID_CUSTOMER_ID, nameof(accessKey.CustomerId));
             }
 
-            if (string.IsNullOrEmpty(configuration.AccessKey.Domain))
+            if (string.IsNullOrEmpty(accessKey.Domain))
             {
-                throw new ArgumentException(Resources.Strings.INVALID_DOMAIN, nameof(configuration.AccessKey.Domain));
+                throw new ArgumentException(Resources.Strings.INVALID_DOMAIN, nameof(accessKey.Domain));
             }
 
-            if (string.IsNullOrEmpty(configuration.AccessKey.ClientId))
+            if (string.IsNullOrEmpty(accessKey.ClientId))
             {
-                throw new ArgumentException(Resources.Strings.INVALID_CLIENT_ID, nameof(configuration.AccessKey.ClientId));
+                throw new ArgumentException(Resources.Strings.INVALID_CLIENT_ID, nameof(accessKey.ClientId));
             }
 
-            if (string.IsNullOrEmpty(configuration.ServicePrincipalKey))
-            {
-                throw new ArgumentException(Resources.Strings.INVALID_SERVICE_PRINCIPAL_KEY, nameof(configuration.ServicePrincipalKey));
-            }
-
-            bool isValidSigningKey = configuration.AccessKey.Jwk != null && configuration.AccessKey.Jwk.KeySize != 0;
+            bool isValidSigningKey = accessKey.Jwk != null && accessKey.Jwk.KeySize != 0;
             if (!isValidSigningKey)
             {
-                throw new ArgumentException(Resources.Strings.INVALID_ACCESS_KEY, nameof(configuration.AccessKey.Jwk));
+                throw new ArgumentException(Resources.Strings.INVALID_ACCESS_KEY, nameof(accessKey.Jwk));
             }
         }
 

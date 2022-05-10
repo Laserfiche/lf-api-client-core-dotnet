@@ -1,4 +1,6 @@
-﻿using System.Net;
+﻿using Laserfiche.Oauth.Api.Client.Util;
+using System;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading;
@@ -21,7 +23,14 @@ namespace Laserfiche.Oauth.Api.Client
         public OauthClientCredentialsHandler(string servicePrincipalKey, AccessKey accessKey)
         {
             _servicePrincipalKey = servicePrincipalKey;
+            if (string.IsNullOrEmpty(_servicePrincipalKey))
+            {
+                throw new ArgumentException(Resources.Strings.INVALID_SERVICE_PRINCIPAL_KEY, nameof(_servicePrincipalKey));
+            }
+
             _accessKey = accessKey;
+            _accessKey.IsValid();
+
             _tokenApiClient = new TokenApiClient(_accessKey.Domain); // change the api so this one works
         }
 
