@@ -2,10 +2,6 @@
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Moq.Protected;
-using Newtonsoft.Json;
-using System;
-using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -28,80 +24,32 @@ namespace Laserfiche.OAuth.Client.ClientCredentials.UnitTest
 	            ""d"": ""Q2J9YzSI_p98uMlt-MvFAi5VkzcFzQ-ThE2VRtv1g-Y""
             }";
 
-        ITokenApiClient client;
-        Mock<IHttpClientFactory> mockHttpClientFactory;
-        Mock<HttpMessageHandler> mockHttpMessageHandler;
-        ClientCredentialsOptions options;
-        HttpClient httpClient;
+        Mock<TokenApiClient> mockTokenApiClient;
+        string servicePrincipalKey;
+        AccessKey accessKey;
 
         [TestInitialize]
         public void Setup()
         {
-            mockHttpClientFactory = new Mock<IHttpClientFactory>();
-            mockHttpMessageHandler = new Mock<HttpMessageHandler>();
-            httpClient = new HttpClient(mockHttpMessageHandler.Object);
-            options = new ClientCredentialsOptions()
-            {
-                ServicePrincipalKey = SERVICE_PRINCIPAL_KEY,
-                AccessKey = new AccessKey()
-                {
-                    CustomerId = CUSTOMER_ID,
-                    Domain = DOMAIN,
-                    ClientId = CLIENT_ID,
-                    Jwk = new JsonWebKey(ACCESS_KEY)
-                }
-            };
+            mockTokenApiClient = new Mock<TokenApiClient>();
+            mockTokenApiClient.Setup(tokenApiClient => tokenApiClient.TokenAsync(It.IsAny<GetAccessTokenRequest>(), It.IsAny<string>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(new SwaggerResponse<GetAccessTokenResponse>(200, null, null)));
 
-            // When called, it gives a stubbed HttpClient
-            mockHttpClientFactory.Setup(mock => mock.CreateClient(It.IsAny<string>())).Returns(httpClient);
+            servicePrincipalKey = SERVICE_PRINCIPAL_KEY;
+            accessKey = new AccessKey()
+            {
+                CustomerId = CUSTOMER_ID,
+                Domain = DOMAIN,
+                ClientId = CLIENT_ID,
+                Jwk = new JsonWebKey(ACCESS_KEY)
+            };
         }
 
         [TestMethod]
-        public void GetAccessTokenAsync_Success()
+        public async Task GetAccessTokenAsync_Success()
         {
-            var accessTokenResponse = new HttpResponseMessage(System.Net.HttpStatusCode.OK)
-            {
-                Content = new StringContent("{\"access_token\":\"fake.access.token\",\"expires_in\":1001,\"token_type\":\"bearer\"}")
-            };
-
-            // Accommodate the request to get access token:
-            // We expect the path is for token request.
-            mockHttpMessageHandler.Protected()
-                .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
-                .ReturnsAsync(accessTokenResponse);
-
-            client = new ClientCredentialsClient(options, mockHttpClientFactory.Object);
-            Assert.IsNotNull(client.GetAccessTokenAsync());
-        }
-
-        [TestMethod]
-        public async Task GetAccessTokenAsync_ExceptionResponse()
-        {
-            var statusCode = System.Net.HttpStatusCode.BadRequest;
-            var responseContent = new OAuthProblemDetails()
-            {
-                Type = "invalid_client",
-                Title = "The client_id is invalid or authentication failed.",
-                Status = (int)statusCode,
-                Instance = "/Token",
-                OperationId = "fake.operation.id",
-            };
-            var accessTokenResponse = new HttpResponseMessage(statusCode)
-            {
-                Content = new StringContent(JsonConvert.SerializeObject(responseContent))
-            };
-
-            mockHttpMessageHandler.Protected()
-                .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
-                .ReturnsAsync(accessTokenResponse);
-
-            client = new ClientCredentialsClient(options, mockHttpClientFactory.Object);
-            var exception = await Assert.ThrowsExceptionAsync<Exception>(async () => await client.GetAccessTokenAsync());
-            Assert.AreEqual(exception.Data["Type"], responseContent.Type);
-            Assert.AreEqual(exception.Data["Title"], responseContent.Title);
-            Assert.AreEqual(exception.Data["Status"], ((int)statusCode).ToString());
-            Assert.AreEqual(exception.Data["Instance"], responseContent.Instance);
-            Assert.AreEqual(exception.Data["OperationId"], responseContent.OperationId);
+            TokenApiClient client = new(DOMAIN);
+            await client.GetAccessTokenAsync(servicePrincipalKey, accessKey);
+            mockTokenApiClient.Verify(tokenApiClient => tokenApiClient.TokenAsync(It.Is<GetAccessTokenRequest>(request => request.Grant_type == "client_credentials"), It.IsNotNull<string>(), It.IsAny<CancellationToken>()));
         }
     }
 }
