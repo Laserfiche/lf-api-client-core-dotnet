@@ -11,15 +11,18 @@ namespace Laserfiche.Oauth.Api.Client
     {
         private string _accessToken;
 
-        private readonly ClientCredentialsOptions _options;
+        private readonly string _servicePrincipalKey;
+
+        private readonly AccessKey _accessKey;
 
         private readonly ITokenApiClient _tokenApiClient;
 
         // Put ClientCredentialsClient stuff into here
-        public OauthClientCredentialsHandler(ClientCredentialsOptions options)
+        public OauthClientCredentialsHandler(string servicePrincipalKey, AccessKey accessKey)
         {
-            _options = options;
-            _tokenApiClient = new TokenApiClient(_options.AccessKey.Domain); // change the api so this one works
+            _servicePrincipalKey = servicePrincipalKey;
+            _accessKey = accessKey;
+            _tokenApiClient = new TokenApiClient(_accessKey.Domain); // change the api so this one works
         }
 
         /// <summary>
@@ -33,14 +36,14 @@ namespace Laserfiche.Oauth.Api.Client
         {
             if (string.IsNullOrEmpty(_accessToken))
             {
-                var response = await _tokenApiClient.GetAccessTokenAsync(_options.ServicePrincipalKey, _options.AccessKey, cancellationToken);
+                var response = await _tokenApiClient.GetAccessTokenAsync(_servicePrincipalKey, _accessKey, cancellationToken);
                 _accessToken = response.Result.Access_token;
             }
 
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
             // Will create a BeforeSendResult class and return it 
-            return new BeforeSendResult() { RegionalDomain = _options.AccessKey.Domain };
+            return new BeforeSendResult() { RegionalDomain = _accessKey.Domain };
         }
 
         /// <summary>
