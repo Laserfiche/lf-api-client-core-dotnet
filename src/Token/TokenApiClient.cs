@@ -1,10 +1,6 @@
 ﻿using Laserfiche.Oauth.Api.Client.Util;
-using Newtonsoft.Json;
 using System;
-using System.IO;
-using System.Net;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -53,6 +49,5 @@ namespace Laserfiche.Oauth.Api.Client
             }); // TODO: we will need to find a way to pass in the auth header somewhere which can be drived from spKey and accessKey
             return response;
         }
-
     }
 }
