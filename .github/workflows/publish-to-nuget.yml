@@ -49,7 +49,7 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: us-west-2 # Use your bucket region here
     - name: Upload docs to S3 bucket
-      run: aws s3 sync ./docs_temp/${GITHUB_REF##*/}/ s3://apiserver-publish-client-library-docs/${GITHUB_REPOSITORY##*/}/docs/${GITHUB_REF##*/} --delete
+      run: aws s3 sync ./docs_temp/${GITHUB_REF##*/}/html/ s3://apiserver-publish-client-library-docs/${GITHUB_REPOSITORY##*/}/docs/${GITHUB_REF##*/} --delete
     - name: delete temporary directory
       run: rm -r ./docs_temp
       
