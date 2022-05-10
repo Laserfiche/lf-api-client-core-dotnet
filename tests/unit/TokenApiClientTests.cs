@@ -103,53 +103,5 @@ namespace Laserfiche.OAuth.Client.ClientCredentials.UnitTest
             Assert.AreEqual(exception.Data["Instance"], responseContent.Instance);
             Assert.AreEqual(exception.Data["OperationId"], responseContent.OperationId);
         }
-
-        [TestMethod]
-        public void RefreshAccessTokenAsync_Success()
-        {
-            var accessTokenResponse = new HttpResponseMessage(System.Net.HttpStatusCode.OK)
-            {
-                Content = new StringContent("{\"access_token\":\"fake.access.token\",\"expires_in\":1001,\"token_type\":\"bearer\"}")
-            };
-
-            // Accommodate the request to get access token:
-            // We expect the path is for token request.
-            mockHttpMessageHandler.Protected()
-                .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
-                .ReturnsAsync(accessTokenResponse);
-
-            client = new ClientCredentialsClient(options, mockHttpClientFactory.Object);
-            Assert.IsNotNull(client.RefreshAccessTokenAsync(""));
-        }
-
-        [TestMethod]
-        public async Task RefreshAccessTokenAsync_ExceptionResponse()
-        {
-            var statusCode = System.Net.HttpStatusCode.BadRequest;
-            var responseContent = new OAuthProblemDetails()
-            {
-                Type = "invalid_client",
-                Title = "The client_id is invalid or authentication failed.",
-                Status = (int)statusCode,
-                Instance = "/Token",
-                OperationId = "fake.operation.id",
-            };
-            var accessTokenResponse = new HttpResponseMessage(statusCode)
-            {
-                Content = new StringContent(JsonConvert.SerializeObject(responseContent))
-            };
-
-            mockHttpMessageHandler.Protected()
-                .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
-                .ReturnsAsync(accessTokenResponse);
-
-            client = new ClientCredentialsClient(options, mockHttpClientFactory.Object);
-            var exception = await Assert.ThrowsExceptionAsync<Exception>(async () => await client.RefreshAccessTokenAsync(""));
-            Assert.AreEqual(exception.Data["Type"], responseContent.Type);
-            Assert.AreEqual(exception.Data["Title"], responseContent.Title);
-            Assert.AreEqual(exception.Data["Status"], ((int)statusCode).ToString());
-            Assert.AreEqual(exception.Data["Instance"], responseContent.Instance);
-            Assert.AreEqual(exception.Data["OperationId"], responseContent.OperationId);
-        }
     }
 }
