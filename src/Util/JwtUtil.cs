@@ -9,11 +9,6 @@ namespace Laserfiche.Oauth.Api.Client.Util
 {
     internal static class JwtUtil
     {
-        internal static JsonWebToken ReadJWT(string jwt)
-        {
-            return new JsonWebTokenHandler().ReadJsonWebToken(jwt);
-        }
-
         internal static string CreateClientCredentialsAuthorizationJwt(string servicePrincipalKey, AccessKey accessKey, string audience = "laserfiche.com", DateTime? validTo = null)
         {
             var claims = new[]
