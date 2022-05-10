@@ -1,16 +1,20 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 
-namespace Laserfiche.Oauth.Api.Client
+namespace Laserfiche.Oauth.Token.Client
 {
-    // This is the client rest route (non-auto generated one)
+    /// <summary>
+    /// The token route API client.
+    /// </summary>
     public partial interface ITokenApiClient
     {
         /// <summary>
-        /// Gets a new oauth access token.
+        /// Gets an access token given the service principal key and the app access key. These values can be exported from the Laserfiche Developer Console. This is the client credentials flow that applies to service applications.
         /// </summary>
-        /// <param name="cancellationToken">The cancellation token to cancel operation.</param>
-        /// <returns>An TokenResponse object.</returns>
+        /// <param name="servicePrincipalKey"></param>
+        /// <param name="accessKey"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
         Task<SwaggerResponse<GetAccessTokenResponse>> GetAccessTokenAsync(string servicePrincipalKey, AccessKey accessKey, CancellationToken cancellationToken = default);
     }
 }

@@ -1,8 +1,12 @@
 ﻿using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 
-namespace Laserfiche.Oauth.Api.Client
+namespace Laserfiche.Oauth.Token.Client
 {
+    /// <summary>
+    /// Access key together with the service principal key are the secrets associated with an OAuth service app,
+    /// which can be exported from the Laserfiche Developer Console.
+    /// </summary>
     public class AccessKey
     {
         [JsonProperty("customerId")]

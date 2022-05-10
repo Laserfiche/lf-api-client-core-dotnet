@@ -1,4 +1,5 @@
 ﻿using Laserfiche.Oauth.Api.Client.Util;
+using Laserfiche.Oauth.Token.Client;
 using System;
 using System.Net;
 using System.Net.Http;
@@ -6,9 +7,12 @@ using System.Net.Http.Headers;
 using System.Threading;
 using System.Threading.Tasks;
 
+// update packages name, github repo name, namespaces => Laserfiche.Api.Client.Core
 namespace Laserfiche.Oauth.Api.Client
 {
-    // Built based on the TokenClient.
+    /// <summary>
+    /// OAuth client credentials handler to set the authorization header JWT given access key and service principal key.
+    /// </summary>
     public class OauthClientCredentialsHandler : IHttpRequestHandler
     {
         private string _accessToken;
@@ -19,7 +23,11 @@ namespace Laserfiche.Oauth.Api.Client
 
         private readonly ITokenApiClient _tokenApiClient;
 
-        // Put ClientCredentialsClient stuff into here
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="servicePrincipalKey"></param>
+        /// <param name="accessKey"></param>
         public OauthClientCredentialsHandler(string servicePrincipalKey, AccessKey accessKey)
         {
             _servicePrincipalKey = servicePrincipalKey;
@@ -35,12 +43,11 @@ namespace Laserfiche.Oauth.Api.Client
         }
 
         /// <summary>
-        /// A BeforeSendAsync implementation that will automatically get an access token when one does not exist in the
-        /// repository client.
+        /// Invoked before an HTTP request with the request message and cancellation token.
         /// </summary>
-        /// <param name="request"></param>
+        /// <param name="httpRequestMessage"></param>
         /// <param name="cancellationToken"></param>
-        /// <returns></returns>
+        /// <returns>BeforeSendResult</returns>
         public async Task<BeforeSendResult> BeforeSendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             if (string.IsNullOrEmpty(_accessToken))
@@ -56,12 +63,11 @@ namespace Laserfiche.Oauth.Api.Client
         }
 
         /// <summary>
-        /// An AfterSendAsync implementation that will automatically refresh an access token when the current access token
-        /// expires.
+        /// Invoked after a request with the response message and cancellation token.
         /// </summary>
-        /// <param name="response"></param>
+        /// <param name="httpResponseMessage"></param>
         /// <param name="cancellationToken"></param>
-        /// <returns></returns>
+        /// <returns>True if the request should be retried.</returns>
         public Task<bool> AfterSendAsync(HttpResponseMessage response, CancellationToken cancellationToken)
         {
             if (response.StatusCode == HttpStatusCode.Unauthorized)

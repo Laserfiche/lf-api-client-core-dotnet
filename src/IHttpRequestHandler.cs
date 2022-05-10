@@ -4,25 +4,33 @@ using System.Threading.Tasks;
 
 namespace Laserfiche.Oauth.Api.Client
 {
-    // Can be put any where as long as we want to modify http request/response. Inject behavior into req/res pipeline.
+    /// <summary>
+    /// Provides a way to modify an HTTP request and to handle the response.
+    /// </summary>
     public interface IHttpRequestHandler
     {
         /// <summary>
         /// Invoked before an HTTP request with the request message and cancellation token.
-        /// Returns BeforeSendResult.
         /// </summary>
+        /// <param name="httpRequestMessage"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns>BeforeSendResult</returns>
         Task<BeforeSendResult> BeforeSendAsync(HttpRequestMessage httpRequestMessage, CancellationToken cancellationToken);
 
-
         /// <summary>
-        /// Invoked after a request with the response message, the repository client and cancellation token.
-        /// Returns true if the request should be retried.
+        /// Invoked after a request with the response message and cancellation token.
         /// </summary>
+        /// <param name="httpResponseMessage"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns>True if the request should be retried.</returns>
         Task<bool> AfterSendAsync(HttpResponseMessage httpResponseMessage, CancellationToken cancellationToken);
     }
 
     public class BeforeSendResult
     {
+        /// <summary>
+        /// Laserfiche Cloud regional domain.
+        /// </summary>
         public string RegionalDomain { get; set; }
     }
 }
