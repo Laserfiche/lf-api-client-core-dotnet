@@ -50,7 +50,9 @@ jobs:
         aws-region: us-west-2 # Use your bucket region here
     - name: Upload docs to S3 bucket
       run: aws s3 sync ./docs_temp/${GITHUB_REF##*/}/html/ s3://apiserver-publish-client-library-docs/${GITHUB_REPOSITORY##*/}/docs/${GITHUB_REF##*/} --delete
-    - name: delete temporary directory
+    - name: Delete temporary directory
       run: rm -r ./docs_temp
+    - name: Delete doxygen config
+      run: rm -f doxygen.conf
       
   
