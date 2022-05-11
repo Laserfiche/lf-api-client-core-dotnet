@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Laserfiche.Oauth.Token.Client;
+using System;
 
 namespace Laserfiche.Oauth.Api.Client.Util
 {
