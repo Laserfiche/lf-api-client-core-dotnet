@@ -1,4 +1,4 @@
-﻿using Laserfiche.Oauth.Token.Client;
+﻿using Laserfiche.Api.Client.OAuth;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Security.Claims;
 using System.Security.Cryptography;
 
-namespace Laserfiche.Oauth.Api.Client.Util
+namespace Laserfiche.Api.Client.Util
 {
     internal static class JwtUtil
     {

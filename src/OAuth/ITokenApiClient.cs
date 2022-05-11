@@ -1,7 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 
-namespace Laserfiche.Oauth.Token.Client
+namespace Laserfiche.Api.Client.OAuth
 {
     /// <summary>
     /// The token route API client.

@@ -1,6 +1,5 @@
-﻿namespace Laserfiche.Oauth.Api.Client.Util
+﻿namespace Laserfiche.Api.Client.Util
 {
-    // Can we make it internal 
     internal static class DomainUtil
     {
         /// <summary>

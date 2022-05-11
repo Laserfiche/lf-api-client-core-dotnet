@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <Description>.NET client library that enables an application to support the OAuth 2.0 Client Credentials flow.</Description>
-    <PackageId>Laserfiche.Oauth.Api.Client</PackageId>
+    <PackageId>Laserfiche.Api.Client</PackageId>
     <Authors>Laserfiche</Authors>
     <Company>Laserfiche</Company>
     <Version>1.0.0</Version>
@@ -11,8 +11,8 @@
     <PackageTags>OAuth</PackageTags>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <NoWarn>$(NoWarn);1591</NoWarn>
-    <AssemblyName>Laserfiche.Oauth.Api.Client</AssemblyName>
-    <RootNamespace>Laserfiche.Oauth.Api.Client</RootNamespace>
+    <AssemblyName>Laserfiche.Api.Client</AssemblyName>
+    <RootNamespace>Laserfiche.Api.Client</RootNamespace>
     <Product>Laserfiche.Oauth.Api.Client</Product>
     <Copyright>Copyright 2022 Laserfiche</Copyright>
     <ApplicationIcon></ApplicationIcon>
@@ -26,6 +26,12 @@
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <AssemblyVersion>1.0.0.0</AssemblyVersion>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="NewFolder\**" />
+    <EmbeddedResource Remove="NewFolder\**" />
+    <None Remove="NewFolder\**" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" Version="6.13.1" />

@@ -1,14 +1,14 @@
-﻿using Laserfiche.Oauth.Api.Client.Util;
-using Laserfiche.Oauth.Token.Client;
-using System;
+﻿using System;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading;
 using System.Threading.Tasks;
+using Laserfiche.Api.Client.OAuth;
+using Laserfiche.Api.Client.Util;
 
 // update packages name, github repo name, namespaces => Laserfiche.Api.Client.Core
-namespace Laserfiche.Oauth.Api.Client
+namespace Laserfiche.Api.Client.HttpHandlers
 {
     /// <summary>
     /// OAuth client credentials handler to set the authorization header JWT given access key and service principal key.

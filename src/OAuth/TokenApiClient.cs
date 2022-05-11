@@ -1,10 +1,10 @@
-﻿using Laserfiche.Oauth.Api.Client.Util;
+﻿using Laserfiche.Api.Client.Util;
 using System;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Laserfiche.Oauth.Token.Client
+namespace Laserfiche.Api.Client.OAuth
 {
     /// <summary>
     /// The token route API client.

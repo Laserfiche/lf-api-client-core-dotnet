@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Laserfiche.Oauth.Api.Client
+namespace Laserfiche.Api.Client.HttpHandlers
 {
     /// <summary>
     /// Provides a way to modify an HTTP request and to handle the response.

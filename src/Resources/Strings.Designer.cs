@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Laserfiche.Oauth.Api.Client.Resources {
+namespace Laserfiche.Api.Client.Resources {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Laserfiche.Oauth.Api.Client.Resources {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Laserfiche.Oauth.Api.Client.Resources.Strings", typeof(Strings).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Laserfiche.Api.Client.Resources.Strings", typeof(Strings).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace Laserfiche.Oauth.Api.Client
+namespace Laserfiche.Api.Client.Util
 {
     internal class OAuthProblemDetails
     {

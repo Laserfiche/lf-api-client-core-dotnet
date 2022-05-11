@@ -1,7 +1,7 @@
-﻿using Laserfiche.Oauth.Token.Client;
+﻿using Laserfiche.Api.Client.OAuth;
 using System;
 
-namespace Laserfiche.Oauth.Api.Client.Util
+namespace Laserfiche.Api.Client.Util
 {
     internal static class ClientCredentialsUtil
     {
