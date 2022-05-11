@@ -21,8 +21,10 @@ namespace Laserfiche.Oauth.Token.Client
             {
                 AllowAutoRedirect = false,
                 UseCookies = false,
-            });
-            _httpClient.BaseAddress = new Uri(DomainUtil.GetOauthBaseUri(regionalDomain));
+            })
+            {
+                BaseAddress = new Uri(DomainUtil.GetOauthBaseUri(regionalDomain))
+            };
         }
 
         /// <summary>
