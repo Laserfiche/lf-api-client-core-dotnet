@@ -62,7 +62,7 @@ namespace Laserfiche.Api.Client.HttpHandlers
         }
 
         /// <summary>
-        /// Invoked after a request with the response message and cancellation token.
+        /// Invoked after an HTTP request with the response message and cancellation token.
         /// </summary>
         /// <param name="httpResponseMessage"></param>
         /// <param name="cancellationToken"></param>
