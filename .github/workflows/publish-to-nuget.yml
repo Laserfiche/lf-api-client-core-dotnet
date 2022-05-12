@@ -33,7 +33,7 @@ jobs:
       run: doxygen -g doxygen.conf
     - name: Rewrite doxygen config
       run: |
-        sed -i 's|"My Project"|lf-oauth-api-client-dotnet|i' doxygen.conf
+        sed -i 's|"My Project"|lf-api-client-core-dotnet|i' doxygen.conf
         sed -i 's|PROJECT_BRIEF          =|PROJECT_BRIEF          = ".NET implementation of various OAuth 2.0 flows for secure and easy access to Laserfiche APIs."|i' doxygen.conf
         sed -i 's|PROJECT_LOGO           =|PROJECT_LOGO           = logo.png|i' doxygen.conf
         sed -i "s|OUTPUT_DIRECTORY       =|OUTPUT_DIRECTORY       = ./docs_temp/${GITHUB_REF##*/}/|i" doxygen.conf
