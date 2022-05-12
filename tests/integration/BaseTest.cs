@@ -1,7 +1,6 @@
 ﻿using Laserfiche.Api.Client.OAuth;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.IO;
 
 namespace Laserfiche.OAuth.Client.ClientCredentials.IntegrationTest
@@ -12,46 +11,36 @@ namespace Laserfiche.OAuth.Client.ClientCredentials.IntegrationTest
 
         public string ServicePrincipalKey { get; set; }
 
-        private const string SP_KEY = "SERVICE_PRINCIPAL_KEY";
-
-        private const string ACCESS_KEY = "ACCESS_KEY";
-
-        private const string ENV_TEST_CONFIG = "TEST_CONFIG";
+        private const string TestConfigFile = "TestConfig.env";
 
         public BaseTest()
         {
-            if (Environment.GetEnvironmentVariable(ENV_TEST_CONFIG) == null)
+            TryLoadFromDotEnv(TestConfigFile);
+            PopulateFromEnv();
+        }
+
+        private static void TryLoadFromDotEnv(string fileName)
+        {
+            try
             {
-                SourceTestConfigFromFile("TestConfig");
-            } else
+                var path = Path.Combine(Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName, fileName);
+                DotNetEnv.Env.Load(path, new DotNetEnv.LoadOptions(
+                    setEnvVars: true,
+                    clobberExistingVars: true,
+                    onlyExactPath: true
+                ));
+                System.Diagnostics.Trace.TraceWarning($"{fileName} found. {fileName} file should only be used in local developer computers.");
+            }
+            catch
             {
-                var config = Environment.GetEnvironmentVariable(ENV_TEST_CONFIG);
-                var env = DotNetEnv.Env.LoadContents(config);
-                CreateAndPopulateTestConfig(env);
+                System.Diagnostics.Trace.WriteLine($"{fileName} not found.");
             }
         }
 
-        private void SourceTestConfigFromFile(string fileName)
+        private void PopulateFromEnv()
         {
-            var path = Path.Combine(Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName, $"{fileName}.env");
-            var env = DotNetEnv.Env.Load(path);
-            CreateAndPopulateTestConfig(env);
-        }
-
-        private void CreateAndPopulateTestConfig(IEnumerable<KeyValuePair<string, string>> env)
-        {
-            foreach (var kv in env)
-            {
-                switch (kv.Key)
-                {
-                    case SP_KEY:
-                        ServicePrincipalKey = kv.Value;
-                        break;
-                    case ACCESS_KEY:
-                        AccessKey = JsonConvert.DeserializeObject<AccessKey>(kv.Value);
-                        break;
-                }
-            }
+            ServicePrincipalKey = Environment.GetEnvironmentVariable("DEV_CA_PUBLIC_USE_TESTOAUTHSERVICEPRINCIPAL_SERVICE_PRINCIPAL_KEY");
+            AccessKey = JsonConvert.DeserializeObject<AccessKey>(Environment.GetEnvironmentVariable("DEV_CA_PUBLIC_USE_INTEGRATION_TEST_ACCESS_KEY"));
         }
     }
 }

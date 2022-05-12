@@ -110,7 +110,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/OAuthErrorResponse"
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -120,7 +120,17 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/OAuthErrorResponse"
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -173,16 +183,6 @@
             "format": "int32"
           },
           "token_type": {
-            "type": "string",
-            "nullable": true
-          }
-        }
-      },
-      "OAuthErrorResponse": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "error": {
             "type": "string",
             "nullable": true
           }
