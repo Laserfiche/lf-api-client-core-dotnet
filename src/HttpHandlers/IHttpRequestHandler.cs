@@ -18,7 +18,7 @@ namespace Laserfiche.Api.Client.HttpHandlers
         Task<BeforeSendResult> BeforeSendAsync(HttpRequestMessage httpRequestMessage, CancellationToken cancellationToken);
 
         /// <summary>
-        /// Invoked after a request with the response message and cancellation token.
+        /// Invoked after an HTTP request with the response message and cancellation token.
         /// </summary>
         /// <param name="httpResponseMessage"></param>
         /// <param name="cancellationToken"></param>

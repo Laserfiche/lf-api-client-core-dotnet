@@ -1,18 +1,18 @@
-﻿using System;
+﻿using Laserfiche.Api.Client.OAuth;
+using Laserfiche.Api.Client.Utils;
+using System;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading;
 using System.Threading.Tasks;
-using Laserfiche.Api.Client.OAuth;
-using Laserfiche.Api.Client.Utils;
 
 namespace Laserfiche.Api.Client.HttpHandlers
 {
     /// <summary>
     /// OAuth client credentials handler to set the authorization header JWT given access key and service principal key.
     /// </summary>
-    public class OauthClientCredentialsHandler : IHttpRequestHandler
+    public class OAuthClientCredentialsHandler : IHttpRequestHandler
     {
         private string _accessToken;
 
@@ -27,12 +27,12 @@ namespace Laserfiche.Api.Client.HttpHandlers
         /// </summary>
         /// <param name="servicePrincipalKey"></param>
         /// <param name="accessKey"></param>
-        public OauthClientCredentialsHandler(string servicePrincipalKey, AccessKey accessKey)
+        public OAuthClientCredentialsHandler(string servicePrincipalKey, AccessKey accessKey)
         {
             _servicePrincipalKey = servicePrincipalKey;
             if (string.IsNullOrEmpty(_servicePrincipalKey))
             {
-                throw new ArgumentException(Resources.Strings.INVALID_SERVICE_PRINCIPAL_KEY, nameof(_servicePrincipalKey));
+                throw new ArgumentException(Resources.Strings.INVALID_SERVICE_PRINCIPAL_KEY, nameof(servicePrincipalKey));
             }
 
             _accessKey = accessKey;
@@ -47,7 +47,7 @@ namespace Laserfiche.Api.Client.HttpHandlers
         /// <param name="httpRequestMessage"></param>
         /// <param name="cancellationToken"></param>
         /// <returns>BeforeSendResult</returns>
-        public async Task<BeforeSendResult> BeforeSendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+        public async Task<BeforeSendResult> BeforeSendAsync(HttpRequestMessage httpRequestMessage, CancellationToken cancellationToken)
         {
             if (string.IsNullOrEmpty(_accessToken))
             {
@@ -55,7 +55,7 @@ namespace Laserfiche.Api.Client.HttpHandlers
                 _accessToken = response.Result.Access_token;
             }
 
-            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+            httpRequestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
             // Will create a BeforeSendResult class and return it 
             return new BeforeSendResult() { RegionalDomain = _accessKey.Domain };
@@ -67,9 +67,9 @@ namespace Laserfiche.Api.Client.HttpHandlers
         /// <param name="httpResponseMessage"></param>
         /// <param name="cancellationToken"></param>
         /// <returns>True if the request should be retried.</returns>
-        public Task<bool> AfterSendAsync(HttpResponseMessage response, CancellationToken cancellationToken)
+        public Task<bool> AfterSendAsync(HttpResponseMessage httpResponseMessage, CancellationToken cancellationToken)
         {
-            if (response.StatusCode == HttpStatusCode.Unauthorized)
+            if (httpResponseMessage.StatusCode == HttpStatusCode.Unauthorized)
             {
                 _accessToken = null; // In case exception happens when getting the access token.
                 return Task.FromResult(true);

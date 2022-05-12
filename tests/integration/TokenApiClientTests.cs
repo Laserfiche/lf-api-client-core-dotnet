@@ -3,10 +3,10 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Threading.Tasks;
 
-namespace Laserfiche.OAuth.Client.ClientCredentials.IntegrationTest
+namespace Laserfiche.Api.Client.IntegrationTest
 {
     [TestClass]
-    public class GetAccessTokenAsyncTests : BaseTest
+    public class TokenApiClientTests : BaseTest
     {
         [TestMethod]
         public async Task GetAccessTokenAsync()
