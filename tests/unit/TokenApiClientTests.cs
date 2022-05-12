@@ -31,7 +31,7 @@ namespace Laserfiche.OAuth.Client.ClientCredentials.UnitTest
         [TestInitialize]
         public void Setup()
         {
-            mockTokenApiClient = new Mock<TokenApiClient>();
+            mockTokenApiClient = new Mock<TokenApiClient>(DOMAIN);
             mockTokenApiClient.Setup(tokenApiClient => tokenApiClient.TokenAsync(It.IsAny<GetAccessTokenRequest>(), It.IsAny<string>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(new SwaggerResponse<GetAccessTokenResponse>(200, null, null)));
 
             servicePrincipalKey = SERVICE_PRINCIPAL_KEY;
@@ -47,7 +47,7 @@ namespace Laserfiche.OAuth.Client.ClientCredentials.UnitTest
         [TestMethod]
         public async Task GetAccessTokenAsync_Success()
         {
-            TokenApiClient client = new(DOMAIN);
+            TokenApiClient client = mockTokenApiClient.Object;
             await client.GetAccessTokenAsync(servicePrincipalKey, accessKey);
             mockTokenApiClient.Verify(tokenApiClient => tokenApiClient.TokenAsync(It.Is<GetAccessTokenRequest>(request => request.Grant_type == "client_credentials"), It.IsNotNull<string>(), It.IsAny<CancellationToken>()));
         }
