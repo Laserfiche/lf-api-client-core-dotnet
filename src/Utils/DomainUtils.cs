@@ -1,6 +1,8 @@
-﻿namespace Laserfiche.Api.Client.Util
+﻿using System;
+
+namespace Laserfiche.Api.Client.Utils
 {
-    public static class DomainUtil
+    public static class DomainUtils
     {
         /// <summary>
         /// Returns the Laserfiche domain using the Laserfiche account id.
@@ -20,18 +22,22 @@
                     return "eu.laserfiche.com";
                 }
             }
-            return "laserfiche.com";
+            else if (accountId?.Length == 9)
+            {
+                return "laserfiche.com";
+            }
+            throw new ArgumentOutOfRangeException(nameof(accountId));
         }
 
         /// <summary>
-        /// Returns the OAuth base uri using the given domain.
+        /// Returns the OAuth Api base uri using the given domain.
         /// </summary>
         /// <param name="domain">The Laserfiche domain.</param>
-        /// <returns>The OAuth base uri.</returns>
-        public static string GetOAuthBaseUri(string domain)
+        /// <returns>The OAuth Api base uri.</returns>
+        public static string GetOAuthApiBaseUri(string domain)
         {
             if (string.IsNullOrWhiteSpace(domain))
-                domain = "laserfiche.com";
+                throw new ArgumentNullException(nameof(domain));
             return $"https://signin.{domain}/oauth/";
         }
 
@@ -43,7 +49,7 @@
         public static string GetRepositoryApiBaseUri(string domain)
         {
             if (string.IsNullOrWhiteSpace(domain))
-                domain = "laserfiche.com";
+                throw new ArgumentNullException(nameof(domain));
             return $"https://api.{domain}/repository/";
         }
     }

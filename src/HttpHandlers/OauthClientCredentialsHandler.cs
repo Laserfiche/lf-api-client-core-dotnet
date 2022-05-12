@@ -5,7 +5,7 @@ using System.Net.Http.Headers;
 using System.Threading;
 using System.Threading.Tasks;
 using Laserfiche.Api.Client.OAuth;
-using Laserfiche.Api.Client.Util;
+using Laserfiche.Api.Client.Utils;
 
 namespace Laserfiche.Api.Client.HttpHandlers
 {

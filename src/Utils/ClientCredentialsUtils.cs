@@ -1,9 +1,9 @@
 ﻿using Laserfiche.Api.Client.OAuth;
 using System;
 
-namespace Laserfiche.Api.Client.Util
+namespace Laserfiche.Api.Client.Utils
 {
-    internal static class ClientCredentialsUtil
+    internal static class ClientCredentialsUtils
     {
         internal static void IsValid(this AccessKey accessKey)
         {

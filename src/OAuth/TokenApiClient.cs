@@ -1,4 +1,4 @@
-﻿using Laserfiche.Api.Client.Util;
+﻿using Laserfiche.Api.Client.Utils;
 using Newtonsoft.Json;
 using System;
 using System.Net.Http;
@@ -24,7 +24,7 @@ namespace Laserfiche.Api.Client.OAuth
                 UseCookies = false,
             })
             {
-                BaseAddress = new Uri(DomainUtil.GetOAuthBaseUri(regionalDomain))
+                BaseAddress = new Uri(DomainUtils.GetOAuthApiBaseUri(regionalDomain))
             };
             _settings = new Lazy<JsonSerializerSettings>(CreateSerializerSettings);
         }
@@ -38,12 +38,12 @@ namespace Laserfiche.Api.Client.OAuth
         /// <returns></returns>
         public async Task<SwaggerResponse<GetAccessTokenResponse>> GetAccessTokenAsync(string servicePrincipalKey, AccessKey accessKey, CancellationToken cancellationToken = default)
         {
-            if (!string.Equals(_httpClient.BaseAddress.AbsoluteUri, DomainUtil.GetOAuthBaseUri(accessKey.Domain), StringComparison.InvariantCultureIgnoreCase))
+            if (!string.Equals(_httpClient.BaseAddress.AbsoluteUri, DomainUtils.GetOAuthApiBaseUri(accessKey.Domain), StringComparison.InvariantCultureIgnoreCase))
             {
                 throw new ArgumentOutOfRangeException($"{nameof(accessKey)}.{nameof(accessKey.Domain)}");
             }
             
-            string bearerAuth = $"Bearer {JwtUtil.CreateClientCredentialsAuthorizationJwt(servicePrincipalKey, accessKey)}";
+            string bearerAuth = $"Bearer {JwtUtils.CreateClientCredentialsAuthorizationJwt(servicePrincipalKey, accessKey)}";
             var response = await TokenAsync(new GetAccessTokenRequest()
             {
                 Grant_type = "client_credentials",
