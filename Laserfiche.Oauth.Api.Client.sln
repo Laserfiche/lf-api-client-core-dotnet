@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.32228.343
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Laserfiche.Oauth.Api.Client", "src\Laserfiche.Oauth.Api.Client.csproj", "{72D079E4-86F9-4BFE-974A-FAD4DF0A06AB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Laserfiche.Api.Client.Core", "src\Laserfiche.Api.Client.Core.csproj", "{72D079E4-86F9-4BFE-974A-FAD4DF0A06AB}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Laserfiche.OAuth.Client.ClientCredentials.IntegrationTest", "tests\integration\Laserfiche.OAuth.Client.ClientCredentials.IntegrationTest.csproj", "{A2CA5D42-FDB4-4CF3-949E-64B9570D53A2}"
 EndProject
