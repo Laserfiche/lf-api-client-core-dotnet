@@ -28,21 +28,23 @@
         /// </summary>
         /// <param name="domain">The Laserfiche domain.</param>
         /// <returns>The OAuth base uri.</returns>
-        public static string GetOauthBaseUri(string domain)
+        public static string GetOAuthBaseUri(string domain)
         {
             if (string.IsNullOrWhiteSpace(domain))
                 domain = "laserfiche.com";
-            return $"https://signin.{domain}/oauth";
+            return $"https://signin.{domain}/oauth/";
         }
 
         /// <summary>
-        /// Returns the OAuth token uri using the given domain.
+        /// Returns the Repository Api base uri using the given domain.
         /// </summary>
         /// <param name="domain">The Laserfiche domain.</param>
-        /// <returns>The OAuth token uri.</returns>
-        public static string GetOauthTokenUri(string domain)
+        /// <returns>The Repository Api base uri.</returns>
+        public static string GetRepositoryApiBaseUri(string domain)
         {
-            return $"{GetOauthBaseUri(domain)}/Token";
+            if (string.IsNullOrWhiteSpace(domain))
+                domain = "laserfiche.com";
+            return $"https://api.{domain}/repository/";
         }
     }
 }

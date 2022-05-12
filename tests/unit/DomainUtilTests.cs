@@ -45,8 +45,8 @@ namespace Laserfiche.OAuth.Client.ClientCredentials.UnitTest
         public void GetOauthBaseUri_Success()
         {
             string domain = "laserfiche.ca";
-            string baseUri = DomainUtil.GetOauthBaseUri(domain);
-            Assert.AreEqual($"https://signin.{domain}/oauth", baseUri);
+            string baseUri = DomainUtil.GetOAuthBaseUri(domain);
+            Assert.AreEqual($"https://signin.{domain}/oauth/", baseUri);
         }
 
         [DataTestMethod]
@@ -55,26 +55,26 @@ namespace Laserfiche.OAuth.Client.ClientCredentials.UnitTest
         [DataRow("   ")]
         public void GetOauthBaseUri_DefaultUri(string domain)
         {
-            string baseUri = DomainUtil.GetOauthBaseUri(domain);
-            Assert.AreEqual($"https://signin.laserfiche.com/oauth", baseUri);
+            string baseUri = DomainUtil.GetOAuthBaseUri(domain);
+            Assert.AreEqual($"https://signin.laserfiche.com/oauth/", baseUri);
         }
 
         [TestMethod]
-        public void GetOauthTokenUri_Success()
+        public void GetRepositoryApiBaseUri_Success()
         {
             string domain = "laserfiche.ca";
-            string baseUri = DomainUtil.GetOauthTokenUri(domain);
-            Assert.AreEqual($"https://signin.{domain}/oauth/Token", baseUri);
+            string baseUri = DomainUtil.GetRepositoryApiBaseUri(domain);
+            Assert.AreEqual($"https://api.{domain}/repository/", baseUri);
         }
 
         [DataTestMethod]
         [DataRow(null)]
         [DataRow("")]
         [DataRow("   ")]
-        public void GetOauthTokenUri_DefaultUri(string domain)
+        public void GetRepositoryApiBaseUri_DefaultUri(string domain)
         {
-            string baseUri = DomainUtil.GetOauthTokenUri(domain);
-            Assert.AreEqual($"https://signin.laserfiche.com/oauth/Token", baseUri);
+            string baseUri = DomainUtil.GetRepositoryApiBaseUri(domain);
+            Assert.AreEqual($"https://api.laserfiche.com/repository/", baseUri);
         }
     }
 }

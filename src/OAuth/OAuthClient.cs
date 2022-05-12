@@ -24,6 +24,9 @@ namespace Laserfiche.Api.Client.OAuth
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
         /// Request for an access token.
+        /// <br/>- Use authCode to get an access token for the authorization code flow. This uses grant_type, code and redirect_uri. Furthermore, client id and client secret are taken from the Basic auth header for web applications. For SPAs, the client id should be in the request body. After getting the authorization code, the application could use it to exchange for an access token by calling this endpoint. Authorization code has a short lifetime for around 10 minutes. If it's not used within its lifetime, it will be expired and the application should start from authorization again.
+        /// <br/>- Use refreshToken to get a new access token for the authorization code flow. This uses grant_type and refresh_token. Furthermore, client id and client secret are taken from the Basic auth header for web applications. For SPAs, the client id should be in the request body.
+        /// <br/>- Use Bearer header to generate access token for the client credential flow. This uses grant_type and bearer auth header.
         /// </summary>
         /// <exception cref="ApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<SwaggerResponse<GetAccessTokenResponse>> TokenAsync(GetAccessTokenRequest body = null, string authorization = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
@@ -60,6 +63,9 @@ namespace Laserfiche.Api.Client.OAuth
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
         /// Request for an access token.
+        /// <br/>- Use authCode to get an access token for the authorization code flow. This uses grant_type, code and redirect_uri. Furthermore, client id and client secret are taken from the Basic auth header for web applications. For SPAs, the client id should be in the request body. After getting the authorization code, the application could use it to exchange for an access token by calling this endpoint. Authorization code has a short lifetime for around 10 minutes. If it's not used within its lifetime, it will be expired and the application should start from authorization again.
+        /// <br/>- Use refreshToken to get a new access token for the authorization code flow. This uses grant_type and refresh_token. Furthermore, client id and client secret are taken from the Basic auth header for web applications. For SPAs, the client id should be in the request body.
+        /// <br/>- Use Bearer header to generate access token for the client credential flow. This uses grant_type and bearer auth header.
         /// </summary>
         /// <exception cref="ApiException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<SwaggerResponse<GetAccessTokenResponse>> TokenAsync(GetAccessTokenRequest body = null, string authorization = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))

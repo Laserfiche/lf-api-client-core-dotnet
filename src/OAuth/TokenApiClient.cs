@@ -23,8 +23,9 @@ namespace Laserfiche.Api.Client.OAuth
                 UseCookies = false,
             })
             {
-                BaseAddress = new Uri(DomainUtil.GetOauthBaseUri(regionalDomain))
+                BaseAddress = new Uri(DomainUtil.GetOAuthBaseUri(regionalDomain))
             };
+            _settings = new Lazy<Newtonsoft.Json.JsonSerializerSettings>(CreateSerializerSettings);
         }
 
         /// <summary>
@@ -36,7 +37,7 @@ namespace Laserfiche.Api.Client.OAuth
         /// <returns></returns>
         public async Task<SwaggerResponse<GetAccessTokenResponse>> GetAccessTokenAsync(string servicePrincipalKey, AccessKey accessKey, CancellationToken cancellationToken = default)
         {
-            if (string.Equals(_httpClient.BaseAddress.Host, accessKey.Domain, StringComparison.InvariantCultureIgnoreCase))
+            if (!string.Equals(_httpClient.BaseAddress.AbsoluteUri, DomainUtil.GetOAuthBaseUri(accessKey.Domain), StringComparison.InvariantCultureIgnoreCase))
             {
                 throw new ArgumentOutOfRangeException($"{nameof(accessKey)}.{nameof(accessKey.Domain)}");
             }
