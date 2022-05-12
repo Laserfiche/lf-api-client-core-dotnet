@@ -1,7 +1,6 @@
 ﻿using Laserfiche.Api.Client.OAuth;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace Laserfiche.OAuth.Client.ClientCredentials.IntegrationTest
