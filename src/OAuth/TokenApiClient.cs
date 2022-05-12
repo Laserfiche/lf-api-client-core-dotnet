@@ -1,4 +1,5 @@
 ﻿using Laserfiche.Api.Client.Util;
+using Newtonsoft.Json;
 using System;
 using System.Net.Http;
 using System.Threading;
@@ -25,7 +26,7 @@ namespace Laserfiche.Api.Client.OAuth
             {
                 BaseAddress = new Uri(DomainUtil.GetOAuthBaseUri(regionalDomain))
             };
-            _settings = new Lazy<Newtonsoft.Json.JsonSerializerSettings>(CreateSerializerSettings);
+            _settings = new Lazy<JsonSerializerSettings>(CreateSerializerSettings);
         }
 
         /// <summary>
