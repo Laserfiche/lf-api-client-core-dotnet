@@ -33,7 +33,7 @@ namespace Laserfiche.OAuth.Client.ClientCredentials.IntegrationTest
             TokenApiClient client = new("some.random.string");
 
             // Expect failed attempt to get access token since the domain is wrong
-            await Assert.ThrowsExceptionAsync<HttpRequestException>(async () => await client.GetAccessTokenAsync(ServicePrincipalKey, AccessKey));
+            await Assert.ThrowsExceptionAsync<ArgumentOutOfRangeException>(async () => await client.GetAccessTokenAsync(ServicePrincipalKey, AccessKey));
         }
 
         [TestMethod]
