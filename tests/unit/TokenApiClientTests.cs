@@ -5,7 +5,7 @@ using Moq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Laserfiche.OAuth.Client.ClientCredentials.UnitTest
+namespace Laserfiche.Api.Client.UnitTest
 {
     [TestClass]
     public class TokenApiClientTest

@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 using System;
 using System.IO;
 
-namespace Laserfiche.OAuth.Client.ClientCredentials.IntegrationTest
+namespace Laserfiche.Api.Client.IntegrationTest
 {
     public class BaseTest
     {

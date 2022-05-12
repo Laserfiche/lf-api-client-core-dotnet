@@ -1,10 +1,10 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Microsoft.IdentityModel.Tokens;
-using System;
-using Laserfiche.Api.Client.OAuth;
+﻿using Laserfiche.Api.Client.OAuth;
 using Laserfiche.Api.Client.Utils;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 
-namespace Laserfiche.OAuth.Client.ClientCredentials.UnitTest
+namespace Laserfiche.Api.Client.UnitTest
 {
     [TestClass]
     public class ValidationTests

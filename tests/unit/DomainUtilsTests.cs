@@ -2,7 +2,7 @@
 using Laserfiche.Api.Client.Utils;
 using System;
 
-namespace Laserfiche.OAuth.Client.ClientCredentials.UnitTest
+namespace Laserfiche.Api.Client.UnitTest
 {
     [TestClass]
     public class DomainUtilTest
