@@ -1,4 +1,4 @@
-﻿using Laserfiche.Oauth.Token.Client;
+﻿using Laserfiche.Api.Client.OAuth;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;

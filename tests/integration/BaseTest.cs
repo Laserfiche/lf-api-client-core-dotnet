@@ -1,4 +1,4 @@
-﻿using Laserfiche.Oauth.Token.Client;
+﻿using Laserfiche.Api.Client.OAuth;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;

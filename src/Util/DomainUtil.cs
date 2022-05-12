@@ -1,13 +1,13 @@
 ﻿namespace Laserfiche.Api.Client.Util
 {
-    internal static class DomainUtil
+    public static class DomainUtil
     {
         /// <summary>
         /// Returns the Laserfiche domain using the Laserfiche account id.
         /// </summary>
         /// <param name="accountId">The Laserfiche account id.</param>
         /// <returns>The Laserfiche domain.</returns>
-        internal static string GetDomainFromAccountId(string accountId)
+        public static string GetDomainFromAccountId(string accountId)
         {
             if (accountId?.Length == 10)
             {
@@ -28,7 +28,7 @@
         /// </summary>
         /// <param name="domain">The Laserfiche domain.</param>
         /// <returns>The OAuth base uri.</returns>
-        internal static string GetOauthBaseUri(string domain)
+        public static string GetOauthBaseUri(string domain)
         {
             if (string.IsNullOrWhiteSpace(domain))
                 domain = "laserfiche.com";
@@ -40,7 +40,7 @@
         /// </summary>
         /// <param name="domain">The Laserfiche domain.</param>
         /// <returns>The OAuth token uri.</returns>
-        internal static string GetOauthTokenUri(string domain)
+        public static string GetOauthTokenUri(string domain)
         {
             return $"{GetOauthBaseUri(domain)}/Token";
         }

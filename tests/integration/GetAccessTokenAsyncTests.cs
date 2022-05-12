@@ -1,4 +1,4 @@
-﻿using Laserfiche.Oauth.Token.Client;
+﻿using Laserfiche.Api.Client.OAuth;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Net.Http;

@@ -1,5 +1,5 @@
-﻿using Laserfiche.Oauth.Api.Client.Util;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Laserfiche.Api.Client.Util;
 
 namespace Laserfiche.OAuth.Client.ClientCredentials.UnitTest
 {

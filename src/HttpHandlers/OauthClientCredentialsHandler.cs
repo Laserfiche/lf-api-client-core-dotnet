@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using Laserfiche.Api.Client.OAuth;
 using Laserfiche.Api.Client.Util;
 
-// update packages name, github repo name, namespaces => Laserfiche.Api.Client.Core
 namespace Laserfiche.Api.Client.HttpHandlers
 {
     /// <summary>

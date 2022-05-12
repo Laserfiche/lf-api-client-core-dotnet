@@ -1,8 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.IdentityModel.Tokens;
 using System;
-using Laserfiche.Oauth.Api.Client.Util;
-using Laserfiche.Oauth.Token.Client;
+using Laserfiche.Api.Client.OAuth;
 
 namespace Laserfiche.OAuth.Client.ClientCredentials.UnitTest
 {
