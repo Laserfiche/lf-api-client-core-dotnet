@@ -56,7 +56,7 @@
 
   <ItemGroup>
     <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
-      <_Parameter1>Laserfiche.OAuth.Client.ClientCredentials.UnitTest</_Parameter1>
+      <_Parameter1>Laserfiche.Api.Client.UnitTest</_Parameter1>
     </AssemblyAttribute>
 </ItemGroup>
 

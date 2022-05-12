@@ -2,6 +2,7 @@
 using Microsoft.IdentityModel.Tokens;
 using System;
 using Laserfiche.Api.Client.OAuth;
+using Laserfiche.Api.Client.Util;
 
 namespace Laserfiche.OAuth.Client.ClientCredentials.UnitTest
 {
