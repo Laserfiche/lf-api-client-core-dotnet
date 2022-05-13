@@ -1,27 +1,23 @@
-﻿using Microsoft.IdentityModel.JsonWebTokens;
+﻿using Laserfiche.Api.Client.OAuth;
+using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Security.Cryptography;
 
-namespace Laserfiche.Oauth.Api.Client.Util
+namespace Laserfiche.Api.Client.Utils
 {
-    internal static class JwtUtil
+    internal static class JwtUtils
     {
-        internal static JsonWebToken ReadJWT(string jwt)
-        {
-            return new JsonWebTokenHandler().ReadJsonWebToken(jwt);
-        }
-
-        internal static string CreateClientCredentialsAuthorizationJwt(ClientCredentialsOptions config, string audience = "laserfiche.com", DateTime? validTo = null)
+        internal static string CreateClientCredentialsAuthorizationJwt(string servicePrincipalKey, AccessKey accessKey, string audience = "laserfiche.com", DateTime? validTo = null)
         {
             var claims = new[]
                 {
-                    new Claim("client_id", config.AccessKey.ClientId),
-                    new Claim("client_secret", config.ServicePrincipalKey),
+                    new Claim("client_id", accessKey.ClientId),
+                    new Claim("client_secret", servicePrincipalKey),
                 };
-            return CreateSignedJwt(claims, config.AccessKey.Jwk, audience, validTo);
+            return CreateSignedJwt(claims, accessKey.Jwk, audience, validTo);
         }
 
         private static SigningCredentials GetSigningCredentials(JsonWebKey key)

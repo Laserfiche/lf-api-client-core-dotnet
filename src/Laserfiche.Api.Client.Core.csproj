@@ -2,18 +2,18 @@
 
   <PropertyGroup>
     <Description>.NET client library that enables an application to support the OAuth 2.0 Client Credentials flow.</Description>
-    <PackageId>Laserfiche.Oauth.Api.Client</PackageId>
+    <PackageId>Laserfiche.Api.Client.Core</PackageId>
     <Authors>Laserfiche</Authors>
     <Company>Laserfiche</Company>
     <Version>1.0.0</Version>
-    <PackageProjectUrl>https://github.com/Laserfiche/lf-oauth-api-client-dotnet</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/Laserfiche/lf-api-client-core-dotnet</PackageProjectUrl>
     <TargetFrameworks>netstandard2.0;netstandard2.1;net6.0</TargetFrameworks>
     <PackageTags>OAuth</PackageTags>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <NoWarn>$(NoWarn);1591</NoWarn>
-    <AssemblyName>Laserfiche.Oauth.Api.Client</AssemblyName>
-    <RootNamespace>Laserfiche.Oauth.Api.Client</RootNamespace>
-    <Product>Laserfiche.Oauth.Api.Client</Product>
+    <AssemblyName>Laserfiche.Api.Client.Core</AssemblyName>
+    <RootNamespace>Laserfiche.Api.Client</RootNamespace>
+    <Product>Laserfiche.Api.Client.Core</Product>
     <Copyright>Copyright 2022 Laserfiche</Copyright>
     <ApplicationIcon></ApplicationIcon>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -21,16 +21,16 @@
     <PackageIconUrl />
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <RepositoryUrl>https://github.com/Laserfiche/lf-oauth-api-client-dotnet</RepositoryUrl>
+    <RepositoryUrl>https://github.com/Laserfiche/lf-api-client-core-dotnet</RepositoryUrl>
     <RepositoryType>GitHub</RepositoryType>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <AssemblyVersion>1.0.0.0</AssemblyVersion>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Http" Version="5.0.0" />
     <PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" Version="6.13.1" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -50,7 +50,7 @@
 
   <ItemGroup>
     <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
-      <_Parameter1>Laserfiche.OAuth.Client.ClientCredentials.UnitTest</_Parameter1>
+      <_Parameter1>Laserfiche.Api.Client.UnitTest</_Parameter1>
     </AssemblyAttribute>
 </ItemGroup>
 
