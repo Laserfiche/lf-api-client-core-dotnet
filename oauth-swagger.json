@@ -185,6 +185,10 @@
           "token_type": {
             "type": "string",
             "nullable": true
+          },
+          "refresh_token": {
+            "type": "string",
+            "nullable": true
           }
         }
       }

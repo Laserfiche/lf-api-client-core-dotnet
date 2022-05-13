@@ -23,6 +23,7 @@ namespace Laserfiche.Api.Client.IntegrationTest
             Assert.IsNotNull(tokenResponse.Access_token);
             Assert.IsNotNull(tokenResponse.Expires_in);
             Assert.IsNotNull(tokenResponse.Token_type);
+            Assert.IsNull(tokenResponse.Refresh_token);
         }
 
         [TestMethod]
