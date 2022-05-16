@@ -1,15 +1,13 @@
-# lf-oauth-api-client-dotnet
-.NET implementation of various OAuth 2.0 flows for secure and easy access to Laserfiche APIs.
+# lf-api-client-core-dotnet
+.NET implementation of various foundational APIs for Laserfiche, including authorization APIs such as OAuth 2.0 flows for secure and easy access to Laserfiche APIs.
 
 ## Overview
-- src contains the implementation of the OAuth API Client.
-- tests/integration contains integration tests. You can run it locally with a JSON file that contains the following fields: 
-  - baseAddress
-  - clientId
-  - servicePrincipalKey
-  - signingKey
-  You could also just run with GitHhub actions and the JSON file is handled automatically.
-- tests/unit contains unit tests. You can run them locally without any setup. It will also be run when you make a PR.
+- `src` contains the implementation of the foundational authentication/authorization related code for APIs of various Laserfiche products.
+- `src\HttpHandlers` contains a client implementation of OAuth 2.0 Client Credentials Flow.
+- `src\OAuth` contains all OAuth related client code.
+- `src\Utils` contains all utility functions and classes for Laserfiche APIs.
+- `tests\integration` contains all integration tests. To run them, you either use GitHub Workflows, or you could provide the `.env` files in your file system and run them there.
+- `test\unit` contains all unit tests.
 
 For more detailed documentation, see the Laserfiche Developer [site](https://developer.laserfiche.com/guide_oauth-service.html).
 
