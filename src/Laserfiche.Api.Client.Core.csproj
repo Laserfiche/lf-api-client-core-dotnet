@@ -5,10 +5,10 @@
     <PackageId>Laserfiche.Api.Client.Core</PackageId>
     <Authors>Laserfiche</Authors>
     <Company>Laserfiche</Company>
-    <Version>1.0.0-beta.1</Version>
+    <Version>1.0.1-beta.1</Version>
     <PackageProjectUrl>https://github.com/Laserfiche/lf-api-client-core-dotnet</PackageProjectUrl>
     <TargetFrameworks>netstandard2.0;netstandard2.1;net6.0</TargetFrameworks>
-    <PackageTags>OAuth</PackageTags>
+    <PackageTags>Laserfiche OAuth OAuth2 Authentication Authorization</PackageTags>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <NoWarn>$(NoWarn);1591</NoWarn>
     <AssemblyName>Laserfiche.Api.Client.Core</AssemblyName>
@@ -23,8 +23,9 @@
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <RepositoryUrl>https://github.com/Laserfiche/lf-api-client-core-dotnet</RepositoryUrl>
     <RepositoryType>GitHub</RepositoryType>
-    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <AssemblyVersion>1.0.1.0</AssemblyVersion>
+    <FileVersion>1.0.1.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
