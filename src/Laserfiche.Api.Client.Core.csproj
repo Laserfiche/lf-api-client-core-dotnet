@@ -1,11 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <Description>.NET client library that enables an application to support the OAuth 2.0 Client Credentials flow.</Description>
+    <Description>.NET implementation of various foundational APIs for Laserfiche, including authorization APIs such as OAuth 2.0 flows for secure and easy access to Laserfiche APIs.</Description>
     <PackageId>Laserfiche.Api.Client.Core</PackageId>
     <Authors>Laserfiche</Authors>
     <Company>Laserfiche</Company>
-    <Version>1.0.0</Version>
+    <Version>1.0.0-beta.1</Version>
     <PackageProjectUrl>https://github.com/Laserfiche/lf-api-client-core-dotnet</PackageProjectUrl>
     <TargetFrameworks>netstandard2.0;netstandard2.1;net6.0</TargetFrameworks>
     <PackageTags>OAuth</PackageTags>
