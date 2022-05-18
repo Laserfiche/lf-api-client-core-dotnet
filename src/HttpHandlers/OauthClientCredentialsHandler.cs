@@ -52,7 +52,7 @@ namespace Laserfiche.Api.Client.HttpHandlers
             if (string.IsNullOrEmpty(_accessToken))
             {
                 var response = await _tokenApiClient.GetAccessTokenAsync(_servicePrincipalKey, _accessKey, cancellationToken);
-                _accessToken = response.Result.Access_token;
+                _accessToken = response.Access_token;
             }
 
             httpRequestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
