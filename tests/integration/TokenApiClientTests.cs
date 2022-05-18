@@ -18,7 +18,7 @@ namespace Laserfiche.Api.Client.IntegrationTest
             var response = await client.GetAccessTokenAsync(ServicePrincipalKey, AccessKey);
             Assert.IsNotNull(response);
 
-            var tokenResponse = response.Result;
+            var tokenResponse = response;
 
             Assert.IsNotNull(tokenResponse.Access_token);
             Assert.IsNotNull(tokenResponse.Expires_in);
