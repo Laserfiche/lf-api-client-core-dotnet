@@ -32,7 +32,7 @@ namespace Laserfiche.Api.Client.UnitTest
         public void Setup()
         {
             mockTokenApiClient = new Mock<TokenApiClient>(DOMAIN);
-            mockTokenApiClient.Setup(tokenApiClient => tokenApiClient.TokenAsync(It.IsAny<GetAccessTokenRequest>(), It.IsAny<string>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(new SwaggerResponse<GetAccessTokenResponse>(200, null, null)));
+            mockTokenApiClient.Setup(tokenApiClient => tokenApiClient.TokenAsync(It.IsAny<GetAccessTokenRequest>(), It.IsAny<string>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(new GetAccessTokenResponse()));
 
             servicePrincipalKey = SERVICE_PRINCIPAL_KEY;
             accessKey = new AccessKey()
