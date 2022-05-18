@@ -36,7 +36,7 @@ namespace Laserfiche.Api.Client.OAuth
         /// <param name="accessKey"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public async Task<SwaggerResponse<GetAccessTokenResponse>> GetAccessTokenAsync(string servicePrincipalKey, AccessKey accessKey, CancellationToken cancellationToken = default)
+        public async Task<GetAccessTokenResponse> GetAccessTokenAsync(string servicePrincipalKey, AccessKey accessKey, CancellationToken cancellationToken = default)
         {
             if (!string.Equals(_httpClient.BaseAddress.AbsoluteUri, DomainUtils.GetOAuthApiBaseUri(accessKey.Domain), StringComparison.InvariantCultureIgnoreCase))
             {
