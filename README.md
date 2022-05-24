@@ -1,4 +1,4 @@
-# lf-api-client-core-dotnet
+# Laserfiche API Client Core .NET
 .NET implementation of various foundational APIs for Laserfiche, including authorization APIs such as OAuth 2.0 flows for secure and easy access to Laserfiche APIs.
 
 ## Overview
