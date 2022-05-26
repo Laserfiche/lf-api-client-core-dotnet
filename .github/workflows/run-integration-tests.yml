@@ -22,9 +22,10 @@ jobs:
     - name: Build
       run: dotnet build --no-restore
     - name: Run unit tests
-      run: dotnet test --no-build --verbosity normal --filter Laserfiche.OAuth.Client.ClientCredentials.UnitTest
+      run: dotnet test --no-build --verbosity normal --filter Laserfiche.Api.Client.UnitTest
     - name: Run integration tests
       env:
-        TEST_CONFIG: ${{ secrets.TEST_CONFIG }}
+        DEV_CA_PUBLIC_USE_INTEGRATION_TEST_ACCESS_KEY: ${{ secrets.DEV_CA_PUBLIC_USE_INTEGRATION_TEST_ACCESS_KEY }}
+        DEV_CA_PUBLIC_USE_TESTOAUTHSERVICEPRINCIPAL_SERVICE_PRINCIPAL_KEY:  ${{ secrets.DEV_CA_PUBLIC_USE_TESTOAUTHSERVICEPRINCIPAL_SERVICE_PRINCIPAL_KEY }}
       run:
-        dotnet test --no-build --verbosity normal --filter Laserfiche.OAuth.Client.ClientCredentials.IntegrationTest
+        dotnet test --no-build --verbosity normal --filter Laserfiche.Api.Client.IntegrationTest
