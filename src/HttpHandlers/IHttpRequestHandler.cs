@@ -24,6 +24,18 @@ namespace Laserfiche.Api.Client.HttpHandlers
         /// <param name="cancellationToken"></param>
         /// <returns>True if the request should be retried.</returns>
         Task<bool> AfterSendAsync(HttpResponseMessage httpResponseMessage, CancellationToken cancellationToken);
+
+        //Task<string> GetAccessToken(); //escape hatch
+    }
+
+    public class ApiHttpRequest
+    {
+        // same as Java 11
+    }
+
+    public interface ApiHttpResponse
+    {
+        // same as Java 11
     }
 
     public class BeforeSendResult
