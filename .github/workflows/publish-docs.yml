@@ -10,19 +10,9 @@ on:
 
 env:
   VERSION_PREFIX: "1.0.1"
+  REPOSITORY_NAME: ${GITHUB_REPOSITORY##*/}
 
 jobs:
-  setup:
-    runs-on: ubuntu-latest
-    steps:
-    - name: Dump github context
-      run:   echo "$GITHUB_CONTEXT"
-      shell: bash
-      env:
-        GITHUB_CONTEXT: ${{ toJson(github) }}
-    - name: set REPOSITORY_NAME environment
-      run: echo "REPOSITORY_NAME=${GITHUB_REPOSITORY##*/}" >> $GITHUB_ENV
-
   build-n-test:
     runs-on: ubuntu-latest
     steps:
@@ -83,6 +73,7 @@ jobs:
 
   publish-preview:
     runs-on: ubuntu-latest
+    environment: preview
     if: ${{ github.run_attempt != 1 }}
     needs: [ build-n-test, build-documentation ] # wait for build to finish
     steps:
@@ -102,7 +93,41 @@ jobs:
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v3.1.0
       with:
-        name: package-artifact
+        name: package-preview-artifact
+        path: ${{ github.workspace }}/src/bin/Release/*.nupkg
+
+    #- name: Publish to Nuget.org
+    #  run: dotnet nuget push ./src/bin/Release/*.nupkg --api-key ${{secrets.NUGET_KEY}} --source https://api.nuget.org/v3/index.json
+    - name: Tag commit
+      uses: rickstaa/action-create-tag@v1
+      with:
+        tag: ${{ env.PACKAGE_VERSION }}
+        commit_sha: ${{ github.sha }}
+        message: Workflow run ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+  publish-production:
+    runs-on: ubuntu-latest
+    environment: production
+    if: ${{ github.run_attempt != 1 }}
+    needs: [ build-n-test, build-documentation ] # wait for build to finish
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: 6.0.x
+    - name: Restore dependencies
+      run: dotnet restore
+    - name: Build
+      run: dotnet build --no-restore --configuration release
+    - name: set PACKAGE_VERSION environment
+      run: echo "PACKAGE_VERSION=${{ env.VERSION_PREFIX }}" >> $GITHUB_ENV
+    - name: Packaging
+      run: dotnet pack --no-build --configuration release /p:version=${{ env.PACKAGE_VERSION }}
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v3.1.0
+      with:
+        name: package-production-artifact
         path: ${{ github.workspace }}/src/bin/Release/*.nupkg
 
     #- name: Publish to Nuget.org
