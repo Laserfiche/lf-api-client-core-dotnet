@@ -43,7 +43,7 @@ jobs:
     - name: Check doxygen version
       run: doxygen --version
     - name: Create temporary directory
-      run: mkdir -p ./docs_temp/${GITHUB_REF##*/}
+      run: mkdir -p ./docs_temp/${{ github.ref }}
     - name: Generate doxygen config
       run: doxygen -g doxygen.conf
     - name: Rewrite doxygen config
@@ -51,7 +51,7 @@ jobs:
         sed -i 's|"My Project"|lf-api-client-core-dotnet|i' doxygen.conf
         sed -i 's|PROJECT_BRIEF          =|PROJECT_BRIEF          = ".NET implementation of various OAuth 2.0 flows for secure and easy access to Laserfiche APIs."|i' doxygen.conf
         sed -i 's|PROJECT_LOGO           =|PROJECT_LOGO           = logo.png|i' doxygen.conf
-        sed -i "s|OUTPUT_DIRECTORY       =|OUTPUT_DIRECTORY       = ./docs_temp/${GITHUB_REF##*/}/|i" doxygen.conf
+        sed -i "s|OUTPUT_DIRECTORY       =|OUTPUT_DIRECTORY       = ./docs_temp/${{ github.ref }}/|i" doxygen.conf
         sed -i 's|RECURSIVE              = NO|RECURSIVE              = YES|i' doxygen.conf
         sed -i 's|GENERATE_LATEX         = YES|GENERATE_LATEX         = NO|i' doxygen.conf
     - name: Dump doxygen.conf to check rewrite
@@ -59,14 +59,12 @@ jobs:
     - name: Generate doxygen docs
       run: doxygen doxygen.conf
     - name: Print folder content
-      run: ls ${{ github.workspace }}/docs_temp/${GITHUB_REF##*/}/html/
+      run: ls ${{ github.workspace }}/docs_temp/${{ github.ref }}/html
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v3.1.0
       with:
         name: documentation-artifact
-        # A file, directory or wildcard pattern that describes what to upload
-        path: |
-          ${{ github.workspace }}/docs_temp/${GITHUB_REF##*/}/html/
+        path: ${{ github.workspace }}/docs_temp/${{ github.ref }}/html
     - name: Delete temporary directory
       run: rm -r ./docs_temp
     - name: Delete doxygen config
@@ -128,6 +126,6 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: us-west-2 # Use your bucket region here
     - name: Upload docs to S3 bucket
-      run: aws s3 sync ./docs_temp/${GITHUB_REF##*/}/html/ s3://apiserver-publish-client-library-docs/${GITHUB_REPOSITORY##*/}/docs/${GITHUB_REF##*/} --delete
+      run: aws s3 sync ./docs_temp/${{ github.ref }}/html/ s3://apiserver-publish-client-library-docs/${{ github.repository }}/docs/${{ github.ref }} --delete
     - name: Delete temporary directory
       run: rm -r ./html
