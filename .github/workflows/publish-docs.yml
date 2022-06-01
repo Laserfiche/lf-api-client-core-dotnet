@@ -24,14 +24,14 @@ jobs:
       run: dotnet restore
     - name: Build
       run: dotnet build --no-restore
-    # - name: Run unit tests
-    #   run: dotnet test --no-build --verbosity normal --filter Laserfiche.Api.Client.UnitTest
-    # - name: Run integration tests
-    #   env:
-    #     DEV_CA_PUBLIC_USE_INTEGRATION_TEST_ACCESS_KEY: ${{ secrets.DEV_CA_PUBLIC_USE_INTEGRATION_TEST_ACCESS_KEY }}
-    #     DEV_CA_PUBLIC_USE_TESTOAUTHSERVICEPRINCIPAL_SERVICE_PRINCIPAL_KEY:  ${{ secrets.DEV_CA_PUBLIC_USE_TESTOAUTHSERVICEPRINCIPAL_SERVICE_PRINCIPAL_KEY }}
-    #   run:
-    #     dotnet test --no-build --verbosity normal --filter Laserfiche.Api.Client.IntegrationTest
+    - name: Run unit tests
+      run: dotnet test --no-build --verbosity normal --filter Laserfiche.Api.Client.UnitTest
+    - name: Run integration tests
+      env:
+        DEV_CA_PUBLIC_USE_INTEGRATION_TEST_ACCESS_KEY: ${{ secrets.DEV_CA_PUBLIC_USE_INTEGRATION_TEST_ACCESS_KEY }}
+        DEV_CA_PUBLIC_USE_TESTOAUTHSERVICEPRINCIPAL_SERVICE_PRINCIPAL_KEY:  ${{ secrets.DEV_CA_PUBLIC_USE_TESTOAUTHSERVICEPRINCIPAL_SERVICE_PRINCIPAL_KEY }}
+      run:
+        dotnet test --no-build --verbosity normal --filter Laserfiche.Api.Client.IntegrationTest
 
   build-documentation:
     runs-on: ubuntu-latest
@@ -109,7 +109,7 @@ jobs:
     - name: Build
       run: dotnet build --no-restore --configuration release
     - name: set PACKAGE_VERSION environment
-      run: echo "PACKAGE_VERSION=${{ env.VERSION_PREFIX }}-beta-${{ github.run_id }}" >> $env:GITHUB_ENV
+      run: echo "PACKAGE_VERSION=${{ env.VERSION_PREFIX }}-beta-${{ github.run_id }}" >> $GITHUB_ENV
     - name: Packaging
       run: dotnet pack --no-build --configuration release /p:version=${{ env.PACKAGE_VERSION }}
     - name: Upload a Build Artifact
