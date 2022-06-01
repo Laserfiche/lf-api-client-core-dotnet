@@ -15,8 +15,6 @@ jobs:
   publish-preview:
     runs-on: windows-latest
     environment: preview
-    env:
-      PACKAGE_VERSION: "${{ env.VERSION_PREFIX }}-beta-${{ github.run_id }}"
     steps:
     - uses: actions/checkout@v3
     - name: Setup .NET
@@ -27,8 +25,10 @@ jobs:
       run: dotnet restore
     - name: Build
       run: dotnet build --no-restore --configuration release
+    # - name: set PACKAGE_VERSION environment
+    #   run: echo "PACKAGE_VERSION=${{ env.VERSION_PREFIX }}-beta-${{ github.run_id }}" >> $env:GITHUB_ENV
     - name: Packaging
-      run: dotnet pack --no-build --configuration release /p:version=${{ env.PACKAGE_VERSION }}
+      run: dotnet pack --no-build --configuration release /p:version=2.0.1-beta-123123
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v3.1.0
       with:
