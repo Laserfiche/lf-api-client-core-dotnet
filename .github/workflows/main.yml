@@ -87,6 +87,7 @@ jobs:
 
   publish-documentation:
     runs-on: ubuntu-latest
+    environment: documentation
     if: ${{ github.run_attempt != 1 }}
     needs: [ build-n-test, build-documentation ] # wait for build to finish
     steps:
