@@ -101,20 +101,20 @@ jobs:
       with:
         tag: ${{ env.PACKAGE_VERSION }}
         commit_sha: ${{ github.sha }}
-        message: Workflow run ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        message: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
   publish-documentation:
     runs-on: ubuntu-latest
     if: ${{ github.run_attempt != 1 }}
-    needs: [ build-documentation ] # wait for build to finish
+    needs: [ build-n-test, build-documentation ] # wait for build to finish
     steps:
     - name: Create temporary directory
-      run: mkdir ./html
+      run: mkdir -p ./docs_temp/${{ github.ref_name }}/html/
     - name: Download a Build Artifact
       uses: actions/download-artifact@v3.0.0
       with:
         name: documentation-artifact
-        path: ./html
+        path: ${{ github.workspace }}/docs_temp/${{ github.ref_name }}/html/
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
       with:
