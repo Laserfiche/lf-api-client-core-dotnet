@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
 
 env:
-  VERSION_PREFIX: "1.0.1"
+  VERSION_PREFIX: "2.0.1" # <------------------- Change back to 1.0.1
 
 jobs:
   build-n-test:
@@ -94,7 +94,7 @@ jobs:
       run: rm -r ./docs_temp/${{ github.ref_name }}/html/
 
   publish-preview:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     environment: preview
     if: ${{ github.run_attempt != 1 }}
     needs: [ build-n-test, build-documentation ] # wait for build to finish
