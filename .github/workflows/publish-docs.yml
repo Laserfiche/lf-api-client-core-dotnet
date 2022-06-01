@@ -58,13 +58,14 @@ jobs:
       run: head -n 200 doxygen.conf
     - name: Generate doxygen docs
       run: doxygen doxygen.conf
+    - name: Print folder content
+      run: ls ./docs_temp/${GITHUB_REF##*/}/html/
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v3.1.0
       with:
         name: documentation-artifact
         # A file, directory or wildcard pattern that describes what to upload
-        path: |
-          ./docs_temp/${GITHUB_REF##*/}/html/
+        path: ./docs_temp/${GITHUB_REF##*/}/html/
     - name: Delete temporary directory
       run: rm -r ./docs_temp
     - name: Delete doxygen config
