@@ -72,6 +72,12 @@ jobs:
     - name: Generate doxygen docs
       run: doxygen doxygen.conf
 
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v3.1.0
+      with:
+        name: documentation-artifact
+        path: ${{ github.workspace }}/docs_temp/${{ github.ref_name }}/html
+
     - name: Delete temporary directory
       run: rm -r ./docs_temp
 
