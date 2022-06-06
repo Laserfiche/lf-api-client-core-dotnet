@@ -30,8 +30,6 @@ Technically you could use any editors you like. But it's more convenient if you 
 ### Add a Nuget Pacakge in a Local Directory
 `dotnet add package {package_id} --source {absolute_path_to_folder_containing_nupkg}`
 
-### Run Unit Tests
-`dotnet test --verbosity normal --filter Laserfiche.OAuth.Client.ClientCredentials.UnitTest`
+### Tests
 
-### Run Integration Tests
-`dotnet test --verbosity normal --filter Laserfiche.OAuth.Client.ClientCredentials.IntegrationTest`
+See the `./workflow/main.yml` for running unit and integration tests.
