@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.IO;
+using System.Text;
 
 namespace Laserfiche.Api.Client.IntegrationTest
 {
@@ -12,6 +13,10 @@ namespace Laserfiche.Api.Client.IntegrationTest
         public string ServicePrincipalKey { get; set; }
 
         private const string TestConfigFile = "TestConfig.env";
+
+        private const string AccessKeyVar = "DEV_CA_PUBLIC_USE_INTEGRATION_TEST_ACCESS_KEY";
+
+        private const string SpKeyVar = "DEV_CA_PUBLIC_USE_TESTOAUTHSERVICEPRINCIPAL_SERVICE_PRINCIPAL_KEY";
 
         public BaseTest()
         {
@@ -29,6 +34,15 @@ namespace Laserfiche.Api.Client.IntegrationTest
                     clobberExistingVars: true,
                     onlyExactPath: true
                 ));
+
+                // Decode ACCESS_KEY
+                var base64Encoded = Environment.GetEnvironmentVariable(AccessKeyVar);
+                if (base64Encoded != null)
+                {
+                    var decoded = Encoding.UTF8.GetString(Convert.FromBase64String(base64Encoded));
+                    Environment.SetEnvironmentVariable(AccessKeyVar, decoded);
+                }
+                
                 System.Diagnostics.Trace.TraceWarning($"{fileName} found. {fileName} file should only be used in local developer computers.");
             }
             else
@@ -39,8 +53,8 @@ namespace Laserfiche.Api.Client.IntegrationTest
 
         private void PopulateFromEnv()
         {
-            ServicePrincipalKey = Environment.GetEnvironmentVariable("DEV_CA_PUBLIC_USE_TESTOAUTHSERVICEPRINCIPAL_SERVICE_PRINCIPAL_KEY");
-            AccessKey = JsonConvert.DeserializeObject<AccessKey>(Environment.GetEnvironmentVariable("DEV_CA_PUBLIC_USE_INTEGRATION_TEST_ACCESS_KEY"));
+            ServicePrincipalKey = Environment.GetEnvironmentVariable(SpKeyVar);
+            AccessKey = JsonConvert.DeserializeObject<AccessKey>(Environment.GetEnvironmentVariable(AccessKeyVar));
         }
     }
 }
