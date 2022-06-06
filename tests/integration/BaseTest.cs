@@ -18,13 +18,15 @@ namespace Laserfiche.Api.Client.IntegrationTest
 
         private const string SpKeyVar = "DEV_CA_PUBLIC_USE_TESTOAUTHSERVICEPRINCIPAL_SERVICE_PRINCIPAL_KEY";
 
+        private bool HasBase64Decoded = false;
+
         public BaseTest()
         {
             TryLoadFromDotEnv(TestConfigFile);
             PopulateFromEnv();
         }
 
-        private static void TryLoadFromDotEnv(string fileName)
+        private void TryLoadFromDotEnv(string fileName)
         {
             var path = Path.Combine(Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName, fileName);
             if (File.Exists(path))
@@ -36,12 +38,7 @@ namespace Laserfiche.Api.Client.IntegrationTest
                 ));
 
                 // Decode ACCESS_KEY
-                var base64Encoded = Environment.GetEnvironmentVariable(AccessKeyVar);
-                if (base64Encoded != null)
-                {
-                    var decoded = Encoding.UTF8.GetString(Convert.FromBase64String(base64Encoded));
-                    Environment.SetEnvironmentVariable(AccessKeyVar, decoded);
-                }
+                DecodeAccessKeyAndUpdateEnvVar();
                 
                 System.Diagnostics.Trace.TraceWarning($"{fileName} found. {fileName} file should only be used in local developer computers.");
             }
@@ -51,9 +48,25 @@ namespace Laserfiche.Api.Client.IntegrationTest
             }
         }
 
+        private void DecodeAccessKeyAndUpdateEnvVar()
+        {
+            var base64Encoded = Environment.GetEnvironmentVariable(AccessKeyVar);
+            if (base64Encoded != null)
+            {
+                var decoded = Encoding.UTF8.GetString(Convert.FromBase64String(base64Encoded));
+                Environment.SetEnvironmentVariable(AccessKeyVar, decoded);
+                HasBase64Decoded = true;
+            }
+        }
+
         private void PopulateFromEnv()
         {
             ServicePrincipalKey = Environment.GetEnvironmentVariable(SpKeyVar);
+            
+            if (!HasBase64Decoded)
+            {
+                DecodeAccessKeyAndUpdateEnvVar();
+            }
             AccessKey = JsonConvert.DeserializeObject<AccessKey>(Environment.GetEnvironmentVariable(AccessKeyVar));
         }
     }
