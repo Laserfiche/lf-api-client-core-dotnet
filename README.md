@@ -20,5 +20,4 @@ Technically you could use any editors you like. But it's more convenient if you 
 
 
 ### Build, Test, and Package
-
 See the `./workflow/main.yml`.
