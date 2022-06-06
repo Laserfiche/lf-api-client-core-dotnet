@@ -18,18 +18,7 @@ Technically you could use any editors you like. But it's more convenient if you 
 1. Download the `nswag` command line tool. Instructions can be found [here](https://github.com/RicoSuter/NSwag/wiki/CommandLine).
 2. From the root directory of this Git repository, run the command `nswag run oauth-nswag.json`
 
-### Build
-`dotnet build --no-restore`
 
-### Release Build
-`dotnet build --configuration Release --no-restore`
+### Build, Test, and Package
 
-### Make a Nuget Package
-`dotnet pack` (in the same directly where the `.csproj` file resides)
-
-### Add a Nuget Pacakge in a Local Directory
-`dotnet add package {package_id} --source {absolute_path_to_folder_containing_nupkg}`
-
-### Tests
-
-See the `./workflow/main.yml` for running unit and integration tests.
+See the `./workflow/main.yml`.
