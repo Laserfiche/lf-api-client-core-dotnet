@@ -14,9 +14,9 @@ namespace Laserfiche.Api.Client.IntegrationTest
 
         private const string TestConfigFile = "TestConfig.env";
 
-        private const string AccessKeyVar = "DEV_CA_PUBLIC_USE_INTEGRATION_TEST_ACCESS_KEY";
+        private const string AccessKeyVar = "ACCESS_KEY";
 
-        private const string SpKeyVar = "DEV_CA_PUBLIC_USE_TESTOAUTHSERVICEPRINCIPAL_SERVICE_PRINCIPAL_KEY";
+        private const string SpKeyVar = "SERVICE_PRINCIPAL_KEY";
 
         public BaseTest()
         {
@@ -34,7 +34,7 @@ namespace Laserfiche.Api.Client.IntegrationTest
                     clobberExistingVars: true,
                     onlyExactPath: true
                 ));
-                
+
                 System.Diagnostics.Trace.TraceWarning($"{fileName} found. {fileName} file should only be used in local developer computers.");
             }
             else
@@ -49,7 +49,7 @@ namespace Laserfiche.Api.Client.IntegrationTest
         private void PopulateFromEnv()
         {
             ServicePrincipalKey = Environment.GetEnvironmentVariable(SpKeyVar);
-            
+
             var accessKeyStr = DecodeBase64(Environment.GetEnvironmentVariable(AccessKeyVar));
             AccessKey = JsonConvert.DeserializeObject<AccessKey>(accessKeyStr);
         }
