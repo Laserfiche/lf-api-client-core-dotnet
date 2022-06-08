@@ -8,51 +8,50 @@ using System.Net.Mime;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Laserfiche.Api.Client.Lfds;
 
 namespace Laserfiche.Api.Client.HttpHandlers
 {
+    /// <summary>
+    /// LFDS username password handler to set the authorization header given username, password, organization, repository ID and base URL.
+    /// </summary>
     public class LfdsUsernamePasswordHandler : IHttpRequestHandler
     {
         private string _accessToken;
         private readonly string _username;
         private readonly string _password;
-        private readonly string _baseUri;
+        private readonly string _baseUrl;
         private readonly string _repoID;
         private readonly string _organization;
-        private readonly HttpClient _credentialsClient;
 
-        public LfdsUsernamePasswordHandler(string username, string password, string organization, string repoID, string baseUri, HttpClient client = null, string token = null)
+        public LfdsUsernamePasswordHandler(string username, string password, string organization, string repoID, string baseUrl)
         {
             _username = username;
             _password = password;
-            _baseUri = baseUri;
+            _baseUrl = baseUrl.TrimEnd('/');
             _repoID = repoID;
             _organization = organization;
-            _credentialsClient = client?? new HttpClient();
-            _accessToken = token ?? null;
         }
 
         public async Task<BeforeSendResult> BeforeSendAsync(HttpRequestMessage httpRequestMessage, CancellationToken cancellationToken)
         {
             if (string.IsNullOrEmpty(_accessToken))
             {
-                using (var request = new HttpRequestMessage(HttpMethod.Post, $"{_baseUri}/v1-alpha/Repositories/{_repoID}/AccessTokens/Create"))
+                var client = new AccessTokensApiClient(new HttpClient { BaseAddress = new Uri(_baseUrl)});
+                var request = new CreateConnectionRequest
                 {
-                    string json = $"{{\"username\":\"{_username}\",\"password\":\"{_password}\",\"organization\":\"{_organization}\"}}";
-                    request.Content = new StringContent(json, Encoding.UTF8, "application/json");
-
-                    var response = await _credentialsClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, new CancellationToken());
-
-                    var contextText = await response.Content.ReadAsStringAsync();
-                    var dic = JsonConvert.DeserializeObject<Dictionary<string, string>>(contextText);
-                    dic.TryGetValue("authToken", out _accessToken);
-                }
+                    Username = _username,
+                    Password = _password,
+                    Organization = _organization
+                };
+                var response = await client.CreateAsync(_repoID, request);
+                _accessToken = response.AuthToken;
             }
             httpRequestMessage.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _accessToken);
-            return new BeforeSendResult() { SelfHostDomain = _baseUri };
+            return new BeforeSendResult() { SelfHostedBaseUrl = _baseUrl };
         }
 
-        Task<bool> IHttpRequestHandler.AfterSendAsync(HttpResponseMessage httpResponseMessage, CancellationToken cancellationToken)
+        public Task<bool> AfterSendAsync(HttpResponseMessage httpResponseMessage, CancellationToken cancellationToken)
         {
             if (httpResponseMessage.StatusCode == HttpStatusCode.Unauthorized)
             {
@@ -63,3 +62,4 @@ namespace Laserfiche.Api.Client.HttpHandlers
         }
     }
 }
+
