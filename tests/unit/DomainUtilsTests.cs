@@ -43,7 +43,7 @@ namespace Laserfiche.Api.Client.UnitTest
         }
 
         [TestMethod]
-        public void GetOauthBaseUri_Success()
+        public void GetOAuthBaseUri_Success()
         {
             string domain = "laserfiche.ca";
             string baseUri = DomainUtils.GetOAuthApiBaseUri(domain);
@@ -55,7 +55,7 @@ namespace Laserfiche.Api.Client.UnitTest
         [DataRow(null)]
         [DataRow("")]
         [DataRow("   ")]
-        public void GetOauthBaseUri_NullEmptyDomain(string domain)
+        public void GetOAuthBaseUri_NullEmptyDomain(string domain)
         {
             DomainUtils.GetOAuthApiBaseUri(domain);
         }
