@@ -23,28 +23,32 @@ namespace Laserfiche.Api.Client.HttpHandlers
         private readonly string _baseUrl;
         private readonly string _repoID;
         private readonly string _organization;
+        private readonly IAccessTokensApiClient _client;
+        private readonly CreateConnectionRequest _request;
 
-        public LfdsUsernamePasswordHandler(string username, string password, string organization, string repoID, string baseUrl)
+        public LfdsUsernamePasswordHandler(string username, string password, string organization, string repoID, string baseUrl, IAccessTokensApiClient client = null)
         {
             _username = username;
             _password = password;
             _baseUrl = baseUrl.TrimEnd('/');
             _repoID = repoID;
             _organization = organization;
+
+            _request = new CreateConnectionRequest
+            {
+                Username = _username,
+                Password = _password,
+                Organization = _organization
+            };
+            _client = client ?? new AccessTokensApiClient(new HttpClient { BaseAddress = new Uri(_baseUrl) });
         }
 
         public async Task<BeforeSendResult> BeforeSendAsync(HttpRequestMessage httpRequestMessage, CancellationToken cancellationToken)
         {
             if (string.IsNullOrEmpty(_accessToken))
             {
-                var client = new AccessTokensApiClient(new HttpClient { BaseAddress = new Uri(_baseUrl)});
-                var request = new CreateConnectionRequest
-                {
-                    Username = _username,
-                    Password = _password,
-                    Organization = _organization
-                };
-                var response = await client.CreateAsync(_repoID, request);
+
+                var response = await _client.CreateAsync(_repoID, _request);
                 _accessToken = response.AuthToken;
             }
             httpRequestMessage.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _accessToken);
