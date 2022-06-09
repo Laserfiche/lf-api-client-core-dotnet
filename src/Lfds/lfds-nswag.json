@@ -1,0 +1,22 @@
+{
+  "runtime": "Default",
+  "defaultVariables": null,
+  "documentGenerator": {
+    "fromDocument": {
+      "url": "lfds-swagger.json",
+      "output": null,
+      "newLineBehavior": "Auto"
+    }
+  },
+  "codeGenerators": {
+    "openApiToCSharpClient": {
+      "classname": "{controller}ApiClient",
+      "namespace": "Laserfiche.Api.Client.Lfds",
+      "output": "src/Lfds/LfdsClient.cs",
+      "operationGenerationMode": "MultipleClientsFromFirstTagAndPathSegments",
+      "generateClientInterfaces": true,
+      "generateOptionalParameters": true,
+      "useBaseUrl": false
+    }
+  }
+}
