@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.IO;
+using System.Text;
 
 namespace Laserfiche.Api.Client.IntegrationTest
 {
@@ -13,6 +14,10 @@ namespace Laserfiche.Api.Client.IntegrationTest
 
         private const string TestConfigFile = "TestConfig.env";
 
+        private const string AccessKeyVar = "ACCESS_KEY";
+
+        private const string SpKeyVar = "SERVICE_PRINCIPAL_KEY";
+
         public BaseTest()
         {
             TryLoadFromDotEnv(TestConfigFile);
@@ -21,26 +26,32 @@ namespace Laserfiche.Api.Client.IntegrationTest
 
         private static void TryLoadFromDotEnv(string fileName)
         {
-            try
+            var path = Path.Combine(Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName, fileName);
+            if (File.Exists(path))
             {
-                var path = Path.Combine(Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName, fileName);
                 DotNetEnv.Env.Load(path, new DotNetEnv.LoadOptions(
                     setEnvVars: true,
                     clobberExistingVars: true,
                     onlyExactPath: true
                 ));
+
                 System.Diagnostics.Trace.TraceWarning($"{fileName} found. {fileName} file should only be used in local developer computers.");
             }
-            catch
-            {
+            else
                 System.Diagnostics.Trace.WriteLine($"{fileName} not found.");
-            }
+        }
+
+        private static string DecodeBase64(string encoded)
+        {
+            return Encoding.UTF8.GetString(Convert.FromBase64String(encoded));
         }
 
         private void PopulateFromEnv()
         {
-            ServicePrincipalKey = Environment.GetEnvironmentVariable("DEV_CA_PUBLIC_USE_TESTOAUTHSERVICEPRINCIPAL_SERVICE_PRINCIPAL_KEY");
-            AccessKey = JsonConvert.DeserializeObject<AccessKey>(Environment.GetEnvironmentVariable("DEV_CA_PUBLIC_USE_INTEGRATION_TEST_ACCESS_KEY"));
+            ServicePrincipalKey = Environment.GetEnvironmentVariable(SpKeyVar);
+
+            var accessKeyStr = DecodeBase64(Environment.GetEnvironmentVariable(AccessKeyVar));
+            AccessKey = JsonConvert.DeserializeObject<AccessKey>(accessKeyStr);
         }
     }
 }
