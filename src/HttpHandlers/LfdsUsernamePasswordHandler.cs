@@ -52,7 +52,7 @@ namespace Laserfiche.Api.Client.HttpHandlers
                 _accessToken = response.AuthToken;
             }
             httpRequestMessage.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _accessToken);
-            return new BeforeSendResult() { SelfHostedBaseUrl = _baseUrl };
+            return new BeforeSendResult();
         }
 
         public Task<bool> AfterSendAsync(HttpResponseMessage httpResponseMessage, CancellationToken cancellationToken)

@@ -32,9 +32,5 @@ namespace Laserfiche.Api.Client.HttpHandlers
         /// Laserfiche Cloud regional domain.
         /// </summary>
         public string RegionalDomain { get; set; }
-        /// <summary>
-        /// Self-hosted API base URL
-        /// </summary>
-        public string SelfHostedBaseUrl { get; set; }
     }
 }
