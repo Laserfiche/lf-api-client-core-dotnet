@@ -18,12 +18,12 @@ namespace Laserfiche.Api.Client.UnitTest
     public class LfdsUsernamePasswordHandlerTest
     {
         private LfdsUsernamePasswordHandler _handler;
-        private readonly string _username = "admin";
-        private readonly string _password = "a";
+        private readonly string _username = "username";
+        private readonly string _password = "password";
         private readonly string _baseUri = "http://localhost:11211";
-        private readonly string _repoId = "release104";
-        private readonly string _organization = "ROOT";
-        private readonly HttpRequestMessage _request = new HttpRequestMessage();
+        private readonly string _repoId = "repoId";
+        private readonly string _organization = "organization";
+        private readonly HttpRequestMessage _request = new();
 
         [TestMethod]
         public async Task BeforeSendAsync_NewToken_Success()
@@ -42,7 +42,8 @@ namespace Laserfiche.Api.Client.UnitTest
 
             // Assert
             tokenClientMock.Verify(mock => mock.CreateAsync(It.IsAny<string>(), It.IsAny<CreateConnectionRequest>(), It.IsAny<bool?>(), It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Once());
-            Assert.AreEqual($"Bearer {accessToken}", _request.Headers.Authorization.ToString());
+            Assert.AreEqual("Bearer", _request.Headers.Authorization.Scheme);
+            Assert.IsFalse(string.IsNullOrEmpty(_request.Headers.Authorization.Parameter));
             Assert.IsNotNull(result);
             Assert.IsNull(result.RegionalDomain);
         }
@@ -65,7 +66,8 @@ namespace Laserfiche.Api.Client.UnitTest
 
             // Assert
             tokenClientMock.Verify(mock => mock.CreateAsync(It.IsAny<string>(), It.IsAny<CreateConnectionRequest>(), It.IsAny<bool?>(), It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Once());
-            Assert.AreEqual($"Bearer {accessToken}", _request.Headers.Authorization.ToString());
+            Assert.AreEqual("Bearer", _request.Headers.Authorization.Scheme);
+            Assert.IsFalse(string.IsNullOrEmpty(_request.Headers.Authorization.Parameter));
             Assert.IsNotNull(result);
             Assert.IsNull(result.RegionalDomain);
         }
@@ -82,21 +84,25 @@ namespace Laserfiche.Api.Client.UnitTest
             // Assert
             var ex = await Assert.ThrowsExceptionAsync<ApiException>(()=>_handler.BeforeSendAsync(_request, new CancellationToken()));
             Assert.AreEqual((int)HttpStatusCode.Unauthorized, ex.StatusCode);
-            Assert.AreEqual($"{message}\n\nStatus: 401\nResponse: \n(null)", ex.Message);
+            Assert.IsNotNull(ex.Message);
         }
 
         [TestMethod]
-        public async Task AfterSendAsync_ResponseOK_ReturnsFalse()
+        [DataRow(HttpStatusCode.OK)]
+        [DataRow(HttpStatusCode.NotFound)]
+        [DataRow(HttpStatusCode.Forbidden)]
+        [DataRow(HttpStatusCode.InternalServerError)]
+        public async Task AfterSendAsync_ResponseOtherThanUnauthorized_ReturnsFalse(HttpStatusCode statusCode)
         {
             // Arrange
-            HttpResponseMessage responseOk = new()
+            HttpResponseMessage response = new()
             {
-                StatusCode = System.Net.HttpStatusCode.OK,
+                StatusCode = statusCode,
             };
             _handler = new LfdsUsernamePasswordHandler(_username, _password, _organization, _repoId, _baseUri);
 
             // Act
-            var result = await _handler.AfterSendAsync(responseOk, new CancellationToken());
+            var result = await _handler.AfterSendAsync(response, new CancellationToken());
 
             // Assert
             Assert.IsFalse(result);
@@ -106,14 +112,14 @@ namespace Laserfiche.Api.Client.UnitTest
         public async Task AfterSendAsync_ResponseUnauthorized_ReturnsTrue()
         {
             // Arrange
-            HttpResponseMessage responseOk = new()
+            HttpResponseMessage response = new()
             {
                 StatusCode = System.Net.HttpStatusCode.Unauthorized,
             };
             _handler = new LfdsUsernamePasswordHandler(_username, _password, _organization, _repoId, _baseUri);
 
             // Act
-            var result = await _handler.AfterSendAsync(responseOk, new CancellationToken());
+            var result = await _handler.AfterSendAsync(response, new CancellationToken());
 
             // Assert
             Assert.IsTrue(result);
