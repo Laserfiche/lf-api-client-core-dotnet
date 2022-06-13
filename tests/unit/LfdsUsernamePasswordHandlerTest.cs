@@ -82,7 +82,7 @@ namespace Laserfiche.Api.Client.UnitTest
             Assert.IsNotNull(ex.Message);
         }
 
-        [TestMethod]
+        [DataTestMethod]
         [DataRow(HttpStatusCode.OK)]
         [DataRow(HttpStatusCode.NotFound)]
         [DataRow(HttpStatusCode.Forbidden)]
