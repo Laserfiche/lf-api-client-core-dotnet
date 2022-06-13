@@ -9,6 +9,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Laserfiche.Api.Client.Integ
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Laserfiche.Api.Client.UnitTest", "tests\unit\Laserfiche.Api.Client.UnitTest.csproj", "{DD5EF380-51BC-4625-B9AF-32306A97736A}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Laserfiche.Repository.Api.Client", "..\lf-repository-api-client-dotnet\src\Laserfiche.Repository.Api.Client.csproj", "{EC0FB4DC-D964-46BC-8CF9-D582DDD05D31}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleLFClientCore", "..\..\..\..\..\My Workspace\repos_local\SampleLFClientCore\SampleLFClientCore\SampleLFClientCore.csproj", "{01531A45-2C45-4EC7-B71D-40FB11F079ED}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +31,14 @@ Global
 		{DD5EF380-51BC-4625-B9AF-32306A97736A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DD5EF380-51BC-4625-B9AF-32306A97736A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DD5EF380-51BC-4625-B9AF-32306A97736A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC0FB4DC-D964-46BC-8CF9-D582DDD05D31}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC0FB4DC-D964-46BC-8CF9-D582DDD05D31}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC0FB4DC-D964-46BC-8CF9-D582DDD05D31}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC0FB4DC-D964-46BC-8CF9-D582DDD05D31}.Release|Any CPU.Build.0 = Release|Any CPU
+		{01531A45-2C45-4EC7-B71D-40FB11F079ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{01531A45-2C45-4EC7-B71D-40FB11F079ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{01531A45-2C45-4EC7-B71D-40FB11F079ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{01531A45-2C45-4EC7-B71D-40FB11F079ED}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
