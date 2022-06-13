@@ -15,6 +15,6 @@ namespace Laserfiche.Api.Client.OAuth
         /// <param name="accessKey"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<GetAccessTokenResponse> GetAccessTokenAsync(string servicePrincipalKey, AccessKey accessKey, CancellationToken cancellationToken = default);
+        Task<GetAccessTokenResponse> GetAccessTokenFromServicePrincipalAsync(string servicePrincipalKey, AccessKey accessKey, CancellationToken cancellationToken = default);
     }
 }

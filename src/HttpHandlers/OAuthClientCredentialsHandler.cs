@@ -51,7 +51,7 @@ namespace Laserfiche.Api.Client.HttpHandlers
         {
             if (string.IsNullOrEmpty(_accessToken))
             {
-                var response = await _tokenClient.GetAccessTokenAsync(_servicePrincipalKey, _accessKey, cancellationToken);
+                var response = await _tokenClient.GetAccessTokenFromServicePrincipalAsync(_servicePrincipalKey, _accessKey, cancellationToken);
                 _accessToken = response.Access_token;
             }
 
