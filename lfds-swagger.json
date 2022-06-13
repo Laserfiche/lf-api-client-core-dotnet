@@ -32,25 +32,6 @@
               "type": "string"
             },
             "x-position": 1
-          },
-          {
-            "name": "createCookie",
-            "in": "query",
-            "description": "An optional query parameter used to indicate whether a Set-Cookie header containing\n            the authToken is returned in the response.",
-            "schema": {
-              "type": "boolean"
-            },
-            "x-position": 3
-          },
-          {
-            "name": "customerId",
-            "in": "query",
-            "description": "The Laserfiche Cloud account ID to use when using username and password to create a session connection.",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            },
-            "x-position": 4
           }
         ],
         "requestBody": {

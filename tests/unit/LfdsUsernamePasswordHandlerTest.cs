@@ -26,7 +26,7 @@ namespace Laserfiche.Api.Client.UnitTest
             // Arrange
             string accessToken = "access_token";
             Mock<IAccessTokensClient> tokenClientMock = new();
-            tokenClientMock.Setup(mock => mock.CreateAsync(It.IsAny<string>(), It.IsAny<CreateConnectionRequest>(), It.IsAny<bool?>(), It.IsAny<string>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(new SessionKeyInfo
+            tokenClientMock.Setup(mock => mock.CreateAsync(It.IsAny<string>(), It.IsAny<CreateConnectionRequest>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(new SessionKeyInfo
             {
                 AuthToken = accessToken
             }));
@@ -36,7 +36,7 @@ namespace Laserfiche.Api.Client.UnitTest
             var result = await _handler.BeforeSendAsync(_request, new CancellationToken());
 
             // Assert
-            tokenClientMock.Verify(mock => mock.CreateAsync(It.IsAny<string>(), It.IsAny<CreateConnectionRequest>(), It.IsAny<bool?>(), It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Once());
+            tokenClientMock.Verify(mock => mock.CreateAsync(It.IsAny<string>(), It.IsAny<CreateConnectionRequest>(), It.IsAny<CancellationToken>()), Times.Once());
             Assert.AreEqual("Bearer", _request.Headers.Authorization.Scheme);
             Assert.IsFalse(string.IsNullOrEmpty(_request.Headers.Authorization.Parameter));
             Assert.IsNotNull(result);
@@ -49,7 +49,7 @@ namespace Laserfiche.Api.Client.UnitTest
             //Arrange
             string accessToken = "access_token";
             Mock<IAccessTokensClient> tokenClientMock = new();
-            tokenClientMock.Setup(mock => mock.CreateAsync(It.IsAny<string>(), It.IsAny<CreateConnectionRequest>(), It.IsAny<bool?>(), It.IsAny<string>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(new SessionKeyInfo
+            tokenClientMock.Setup(mock => mock.CreateAsync(It.IsAny<string>(), It.IsAny<CreateConnectionRequest>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(new SessionKeyInfo
             {
                 AuthToken = accessToken
             }));
@@ -60,7 +60,7 @@ namespace Laserfiche.Api.Client.UnitTest
             result = await _handler.BeforeSendAsync(_request, new CancellationToken());
 
             // Assert
-            tokenClientMock.Verify(mock => mock.CreateAsync(It.IsAny<string>(), It.IsAny<CreateConnectionRequest>(), It.IsAny<bool?>(), It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Once());
+            tokenClientMock.Verify(mock => mock.CreateAsync(It.IsAny<string>(), It.IsAny<CreateConnectionRequest>(), It.IsAny<CancellationToken>()), Times.Once());
             Assert.AreEqual("Bearer", _request.Headers.Authorization.Scheme);
             Assert.IsFalse(string.IsNullOrEmpty(_request.Headers.Authorization.Parameter));
             Assert.IsNotNull(result);
@@ -73,7 +73,7 @@ namespace Laserfiche.Api.Client.UnitTest
             //Arrange
             string message = "Access token is invalid or expired.";
             Mock<IAccessTokensClient> tokenClientMock = new();
-            tokenClientMock.Setup(mock => mock.CreateAsync(It.IsAny<string>(), It.IsAny<CreateConnectionRequest>(), It.IsAny<bool?>(), It.IsAny<string>(), It.IsAny<CancellationToken>())).Throws(new ApiException(message, 401, null, null, null));
+            tokenClientMock.Setup(mock => mock.CreateAsync(It.IsAny<string>(), It.IsAny<CreateConnectionRequest>(), It.IsAny<CancellationToken>())).Throws(new ApiException(message, 401, null, null, null));
             _handler = new LfdsUsernamePasswordHandler(_username, _password, _organization, _repoId, _baseUri, tokenClientMock.Object);
 
             // Assert

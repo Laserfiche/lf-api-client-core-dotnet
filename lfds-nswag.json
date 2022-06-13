@@ -12,7 +12,7 @@
     "openApiToCSharpClient": {
       "classname": "{controller}Client",
       "namespace": "Laserfiche.Api.Client.Lfds",
-      "output": "src/Lfds/LfdsClient.cs",
+      "output": "src/Lfds/AccessTokensClient.cs",
       "operationGenerationMode": "MultipleClientsFromFirstTagAndPathSegments",
       "generateClientInterfaces": true,
       "generateOptionalParameters": true,
