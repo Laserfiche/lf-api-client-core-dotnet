@@ -20,7 +20,7 @@ namespace Laserfiche.Api.Client.HttpHandlers
 
         private readonly AccessKey _accessKey;
 
-        private readonly ITokenApiClient _tokenApiClient;
+        private readonly ITokenClient _tokenClient;
 
         /// <summary>
         /// Constructor
@@ -38,7 +38,7 @@ namespace Laserfiche.Api.Client.HttpHandlers
             _accessKey = accessKey;
             _accessKey.IsValid();
 
-            _tokenApiClient = new TokenApiClient(_accessKey.Domain); // change the api so this one works
+            _tokenClient = new TokenClient(_accessKey.Domain);
         }
 
         /// <summary>
@@ -51,7 +51,7 @@ namespace Laserfiche.Api.Client.HttpHandlers
         {
             if (string.IsNullOrEmpty(_accessToken))
             {
-                var response = await _tokenApiClient.GetAccessTokenAsync(_servicePrincipalKey, _accessKey, cancellationToken);
+                var response = await _tokenClient.GetAccessTokenAsync(_servicePrincipalKey, _accessKey, cancellationToken);
                 _accessToken = response.Access_token;
             }
 

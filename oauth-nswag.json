@@ -10,7 +10,7 @@
   },
   "codeGenerators": {
     "openApiToCSharpClient": {
-      "classname": "{controller}ApiClient",
+      "classname": "{controller}Client",
       "namespace": "Laserfiche.Api.Client.OAuth",
       "output": "src/OAuth/OAuthClient.cs",
       "operationGenerationMode": "MultipleClientsFromFirstTagAndPathSegments",

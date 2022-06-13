@@ -10,13 +10,13 @@ namespace Laserfiche.Api.Client.OAuth
     /// <summary>
     /// The token route API client.
     /// </summary>
-    public partial class TokenApiClient : ITokenApiClient
+    public partial class TokenClient : ITokenClient
     {
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="regionalDomain">Laserfiche Cloud domain associated with the access key. Since the authorization service is region based, one cannot change the base address once it's set. This value can be found in AccessKey.Domain.</param>
-        public TokenApiClient(string regionalDomain)
+        public TokenClient(string regionalDomain)
         {
             _httpClient = new HttpClient(new HttpClientHandler()
             {
