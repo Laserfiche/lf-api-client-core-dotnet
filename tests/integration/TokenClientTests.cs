@@ -6,16 +6,16 @@ using System.Threading.Tasks;
 namespace Laserfiche.Api.Client.IntegrationTest
 {
     [TestClass]
-    public class TokenApiClientTests : BaseTest
+    public class TokenClientTests : BaseTest
     {
         [TestMethod]
-        public async Task GetAccessTokenAsync()
+        public async Task GetAccessTokenFromServicePrincipalAsync()
         {
             // Initialize an instance of the handler
-            TokenApiClient client = new(AccessKey.Domain);
+            TokenClient client = new(AccessKey.Domain);
 
             // Get tokens for that application
-            var response = await client.GetAccessTokenAsync(ServicePrincipalKey, AccessKey);
+            var response = await client.GetAccessTokenFromServicePrincipalAsync(ServicePrincipalKey, AccessKey);
             Assert.IsNotNull(response);
 
             var tokenResponse = response;
@@ -27,23 +27,23 @@ namespace Laserfiche.Api.Client.IntegrationTest
         }
 
         [TestMethod]
-        public async Task GetAccessTokenAsync_WrongDomain()
+        public async Task GetAccessTokenFromServicePrincipalAsync_WrongDomain()
         {
             // Initialize an instance of the client
-            TokenApiClient client = new("some.random.string");
+            TokenClient client = new("some.random.string");
 
             // Expect failed attempt to get access token since the domain is wrong
-            await Assert.ThrowsExceptionAsync<ArgumentOutOfRangeException>(async () => await client.GetAccessTokenAsync(ServicePrincipalKey, AccessKey));
+            await Assert.ThrowsExceptionAsync<ArgumentOutOfRangeException>(async () => await client.GetAccessTokenFromServicePrincipalAsync(ServicePrincipalKey, AccessKey));
         }
 
         [TestMethod]
-        public async Task GetAccessTokenAsync_WrongServicePrincipalKey()
+        public async Task GetAccessTokenFromServicePrincipalAsync_WrongServicePrincipalKey()
         {
             // Initialize an instance of the handler
-            TokenApiClient client = new(AccessKey.Domain);
+            TokenClient client = new(AccessKey.Domain);
 
             // Expect the retrieval of access token to fail due to incorrect service principal key
-            await Assert.ThrowsExceptionAsync<ApiException<ProblemDetails>>(async () => await client.GetAccessTokenAsync("a wrong service principal key", AccessKey));
+            await Assert.ThrowsExceptionAsync<ApiException<ProblemDetails>>(async () => await client.GetAccessTokenFromServicePrincipalAsync("a wrong service principal key", AccessKey));
         }
     }
 }
