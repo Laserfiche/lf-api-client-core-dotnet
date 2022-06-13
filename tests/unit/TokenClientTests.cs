@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace Laserfiche.Api.Client.UnitTest
 {
     [TestClass]
-    public class TokenApiClientTest
+    public class TokenClientTests
     {
         private const string CUSTOMER_ID = "fake.customer.id";
         private const string DOMAIN = "fake.domain";
@@ -24,15 +24,15 @@ namespace Laserfiche.Api.Client.UnitTest
 	            ""d"": ""Q2J9YzSI_p98uMlt-MvFAi5VkzcFzQ-ThE2VRtv1g-Y""
             }";
 
-        Mock<TokenApiClient> mockTokenApiClient;
+        Mock<TokenClient> mockTokenClient;
         string servicePrincipalKey;
         AccessKey accessKey;
 
         [TestInitialize]
         public void Setup()
         {
-            mockTokenApiClient = new Mock<TokenApiClient>(DOMAIN);
-            mockTokenApiClient.Setup(tokenApiClient => tokenApiClient.TokenAsync(It.IsAny<GetAccessTokenRequest>(), It.IsAny<string>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(new GetAccessTokenResponse()));
+            mockTokenClient = new Mock<TokenClient>(DOMAIN);
+            mockTokenClient.Setup(tokenClient => tokenClient.TokenAsync(It.IsAny<GetAccessTokenRequest>(), It.IsAny<string>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(new GetAccessTokenResponse()));
 
             servicePrincipalKey = SERVICE_PRINCIPAL_KEY;
             accessKey = new AccessKey()
@@ -45,11 +45,11 @@ namespace Laserfiche.Api.Client.UnitTest
         }
 
         [TestMethod]
-        public async Task GetAccessTokenAsync_Success()
+        public async Task GetAccessTokenFromServicePrincipalAsync_Success()
         {
-            TokenApiClient client = mockTokenApiClient.Object;
-            await client.GetAccessTokenAsync(servicePrincipalKey, accessKey);
-            mockTokenApiClient.Verify(tokenApiClient => tokenApiClient.TokenAsync(It.Is<GetAccessTokenRequest>(request => request.Grant_type == "client_credentials"), It.IsNotNull<string>(), It.IsAny<CancellationToken>()));
+            TokenClient client = mockTokenClient.Object;
+            await client.GetAccessTokenFromServicePrincipalAsync(servicePrincipalKey, accessKey);
+            mockTokenClient.Verify(tokenClient => tokenClient.TokenAsync(It.Is<GetAccessTokenRequest>(request => request.Grant_type == "client_credentials"), It.IsNotNull<string>(), It.IsAny<CancellationToken>()));
         }
     }
 }
