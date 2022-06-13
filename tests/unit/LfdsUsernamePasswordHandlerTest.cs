@@ -1,12 +1,7 @@
 ﻿using Laserfiche.Api.Client.HttpHandlers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Moq.Protected;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Laserfiche.Api.Client.Lfds;
@@ -30,7 +25,7 @@ namespace Laserfiche.Api.Client.UnitTest
         {
             // Arrange
             string accessToken = "access_token";
-            Mock<IAccessTokensApiClient> tokenClientMock = new();
+            Mock<IAccessTokensClient> tokenClientMock = new();
             tokenClientMock.Setup(mock => mock.CreateAsync(It.IsAny<string>(), It.IsAny<CreateConnectionRequest>(), It.IsAny<bool?>(), It.IsAny<string>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(new SessionKeyInfo
             {
                 AuthToken = accessToken
@@ -53,7 +48,7 @@ namespace Laserfiche.Api.Client.UnitTest
         {
             //Arrange
             string accessToken = "access_token";
-            Mock<IAccessTokensApiClient> tokenClientMock = new();
+            Mock<IAccessTokensClient> tokenClientMock = new();
             tokenClientMock.Setup(mock => mock.CreateAsync(It.IsAny<string>(), It.IsAny<CreateConnectionRequest>(), It.IsAny<bool?>(), It.IsAny<string>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(new SessionKeyInfo
             {
                 AuthToken = accessToken
@@ -77,7 +72,7 @@ namespace Laserfiche.Api.Client.UnitTest
         {
             //Arrange
             string message = "Access token is invalid or expired.";
-            Mock<IAccessTokensApiClient> tokenClientMock = new();
+            Mock<IAccessTokensClient> tokenClientMock = new();
             tokenClientMock.Setup(mock => mock.CreateAsync(It.IsAny<string>(), It.IsAny<CreateConnectionRequest>(), It.IsAny<bool?>(), It.IsAny<string>(), It.IsAny<CancellationToken>())).Throws(new ApiException(message, 401, null, null, null));
             _handler = new LfdsUsernamePasswordHandler(_username, _password, _organization, _repoId, _baseUri, tokenClientMock.Object);
 
