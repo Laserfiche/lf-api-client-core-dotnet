@@ -10,7 +10,7 @@
   },
   "codeGenerators": {
     "openApiToCSharpClient": {
-      "classname": "{controller}ApiClient",
+      "classname": "{controller}Client",
       "namespace": "Laserfiche.Api.Client.Lfds",
       "output": "src/Lfds/LfdsClient.cs",
       "operationGenerationMode": "MultipleClientsFromFirstTagAndPathSegments",

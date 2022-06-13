@@ -18,10 +18,15 @@ namespace Laserfiche.Api.Client.Lfds
     using System = global::System;
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial interface IAccessTokensApiClient
+    public partial interface IAccessTokensClient
     {
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// - Creates an access token for use with the Laserfiche API.
+        /// <br/>- Provides credentials and uses the access token returned with subsequent API calls as a means of authorization.
+        /// <br/>- Adding createCookie=true as a query parameter results a response that includes a Set-Cookie header containing an authToken value. The default value for createCookie is false.
+        /// </summary>
         /// <param name="repoId">The requested repository ID.</param>
         /// <param name="request">The username and password used to create the session connection.</param>
         /// <param name="createCookie">An optional query parameter used to indicate whether a Set-Cookie header containing
@@ -34,12 +39,12 @@ namespace Laserfiche.Api.Client.Lfds
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class AccessTokensApiClient : IAccessTokensApiClient
+    public partial class AccessTokensClient : IAccessTokensClient
     {
         private System.Net.Http.HttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
 
-        public AccessTokensApiClient(System.Net.Http.HttpClient httpClient)
+        public AccessTokensClient(System.Net.Http.HttpClient httpClient)
         {
             _httpClient = httpClient;
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(CreateSerializerSettings);
@@ -61,6 +66,11 @@ namespace Laserfiche.Api.Client.Lfds
         partial void ProcessResponse(System.Net.Http.HttpClient client, System.Net.Http.HttpResponseMessage response);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// - Creates an access token for use with the Laserfiche API.
+        /// <br/>- Provides credentials and uses the access token returned with subsequent API calls as a means of authorization.
+        /// <br/>- Adding createCookie=true as a query parameter results a response that includes a Set-Cookie header containing an authToken value. The default value for createCookie is false.
+        /// </summary>
         /// <param name="repoId">The requested repository ID.</param>
         /// <param name="request">The username and password used to create the session connection.</param>
         /// <param name="createCookie">An optional query parameter used to indicate whether a Set-Cookie header containing

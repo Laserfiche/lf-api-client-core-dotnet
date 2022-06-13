@@ -20,7 +20,7 @@
         "tags": [
           "AccessTokens"
         ],
-        "description": "- Creates an access token for use with the Laserfiche API.\n- Provides credentials and uses the access token returned with subsequent API calls as a means of authorization.\n- Adding createCookie=true as a query parameter results a response that includes a Set-Cookie header containing an authToken value. The default value for createCookie is false.",
+        "summary": "- Creates an access token for use with the Laserfiche API.\n- Provides credentials and uses the access token returned with subsequent API calls as a means of authorization.\n- Adding createCookie=true as a query parameter results a response that includes a Set-Cookie header containing an authToken value. The default value for createCookie is false.",
         "operationId": "CreateAccessToken",
         "parameters": [
           {

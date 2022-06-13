@@ -23,10 +23,10 @@ namespace Laserfiche.Api.Client.HttpHandlers
         private readonly string _baseUrl;
         private readonly string _repoID;
         private readonly string _organization;
-        private readonly IAccessTokensApiClient _client;
+        private readonly IAccessTokensClient _client;
         private readonly CreateConnectionRequest _request;
 
-        public LfdsUsernamePasswordHandler(string username, string password, string organization, string repoID, string baseUrl, IAccessTokensApiClient client = null)
+        public LfdsUsernamePasswordHandler(string username, string password, string organization, string repoID, string baseUrl, IAccessTokensClient client = null)
         {
             _username = username;
             _password = password;
@@ -40,7 +40,7 @@ namespace Laserfiche.Api.Client.HttpHandlers
                 Password = _password,
                 Organization = _organization
             };
-            _client = client ?? new AccessTokensApiClient(new HttpClient { BaseAddress = new Uri(_baseUrl) });
+            _client = client ?? new AccessTokensClient(new HttpClient { BaseAddress = new Uri(_baseUrl) });
         }
 
         public async Task<BeforeSendResult> BeforeSendAsync(HttpRequestMessage httpRequestMessage, CancellationToken cancellationToken)
