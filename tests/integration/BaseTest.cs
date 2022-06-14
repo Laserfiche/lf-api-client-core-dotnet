@@ -9,14 +9,21 @@ namespace Laserfiche.Api.Client.IntegrationTest
     public class BaseTest
     {
         public AccessKey AccessKey { get; set; }
-
         public string ServicePrincipalKey { get; set; }
+        public string Username { get; set; }
+        public string Password { get; set; }
+        public string RepoId { get; set; }
+        public string Organization { get; set; }
+        public string BaseUrl { get; set; }
 
         private const string TestConfigFile = "TestConfig.env";
-
         private const string AccessKeyVar = "ACCESS_KEY";
-
         private const string SpKeyVar = "SERVICE_PRINCIPAL_KEY";
+        private const string usernameVar = "LFDS_TEST_USERNAME";
+        private const string passwordVar = "LFDS_TEST_PASSWORD";
+        private const string repoIdVar = "REPOSITORY_ID";
+        private const string organizationVar = "LFDS_TEST_ORGANIZATION";
+        private const string baseUrlVar = "SELFHOSTED_REPOSITORY_API_BASE_URI";
 
         public BaseTest()
         {
@@ -52,6 +59,11 @@ namespace Laserfiche.Api.Client.IntegrationTest
 
             var accessKeyStr = DecodeBase64(Environment.GetEnvironmentVariable(AccessKeyVar));
             AccessKey = JsonConvert.DeserializeObject<AccessKey>(accessKeyStr);
+            Username = Environment.GetEnvironmentVariable(usernameVar);
+            Password = Environment.GetEnvironmentVariable(passwordVar);
+            RepoId = Environment.GetEnvironmentVariable(repoIdVar);
+            Organization = Environment.GetEnvironmentVariable(organizationVar);
+            BaseUrl = Environment.GetEnvironmentVariable(baseUrlVar);
         }
     }
 }

@@ -10,7 +10,7 @@ using System.Net;
 namespace Laserfiche.Api.Client.UnitTest
 {
     [TestClass]
-    public class LfdsUsernamePasswordHandlerTest
+    public class LfdsUsernamePasswordHandlerTests
     {
         private LfdsUsernamePasswordHandler _handler;
         private readonly string _username = "username";
