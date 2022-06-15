@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 namespace Laserfiche.Api.Client.IntegrationTest
 {
     [TestClass]
+    [TestCategory("Cloud")]
     public class OAuthClientCredentialsHandlerTests : BaseTest
     {
         [TestMethod]
