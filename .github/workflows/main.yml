@@ -36,7 +36,7 @@ jobs:
         ACCESS_KEY: ${{ secrets.DEV_CA_PUBLIC_USE_INTEGRATION_TEST_ACCESS_KEY }}
         SERVICE_PRINCIPAL_KEY:  ${{ secrets.DEV_CA_PUBLIC_USE_TESTOAUTHSERVICEPRINCIPAL_SERVICE_PRINCIPAL_KEY }}
       run:
-        dotnet test --no-build --verbosity normal --filter Laserfiche.Api.Client.IntegrationTest
+        dotnet test --no-build --verbosity normal --filter Laserfiche.Api.Client.IntegrationTest&TestCategory=Cloud
 
 
   build-documentation:
