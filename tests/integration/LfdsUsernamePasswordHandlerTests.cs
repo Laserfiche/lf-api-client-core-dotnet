@@ -13,6 +13,7 @@ using System.Net;
 namespace Laserfiche.Api.Client.IntegrationTest
 {
     [TestClass]
+    [TestCategory("LFDS")]
     public class LfdsUsernamePasswordHandlerTest : BaseTest
     {
         private IHttpRequestHandler _httpRequestHandler;
