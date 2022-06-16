@@ -26,7 +26,9 @@ namespace Laserfiche.Api.Client.HttpHandlers
         private readonly IAccessTokensClient _client;
         private readonly CreateConnectionRequest _request;
 
-        public LfdsUsernamePasswordHandler(string username, string password, string organization, string repoID, string baseUrl, IAccessTokensClient client = null)
+        public LfdsUsernamePasswordHandler(string username, string password, string organization, string repoID, string baseUrl) : this(username, password, organization, repoID, baseUrl, null) { }
+
+        internal LfdsUsernamePasswordHandler(string username, string password, string organization, string repoID, string baseUrl, IAccessTokensClient client)
         {
             _username = username;
             _password = password;
@@ -47,7 +49,6 @@ namespace Laserfiche.Api.Client.HttpHandlers
         {
             if (string.IsNullOrEmpty(_accessToken))
             {
-
                 var response = await _client.CreateAsync(_repoID, _request, cancellationToken);
                 _accessToken = response?.AuthToken;
             }
