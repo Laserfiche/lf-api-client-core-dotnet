@@ -56,10 +56,10 @@ namespace Laserfiche.Api.Client.IntegrationTest
 
         [DataTestMethod]
         [DynamicData(nameof(GetInvalidCredentials), DynamicDataSourceType.Method)]
-        public async Task BeforeSendAsync_FailedAuthentication_ThrowsException(string username, string password, string repoId, string organization, string baseUrl)
+        public async Task BeforeSendAsync_FailedAuthentication_ThrowsException(string username, string password, string organization)
         {
             //Arrange
-            _httpRequestHandler = new LfdsUsernamePasswordHandler("Invalid_name", Password, RepoId, Organization, BaseUrl);
+            _httpRequestHandler = new LfdsUsernamePasswordHandler(username, password, RepoId, organization, BaseUrl);
             using var request = new HttpRequestMessage();
 
             // Assert
@@ -74,23 +74,15 @@ namespace Laserfiche.Api.Client.IntegrationTest
 
             yield return new object[]
             {
-                "name", baseTest.Password, baseTest.RepoId, baseTest.Organization, baseTest.BaseUrl
+                "invalid name", baseTest.Password, baseTest.Organization
             };
             yield return new object[]
             {
-                baseTest.Username, "password", baseTest.RepoId, baseTest.Organization, baseTest.BaseUrl
+                baseTest.Username, "password", baseTest.Organization
             };
             yield return new object[]
             {
-                baseTest.Username, baseTest.Password, "repo_id", baseTest.Organization, baseTest.BaseUrl
-            };
-            yield return new object[]
-            {
-                baseTest.Username, baseTest.Password, baseTest.RepoId, "organization", baseTest.BaseUrl
-            };
-            yield return new object[]
-            {
-                baseTest.Username, baseTest.Password, baseTest.RepoId, baseTest.Organization, "base_url"
+                baseTest.Username, baseTest.Password, "organization"
             };
         }
 
