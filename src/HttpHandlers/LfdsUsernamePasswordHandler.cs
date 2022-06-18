@@ -49,6 +49,7 @@ namespace Laserfiche.Api.Client.HttpHandlers
         {
             if (string.IsNullOrEmpty(_accessToken))
             {
+
                 var response = await _client.CreateAsync(_repoID, _request, cancellationToken);
                 _accessToken = response?.AuthToken;
             }
