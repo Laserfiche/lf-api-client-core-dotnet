@@ -78,11 +78,11 @@ namespace Laserfiche.Api.Client.IntegrationTest
             };
             yield return new object[]
             {
-                baseTest.Username, "password", baseTest.Organization
+                baseTest.Username, "invalid password", baseTest.Organization
             };
             yield return new object[]
             {
-                baseTest.Username, baseTest.Password, "organization"
+                baseTest.Username, baseTest.Password, "invalid organization"
             };
         }
 
