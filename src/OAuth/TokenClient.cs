@@ -51,7 +51,7 @@ namespace Laserfiche.Api.Client.OAuth
             return response;
         }
 
-        public async Task<GetAccessTokenResponse> GetAccessTokenFromCode(string code, string redirectUri, string clientId, string clientSecret, string codeVerifier)
+        public async Task<GetAccessTokenResponse> GetAccessTokenFromCode(string code, string redirectUri, string clientId, string clientSecret = null, string codeVerifier = null)
         {
             string basicAuth = JwtUtils.CreateBasicAuth(clientId, clientSecret);
             var response = await TokenAsync(new GetAccessTokenRequest()
@@ -66,7 +66,7 @@ namespace Laserfiche.Api.Client.OAuth
             return response;
         }
 
-        public async Task<GetAccessTokenResponse> RefreshAccessToken(string refreshToken, string clientId, string clientSecret)
+        public async Task<GetAccessTokenResponse> RefreshAccessToken(string refreshToken, string clientId, string clientSecret = null)
         {
             string basicAuth = JwtUtils.CreateBasicAuth(clientId,clientSecret);
             var response = await TokenAsync(new GetAccessTokenRequest()
