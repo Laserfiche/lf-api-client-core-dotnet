@@ -47,5 +47,16 @@ namespace Laserfiche.Api.Client.Utils
             };
             return new JsonWebTokenHandler().CreateToken(tokenDescriptor);
         }
+
+        internal static string CreateBasicAuth(string clientId, string clientSecret)
+        {
+            if (clientSecret != null)
+            {
+                var basicCredentials = clientId + ':' + clientSecret;
+                var base64EncodedClientSecret = System.Text.Encoding.UTF8.GetBytes(basicCredentials);
+                return $"Basic {System.Convert.ToBase64String(base64EncodedClientSecret)}";
+            }
+            return null;
+        }
     }
 }
