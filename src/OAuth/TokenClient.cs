@@ -42,12 +42,39 @@ namespace Laserfiche.Api.Client.OAuth
             {
                 throw new ArgumentOutOfRangeException($"{nameof(accessKey)}.{nameof(accessKey.Domain)}");
             }
-            
+
             string bearerAuth = $"Bearer {JwtUtils.CreateClientCredentialsAuthorizationJwt(servicePrincipalKey, accessKey)}";
             var response = await TokenAsync(new GetAccessTokenRequest()
             {
                 Grant_type = "client_credentials",
             }, bearerAuth);
+            return response;
+        }
+
+        public async Task<GetAccessTokenResponse> GetAccessTokenFromCode(string code, string redirectUri, string clientId, string clientSecret = null, string codeVerifier = null)
+        {
+            string basicAuth = JwtUtils.CreateBasicAuth(clientId, clientSecret);
+            var response = await TokenAsync(new GetAccessTokenRequest()
+            {
+                Grant_type = "authorization_code",
+                Client_id = clientId,
+                Code = code,
+                Redirect_uri = redirectUri,
+                Code_verifier = codeVerifier
+
+            }, basicAuth);
+            return response;
+        }
+
+        public async Task<GetAccessTokenResponse> RefreshAccessToken(string refreshToken, string clientId, string clientSecret = null)
+        {
+            string basicAuth = JwtUtils.CreateBasicAuth(clientId,clientSecret);
+            var response = await TokenAsync(new GetAccessTokenRequest()
+            {
+                Grant_type = "refresh_token",
+                Client_id = clientId,
+                Refresh_token = refreshToken
+            }, basicAuth);
             return response;
         }
     }
