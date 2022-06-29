@@ -32,7 +32,7 @@ namespace Laserfiche.Api.Client.HttpHandlers
         {
             _username = username;
             _password = password;
-            _baseUrl = baseUrl.TrimEnd('/');
+            _baseUrl = baseUrl.TrimEnd('/') + "/";
             _repoID = repoID;
             _organization = organization;
 
