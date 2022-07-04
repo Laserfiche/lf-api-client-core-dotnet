@@ -16,7 +16,7 @@ namespace Laserfiche.Api.Client.IntegrationTest
         public string Organization { get; set; }
         public string BaseUrl { get; set; }
 
-        private const string TestConfigFile = "TestConfig.env";
+        private const string TestConfigFile = ".env";
         private const string AccessKeyVar = "ACCESS_KEY";
         private const string SpKeyVar = "SERVICE_PRINCIPAL_KEY";
         private const string usernameVar = "LFDS_USERNAME";
