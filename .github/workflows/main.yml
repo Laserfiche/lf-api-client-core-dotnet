@@ -9,11 +9,12 @@ on:
   workflow_dispatch:
 
 env:
-  VERSION_PREFIX: "1.1.0"
+  VERSION_PREFIX: "1.2.0"
 
 jobs:
   build-n-test:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
     - uses: actions/checkout@v3
 
@@ -41,6 +42,7 @@ jobs:
 
   build-documentation:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     needs: [ build-n-test ] # wait for build to finish
     steps:
     - uses: actions/checkout@v3
