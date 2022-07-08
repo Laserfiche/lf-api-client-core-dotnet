@@ -9,11 +9,12 @@ on:
   workflow_dispatch:
 
 env:
-  VERSION_PREFIX: "1.1.0"
+  VERSION_PREFIX: "1.2.0"
 
 jobs:
   build-n-test:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
     - uses: actions/checkout@v3
 
@@ -41,6 +42,7 @@ jobs:
 
   build-documentation:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     needs: [ build-n-test ] # wait for build to finish
     steps:
     - uses: actions/checkout@v3
@@ -88,6 +90,7 @@ jobs:
 
   publish-documentation:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     environment: documentation
     if: ${{ github.run_attempt != 1 }}
     needs: [ build-n-test, build-documentation ] # wait for build to finish
@@ -117,6 +120,7 @@ jobs:
 
   publish-preview-package:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     environment: preview
     if: ${{ github.run_attempt != 1 }}
     needs: [ build-n-test, build-documentation ] # wait for build to finish
@@ -153,6 +157,7 @@ jobs:
 
   publish-production-package:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     environment: production
     if: ${{ github.run_attempt != 1 }}
     needs: [ build-n-test, build-documentation ] # wait for build to finish
