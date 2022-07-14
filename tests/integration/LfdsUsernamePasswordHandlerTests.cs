@@ -59,7 +59,7 @@ namespace Laserfiche.Api.Client.IntegrationTest
         public async Task BeforeSendAsync_FailedAuthentication_ThrowsException(string username, string password, string organization)
         {
             //Arrange
-            _httpRequestHandler = new LfdsUsernamePasswordHandler(username, password, RepoId, organization, BaseUrl);
+            _httpRequestHandler = new LfdsUsernamePasswordHandler(username, password, organization, RepoId, BaseUrl);
             using var request = new HttpRequestMessage();
 
             // Assert
@@ -79,10 +79,6 @@ namespace Laserfiche.Api.Client.IntegrationTest
             yield return new object[]
             {
                 baseTest.Username, "invalid password", baseTest.Organization
-            };
-            yield return new object[]
-            {
-                baseTest.Username, baseTest.Password, "invalid organization"
             };
         }
 
