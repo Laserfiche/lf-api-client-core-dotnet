@@ -13,11 +13,11 @@ using System.Net;
 namespace Laserfiche.Api.Client.IntegrationTest
 {
     [TestClass]
-    [TestCategory("LFDS")]
     public class LfdsUsernamePasswordHandlerTest : BaseTest
     {
         private IHttpRequestHandler _httpRequestHandler;
 
+        [TestCategory("LFDS")]
         [TestMethod]
         public async Task BeforeSendAsync_NewToken_Success()
         {
