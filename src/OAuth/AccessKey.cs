@@ -23,12 +23,10 @@ namespace Laserfiche.Api.Client.OAuth
         [JsonProperty("jwk")]
         public JsonWebKey Jwk { set; get; }
 
-        private static AccessKey accessKey;
-
         public static AccessKey CreateFromBase64EncodedAccessKey(string encoded)
         {
             var accessKeyStr = Encoding.UTF8.GetString(Convert.FromBase64String(encoded));
-            accessKey = JsonConvert.DeserializeObject<AccessKey>(accessKeyStr);
+            AccessKey accessKey = JsonConvert.DeserializeObject<AccessKey>(accessKeyStr);
             return accessKey;
         }
     }
