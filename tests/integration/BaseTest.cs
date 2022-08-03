@@ -19,11 +19,11 @@ namespace Laserfiche.Api.Client.IntegrationTest
         private const string TestConfigFile = ".env";
         private const string AccessKeyVar = "ACCESS_KEY";
         private const string SpKeyVar = "SERVICE_PRINCIPAL_KEY";
-        private const string usernameVar = "LFDS_USERNAME";
-        private const string passwordVar = "LFDS_PASSWORD";
-        private const string repoIdVar = "REPOSITORY_ID";
-        private const string organizationVar = "LFDS_ORGANIZATION";
-        private const string baseUrlVar = "SELFHOSTED_REPOSITORY_API_BASE_URI";
+        private const string UsernameVar = "LFDS_USERNAME";
+        private const string PasswordVar = "LFDS_PASSWORD";
+        private const string RepoIdVar = "REPOSITORY_ID";
+        private const string OrganizationVar = "LFDS_ORGANIZATION";
+        private const string BaseUrlVar = "SELFHOSTED_REPOSITORY_API_BASE_URI";
 
         public BaseTest()
         {
@@ -48,22 +48,15 @@ namespace Laserfiche.Api.Client.IntegrationTest
                 System.Diagnostics.Trace.WriteLine($"{fileName} not found.");
         }
 
-        private static string DecodeBase64(string encoded)
-        {
-            return Encoding.UTF8.GetString(Convert.FromBase64String(encoded));
-        }
-
         private void PopulateFromEnv()
         {
             ServicePrincipalKey = Environment.GetEnvironmentVariable(SpKeyVar);
-
-            var accessKeyStr = DecodeBase64(Environment.GetEnvironmentVariable(AccessKeyVar));
-            AccessKey = JsonConvert.DeserializeObject<AccessKey>(accessKeyStr);
-            Username = Environment.GetEnvironmentVariable(usernameVar);
-            Password = Environment.GetEnvironmentVariable(passwordVar);
-            RepoId = Environment.GetEnvironmentVariable(repoIdVar);
-            Organization = Environment.GetEnvironmentVariable(organizationVar);
-            BaseUrl = Environment.GetEnvironmentVariable(baseUrlVar);
+            AccessKey = AccessKey.DecodeBase64(Environment.GetEnvironmentVariable(AccessKeyVar));
+            Username = Environment.GetEnvironmentVariable(UsernameVar);
+            Password = Environment.GetEnvironmentVariable(PasswordVar);
+            RepoId = Environment.GetEnvironmentVariable(RepoIdVar);
+            Organization = Environment.GetEnvironmentVariable(OrganizationVar);
+            BaseUrl = Environment.GetEnvironmentVariable(BaseUrlVar);
         }
     }
 }
