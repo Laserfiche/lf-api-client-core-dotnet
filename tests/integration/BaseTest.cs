@@ -48,17 +48,10 @@ namespace Laserfiche.Api.Client.IntegrationTest
                 System.Diagnostics.Trace.WriteLine($"{fileName} not found.");
         }
 
-        private static string DecodeBase64(string encoded)
-        {
-            return Encoding.UTF8.GetString(Convert.FromBase64String(encoded));
-        }
-
         private void PopulateFromEnv()
         {
             ServicePrincipalKey = Environment.GetEnvironmentVariable(SpKeyVar);
-
-            var accessKeyStr = DecodeBase64(Environment.GetEnvironmentVariable(AccessKeyVar));
-            AccessKey = JsonConvert.DeserializeObject<AccessKey>(accessKeyStr);
+            AccessKey = AccessKey.DecodeBase64(Environment.GetEnvironmentVariable(AccessKeyVar));
             Username = Environment.GetEnvironmentVariable(usernameVar);
             Password = Environment.GetEnvironmentVariable(passwordVar);
             RepoId = Environment.GetEnvironmentVariable(repoIdVar);

@@ -1,5 +1,7 @@
 ﻿using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
+using System;
+using System.Text;
 
 namespace Laserfiche.Api.Client.OAuth
 {
@@ -20,5 +22,14 @@ namespace Laserfiche.Api.Client.OAuth
 
         [JsonProperty("jwk")]
         public JsonWebKey Jwk { set; get; }
+
+        private static AccessKey accessKey;
+
+        public static AccessKey DecodeBase64(string encoded)
+        {
+            var accessKeyStr = Encoding.UTF8.GetString(Convert.FromBase64String(encoded));
+            AccessKey accessKey = JsonConvert.DeserializeObject<AccessKey>(accessKeyStr);
+            return accessKey;
+        }
     }
 }
