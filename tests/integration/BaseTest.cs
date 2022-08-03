@@ -51,7 +51,7 @@ namespace Laserfiche.Api.Client.IntegrationTest
         private void PopulateFromEnv()
         {
             ServicePrincipalKey = Environment.GetEnvironmentVariable(SpKeyVar);
-            AccessKey = AccessKey.DecodeBase64(Environment.GetEnvironmentVariable(AccessKeyVar));
+            AccessKey = AccessKey.CreateFromBase64EncodedAccessKey(Environment.GetEnvironmentVariable(AccessKeyVar));
             Username = Environment.GetEnvironmentVariable(UsernameVar);
             Password = Environment.GetEnvironmentVariable(PasswordVar);
             RepoId = Environment.GetEnvironmentVariable(RepoIdVar);

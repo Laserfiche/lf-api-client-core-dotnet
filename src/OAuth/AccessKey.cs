@@ -25,7 +25,7 @@ namespace Laserfiche.Api.Client.OAuth
 
         private static AccessKey accessKey;
 
-        public static AccessKey DecodeBase64(string encoded)
+        public static AccessKey CreateFromBase64EncodedAccessKey(string encoded)
         {
             var accessKeyStr = Encoding.UTF8.GetString(Convert.FromBase64String(encoded));
             accessKey = JsonConvert.DeserializeObject<AccessKey>(accessKeyStr);
