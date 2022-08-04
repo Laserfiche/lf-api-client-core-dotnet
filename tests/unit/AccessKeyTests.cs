@@ -18,8 +18,8 @@ namespace Laserfiche.Api.Client.UnitTest
             string jwkJson = "{\"kty\": \"EC\",\"crv\": \"P-256\", \"use\": \"sig\", \"kid\": \"_pk_xM5VCqEND6OULr_DNYs-GegAUJwLBP9lyFenAMh\",\"x\": \"0CfMWX6yOmNo7F_km8nv8SAkQPUzDw06LknNzXadwTS\", \"y\": \"gfNs-JA9v0iW9sqUAdHfXq8ZSAsYxIkYRxOH94cHlal\", \"d\": \"B1oAZHCPP2Ic03fhRuXVKQpEpQdM5bqqbK7iKQU-4Uh\",\"iat\": 1659632705}";
             JsonWebKey jwk = JsonWebKey.Create(jwkJson);
             expectedDecodedAccessKey.Jwk = jwk;
-            string accountId = "ewoJImN1c3RvbWVySWQiOiAiNzIxNTE4OTYzNCIsCgkiY2xpZW50SWQiOiAiVjVncUh4a3ppaFpLZFFUU2M2REZZbmtkIiwKCSJkb21haW4iOiAiYS5jbG91ZGRldi5sYXNlcmZpY2hlLmNhIiwKCSJqd2siOiB7CgkJImt0eSI6ICJFQyIsCgkJImNydiI6ICJQLTI1NiIsCgkJInVzZSI6ICJzaWciLAoJCSJraWQiOiAiX3BrX3hNNVZDcUVORDZPVUxyX0ROWXMtR2VnQVVKd0xCUDlseUZlbkFNaCIsCgkJIngiOiAiMENmTVdYNnlPbU5vN0Zfa204bnY4U0FrUVBVekR3MDZMa25OelhhZHdUUyIsCgkJInkiOiAiZ2ZOcy1KQTl2MGlXOXNxVUFkSGZYcThaU0FzWXhJa1lSeE9IOTRjSGxhbCIsCgkJImQiOiAiQjFvQVpIQ1BQMkljMDNmaFJ1WFZLUXBFcFFkTTVicXFiSzdpS1FVLTRVaCIsCgkJImlhdCI6IDE2NTk2MzI3MDUKCX0KfQ==";
-            AccessKey decodedAccessKey = AccessKey.CreateFromBase64EncodedAccessKey(accountId);
+            string base64EncodedAccessKey = "ewoJImN1c3RvbWVySWQiOiAiNzIxNTE4OTYzNCIsCgkiY2xpZW50SWQiOiAiVjVncUh4a3ppaFpLZFFUU2M2REZZbmtkIiwKCSJkb21haW4iOiAiYS5jbG91ZGRldi5sYXNlcmZpY2hlLmNhIiwKCSJqd2siOiB7CgkJImt0eSI6ICJFQyIsCgkJImNydiI6ICJQLTI1NiIsCgkJInVzZSI6ICJzaWciLAoJCSJraWQiOiAiX3BrX3hNNVZDcUVORDZPVUxyX0ROWXMtR2VnQVVKd0xCUDlseUZlbkFNaCIsCgkJIngiOiAiMENmTVdYNnlPbU5vN0Zfa204bnY4U0FrUVBVekR3MDZMa25OelhhZHdUUyIsCgkJInkiOiAiZ2ZOcy1KQTl2MGlXOXNxVUFkSGZYcThaU0FzWXhJa1lSeE9IOTRjSGxhbCIsCgkJImQiOiAiQjFvQVpIQ1BQMkljMDNmaFJ1WFZLUXBFcFFkTTVicXFiSzdpS1FVLTRVaCIsCgkJImlhdCI6IDE2NTk2MzI3MDUKCX0KfQ==";
+            AccessKey decodedAccessKey = AccessKey.CreateFromBase64EncodedAccessKey(base64EncodedAccessKey);
             Assert.AreEqual(expectedDecodedAccessKey.ClientId, decodedAccessKey.ClientId);
             Assert.AreEqual(expectedDecodedAccessKey.CustomerId, decodedAccessKey.CustomerId);
             Assert.AreEqual(expectedDecodedAccessKey.Domain, decodedAccessKey.Domain);
