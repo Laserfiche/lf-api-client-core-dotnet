@@ -14,7 +14,7 @@ namespace Laserfiche.Api.Client.UnitTest
             AccessKey expectedDecodedAccessKey = new AccessKey();
             expectedDecodedAccessKey.CustomerId = "7215189634";
             expectedDecodedAccessKey.ClientId = "V5gqHxkzihZKdQTSc6DFYnkd";
-            expectedDecodedAccessKey.Domain = "a.clouddev.laserfiche.ca";
+            expectedDecodedAccessKey.Domain = "laserfiche.ca";
             string jwkJson = "{\"kty\": \"EC\",\"crv\": \"P-256\", \"use\": \"sig\", \"kid\": \"_pk_xM5VCqEND6OULr_DNYs-GegAUJwLBP9lyFenAMh\",\"x\": \"0CfMWX6yOmNo7F_km8nv8SAkQPUzDw06LknNzXadwTS\", \"y\": \"gfNs-JA9v0iW9sqUAdHfXq8ZSAsYxIkYRxOH94cHlal\", \"d\": \"B1oAZHCPP2Ic03fhRuXVKQpEpQdM5bqqbK7iKQU-4Uh\",\"iat\": 1659632705}";
             JsonWebKey jwk = JsonWebKey.Create(jwkJson);
             expectedDecodedAccessKey.Jwk = jwk;

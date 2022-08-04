@@ -29,13 +29,16 @@ namespace Laserfiche.Api.Client.OAuth
             {
                 throw new ArgumentNullException(nameof(base64EncodedAccessKey));
             }
-            else if (base64EncodedAccessKey.Length != 552)
-            {
-                throw new FormatException("Base 64 encoded access key is not valid");
-            }
             var accessKeyStr = Encoding.UTF8.GetString(Convert.FromBase64String(base64EncodedAccessKey));
-            AccessKey accessKey = JsonConvert.DeserializeObject<AccessKey>(accessKeyStr);
-            return accessKey;
+            try
+            {
+                AccessKey accessKey = JsonConvert.DeserializeObject<AccessKey>(accessKeyStr);
+                return accessKey;
+            }
+            catch(JsonReaderException e)
+            {
+                throw new FormatException($"{nameof(base64EncodedAccessKey)} is not valid", e);
+            }
         }
     }
 }
