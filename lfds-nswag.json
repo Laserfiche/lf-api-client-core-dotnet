@@ -3,7 +3,7 @@
   "defaultVariables": null,
   "documentGenerator": {
     "fromDocument": {
-      "url": "lfds-swagger.json",
+      "url": "selfhosted-swagger.json",
       "output": null,
       "newLineBehavior": "Auto"
     }
@@ -11,8 +11,8 @@
   "codeGenerators": {
     "openApiToCSharpClient": {
       "classname": "{controller}Client",
-      "namespace": "Laserfiche.Api.Client.Lfds",
-      "output": "src/Lfds/AccessTokensClient.cs",
+      "namespace": "Laserfiche.Api.Client.SelfHosted",
+      "output": "src/SelfHosted/TokenClient.cs",
       "operationGenerationMode": "MultipleClientsFromFirstTagAndPathSegments",
       "generateClientInterfaces": true,
       "generateOptionalParameters": true,
