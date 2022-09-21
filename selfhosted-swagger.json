@@ -6,21 +6,13 @@
     "description": "Welcome to the Laserfiche API Swagger Playground. You can try out any of our API calls against your live Laserfiche Cloud account. Visit the developer center for more details: <a href=\"https://developer.laserfiche.com\">https://developer.laserfiche.com</a><p>Visit the changelog for the list of changes: <a href=\"/LFRepositoryAPI/v1/changelog\">/LFRepositoryAPI/v1/changelog</a></p><p><strong>Build# : </strong>1.0.0.21</p>",
     "version": "1"
   },
-  "servers": [
-    {
-      "url": "https://v-dev-w10x64-73.laserfiche.com/LFRepositoryAPI"
-    },
-    {
-      "url": "https://v-dev-w10x64-73.laserfiche.com/LFRepositoryAPI"
-    }
-  ],
   "paths": {
     "/v1/Repositories/{repoId}/Token": {
       "post": {
         "tags": [
           "Token"
         ],
-        "summary": "Request for an access token.",
+        "summary": "Request for an access token.\n- Creates an access token for use with the Laserfiche API.\n- Provides credentials and uses the access token returned with subsequent API calls as a means of authorization.\n- For authentication with password, username and password are required and grant_type must be 'password'.\n- Only available in Laserfiche Self-hosted.",
         "description": "- Creates an access token for use with the Laserfiche API.\n- Provides credentials and uses the access token returned with subsequent API calls as a means of authorization.\n- For authentication with password, username and password are required and grant_type must be 'password'.\n- Only available in Laserfiche Self-hosted.",
         "operationId": "CreateAccessToken",
         "parameters": [
