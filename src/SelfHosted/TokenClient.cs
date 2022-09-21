@@ -24,6 +24,10 @@ namespace Laserfiche.Api.Client.SelfHosted
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
         /// Request for an access token.
+        /// <br/>- Creates an access token for use with the Laserfiche API.
+        /// <br/>- Provides credentials and uses the access token returned with subsequent API calls as a means of authorization.
+        /// <br/>- For authentication with password, username and password are required and grant_type must be 'password'.
+        /// <br/>- Only available in Laserfiche Self-hosted.
         /// </summary>
         /// <param name="repoId">The requested repository ID.</param>
         /// <returns>Create an access token successfuly.</returns>
@@ -62,6 +66,10 @@ namespace Laserfiche.Api.Client.SelfHosted
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
         /// Request for an access token.
+        /// <br/>- Creates an access token for use with the Laserfiche API.
+        /// <br/>- Provides credentials and uses the access token returned with subsequent API calls as a means of authorization.
+        /// <br/>- For authentication with password, username and password are required and grant_type must be 'password'.
+        /// <br/>- Only available in Laserfiche Self-hosted.
         /// </summary>
         /// <param name="repoId">The requested repository ID.</param>
         /// <returns>Create an access token successfuly.</returns>
@@ -261,7 +269,7 @@ namespace Laserfiche.Api.Client.SelfHosted
                     var field = System.Reflection.IntrospectionExtensions.GetTypeInfo(value.GetType()).GetDeclaredField(name);
                     if (field != null)
                     {
-                        var attribute = System.Reflection.CustomAttributeExtensions.GetCustomAttribute(field, typeof(System.Runtime.Serialization.EnumMemberAttribute))
+                        var attribute = System.Reflection.CustomAttributeExtensions.GetCustomAttribute(field, typeof(System.Runtime.Serialization.EnumMemberAttribute)) 
                             as System.Runtime.Serialization.EnumMemberAttribute;
                         if (attribute != null)
                         {
@@ -273,17 +281,17 @@ namespace Laserfiche.Api.Client.SelfHosted
                     return converted == null ? string.Empty : converted;
                 }
             }
-            else if (value is bool)
+            else if (value is bool) 
             {
                 return System.Convert.ToString((bool)value, cultureInfo).ToLowerInvariant();
             }
             else if (value is byte[])
             {
-                return System.Convert.ToBase64String((byte[])value);
+                return System.Convert.ToBase64String((byte[]) value);
             }
             else if (value.GetType().IsArray)
             {
-                var array = System.Linq.Enumerable.OfType<object>((System.Array)value);
+                var array = System.Linq.Enumerable.OfType<object>((System.Array) value);
                 return string.Join(",", System.Linq.Enumerable.Select(array, o => ConvertToString(o, cultureInfo)));
             }
 
@@ -412,8 +420,8 @@ namespace Laserfiche.Api.Client.SelfHosted
 
 #pragma warning restore 1591
 #pragma warning restore 1573
-#pragma warning restore 472
-#pragma warning restore 114
-#pragma warning restore 108
+#pragma warning restore  472
+#pragma warning restore  114
+#pragma warning restore  108
 #pragma warning restore 3016
 #pragma warning restore 8603
