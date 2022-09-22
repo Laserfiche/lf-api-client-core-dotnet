@@ -5,9 +5,9 @@
     <PackageId>Laserfiche.Api.Client.Core</PackageId>
     <Authors>Laserfiche</Authors>
     <Company>Laserfiche</Company>
-    <Version>1.2.1</Version>
-    <AssemblyVersion>1.2.1.0</AssemblyVersion>
-    <FileVersion>1.2.1.0</FileVersion>
+    <Version>1.2.2</Version>
+    <AssemblyVersion>1.2.2.0</AssemblyVersion>
+    <FileVersion>1.2.2.0</FileVersion>
     <PackageProjectUrl>https://github.com/Laserfiche/lf-api-client-core-dotnet</PackageProjectUrl>
     <TargetFrameworks>netstandard2.0;netstandard2.1;net6.0</TargetFrameworks>
     <PackageTags>Laserfiche OAuth OAuth2 Authentication Authorization</PackageTags>
