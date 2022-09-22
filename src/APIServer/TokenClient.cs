@@ -13,35 +13,35 @@
 #pragma warning disable 3016 // Disable "CS3016 Arrays as attribute arguments is not CLS-compliant"
 #pragma warning disable 8603 // Disable "CS8603 Possible null reference return"
 
-namespace Laserfiche.Api.Client.Lfds
+namespace Laserfiche.Api.Client.APIServer
 {
     using System = global::System;
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial interface IAccessTokensClient
+    public partial interface ITokenClient
     {
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
-        /// - Creates an access token for use with the Laserfiche API.
+        /// Request for an access token.
+        /// <br/>- Creates an access token for use with the Laserfiche API.
         /// <br/>- Provides credentials and uses the access token returned with subsequent API calls as a means of authorization.
-        /// <br/>- Adding createCookie=true as a query parameter results a response that includes a Set-Cookie header containing an authToken value. The default value for createCookie is false.
+        /// <br/>- For authentication with password, username and password are required and grant_type must be 'password'.
+        /// <br/>- Only available in Laserfiche Self-hosted.
         /// </summary>
         /// <param name="repoId">The requested repository ID.</param>
-        /// <param name="request">The username and password used to create the session connection.</param>
-        /// <returns>Create an authorizationToken successfuly.</returns>
+        /// <returns>Create an access token successfuly.</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<SessionKeyInfo> CreateAsync(string repoId, CreateConnectionRequest request = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-
+        System.Threading.Tasks.Task<SessionKeyInfo> TokenAsync(string repoId, CreateConnectionRequest body = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class AccessTokensClient : IAccessTokensClient
+    public partial class TokenClient : ITokenClient
     {
         private System.Net.Http.HttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
 
-        public AccessTokensClient(System.Net.Http.HttpClient httpClient)
+        public TokenClient(System.Net.Http.HttpClient httpClient)
         {
             _httpClient = httpClient;
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(CreateSerializerSettings);
@@ -64,21 +64,22 @@ namespace Laserfiche.Api.Client.Lfds
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
-        /// - Creates an access token for use with the Laserfiche API.
+        /// Request for an access token.
+        /// <br/>- Creates an access token for use with the Laserfiche API.
         /// <br/>- Provides credentials and uses the access token returned with subsequent API calls as a means of authorization.
-        /// <br/>- Adding createCookie=true as a query parameter results a response that includes a Set-Cookie header containing an authToken value. The default value for createCookie is false.
+        /// <br/>- For authentication with password, username and password are required and grant_type must be 'password'.
+        /// <br/>- Only available in Laserfiche Self-hosted.
         /// </summary>
         /// <param name="repoId">The requested repository ID.</param>
-        /// <param name="request">The username and password used to create the session connection.</param>
-        /// <returns>Create an authorizationToken successfuly.</returns>
+        /// <returns>Create an access token successfuly.</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<SessionKeyInfo> CreateAsync(string repoId, CreateConnectionRequest request = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public virtual async System.Threading.Tasks.Task<SessionKeyInfo> TokenAsync(string repoId, CreateConnectionRequest body = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (repoId == null)
                 throw new System.ArgumentNullException("repoId");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("v1-alpha/Repositories/{repoId}/AccessTokens/Create");
+            urlBuilder_.Append("v1/Repositories/{repoId}/Token");
             urlBuilder_.Replace("{repoId}", System.Uri.EscapeDataString(ConvertToString(repoId, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
@@ -87,8 +88,10 @@ namespace Laserfiche.Api.Client.Lfds
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
-                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value));
-                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(body, _settings.Value);
+                    var dictionary_ = Newtonsoft.Json.JsonConvert.DeserializeObject<System.Collections.Generic.Dictionary<string, string>>(json_, _settings.Value);
+                    var content_ = new System.Net.Http.FormUrlEncodedContent(dictionary_);
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/x-www-form-urlencoded");
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("POST");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
@@ -126,42 +129,52 @@ namespace Laserfiche.Api.Client.Lfds
                         else
                         if (status_ == 400)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<APIServerException>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new ApiException<APIServerException>("Invalid or bad request.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new ApiException<ProblemDetails>("Invalid or bad request.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 401)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<APIServerException>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new ApiException<APIServerException>("Access token is invalid or expired.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new ApiException<ProblemDetails>("Access token is invalid or expired.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 403)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<APIServerException>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new ApiException<APIServerException>("Access denied for the operation.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new ApiException<ProblemDetails>("Access denied for the operation.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        if (status_ == 404)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new ApiException<ProblemDetails>("Not found.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 429)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<APIServerException>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new ApiException<APIServerException>("Rate limit is reached.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new ApiException<ProblemDetails>("Rate limit is reached.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -287,43 +300,25 @@ namespace Laserfiche.Api.Client.Lfds
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class APIServerException
+    public partial class ProblemDetails
     {
-        /// <summary>
-        /// The id of the operation that threw the exception.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("operationId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string OperationId { get; set; }
+        [Newtonsoft.Json.JsonProperty("type", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Type { get; set; }
 
-        /// <summary>
-        /// The explaination of the exception that occurred.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("message", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Message { get; set; }
+        [Newtonsoft.Json.JsonProperty("title", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Title { get; set; }
 
-        /// <summary>
-        /// The code associated with the exception.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("errorCode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? ErrorCode { get; set; }
+        [Newtonsoft.Json.JsonProperty("status", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? Status { get; set; }
 
-        /// <summary>
-        /// The class of exceptions this belongs to.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("errorClass", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string ErrorClass { get; set; }
+        [Newtonsoft.Json.JsonProperty("detail", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Detail { get; set; }
 
-        /// <summary>
-        /// The HTTP status code returned.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("statusCode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? StatusCode { get; set; }
+        [Newtonsoft.Json.JsonProperty("instance", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Instance { get; set; }
 
-        /// <summary>
-        /// The source of where the exception occurred.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("errorSource", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string ErrorSource { get; set; }
+        [Newtonsoft.Json.JsonProperty("extensions", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IDictionary<string, object> Extensions { get; set; }
 
         private System.Collections.Generic.IDictionary<string, object> _additionalProperties = new System.Collections.Generic.Dictionary<string, object>();
 
@@ -340,16 +335,22 @@ namespace Laserfiche.Api.Client.Lfds
     public partial class SessionKeyInfo
     {
         /// <summary>
-        /// The auth token that can be used to authenticate with the repository apis.
+        /// The access token that can be used to authenticate with the repository apis.
         /// </summary>
-        [Newtonsoft.Json.JsonProperty("authToken", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string AuthToken { get; set; }
+        [Newtonsoft.Json.JsonProperty("access_token", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Access_token { get; set; }
 
         /// <summary>
-        /// The auth token expire time.
+        /// The token type that provides how to utilize the access token.
         /// </summary>
-        [Newtonsoft.Json.JsonProperty("expireTime", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.DateTimeOffset ExpireTime { get; set; }
+        [Newtonsoft.Json.JsonProperty("token_type", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Token_type { get; set; }
+
+        /// <summary>
+        /// The lifetime in seconds of the access token.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("expire_in", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int Expire_in { get; set; }
 
     }
 
@@ -357,40 +358,23 @@ namespace Laserfiche.Api.Client.Lfds
     public partial class CreateConnectionRequest
     {
         /// <summary>
-        /// Authenticate using a session key.
+        /// The value MUST be "password".
         /// </summary>
-        [Newtonsoft.Json.JsonProperty("sessionKey", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string SessionKey { get; set; }
+        [Newtonsoft.Json.JsonProperty("grant_type", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public string Grant_type { get; set; }
 
         /// <summary>
-        /// Authenticate using a saml token.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("samlToken", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string SamlToken { get; set; }
-
-        /// <summary>
-        /// Authenticate username.
+        /// The username used with "password" grant type.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("username", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Username { get; set; }
 
         /// <summary>
-        /// Authenticate password.
+        /// The password used with "password" grant type.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("password", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Password { get; set; }
-
-        /// <summary>
-        /// An optional application name that will be used for audit trail.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("applicationName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string ApplicationName { get; set; }
-
-        /// <summary>
-        /// Authenticate organization.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("organization", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Organization { get; set; }
 
     }
 

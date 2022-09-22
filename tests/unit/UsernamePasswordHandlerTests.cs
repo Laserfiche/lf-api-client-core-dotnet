@@ -4,20 +4,19 @@ using Moq;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using Laserfiche.Api.Client.Lfds;
+using Laserfiche.Api.Client.APIServer;
 using System.Net;
 
 namespace Laserfiche.Api.Client.UnitTest
 {
     [TestClass]
-    public class LfdsUsernamePasswordHandlerTests
+    public class UsernamePasswordHandlerTests
     {
-        private LfdsUsernamePasswordHandler _handler;
+        private UsernamePasswordHandler _handler;
+        private readonly string _repoId = "repoId";
         private readonly string _username = "username";
         private readonly string _password = "password";
-        private readonly string _baseUri = "http://localhost:11211";
-        private readonly string _repoId = "repoId";
-        private readonly string _organization = "organization";
+        private readonly string _baseUrl = "http://localhost:11211";
         private readonly HttpRequestMessage _request = new();
 
         [TestMethod]
@@ -25,18 +24,18 @@ namespace Laserfiche.Api.Client.UnitTest
         {
             // Arrange
             string accessToken = "access_token";
-            Mock<IAccessTokensClient> tokenClientMock = new();
-            tokenClientMock.Setup(mock => mock.CreateAsync(It.IsAny<string>(), It.IsAny<CreateConnectionRequest>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(new SessionKeyInfo
+            Mock<ITokenClient> tokenClientMock = new();
+            tokenClientMock.Setup(mock => mock.TokenAsync(It.IsAny<string>(), It.IsAny<CreateConnectionRequest>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(new SessionKeyInfo
             {
-                AuthToken = accessToken
+                Access_token = accessToken
             }));
-            _handler = new LfdsUsernamePasswordHandler(_username, _password, _organization, _repoId, _baseUri, tokenClientMock.Object);
+            _handler = new UsernamePasswordHandler(_repoId, _username, _password, _baseUrl, tokenClientMock.Object);
             
             // Act
             var result = await _handler.BeforeSendAsync(_request, new CancellationToken());
 
             // Assert
-            tokenClientMock.Verify(mock => mock.CreateAsync(It.IsAny<string>(), It.IsAny<CreateConnectionRequest>(), It.IsAny<CancellationToken>()), Times.Once());
+            tokenClientMock.Verify(mock => mock.TokenAsync(It.IsAny<string>(), It.IsAny<CreateConnectionRequest>(), It.IsAny<CancellationToken>()), Times.Once());
             Assert.AreEqual("Bearer", _request.Headers.Authorization.Scheme);
             Assert.IsFalse(string.IsNullOrEmpty(_request.Headers.Authorization.Parameter));
             Assert.IsNotNull(result);
@@ -48,19 +47,19 @@ namespace Laserfiche.Api.Client.UnitTest
         {
             //Arrange
             string accessToken = "access_token";
-            Mock<IAccessTokensClient> tokenClientMock = new();
-            tokenClientMock.Setup(mock => mock.CreateAsync(It.IsAny<string>(), It.IsAny<CreateConnectionRequest>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(new SessionKeyInfo
+            Mock<ITokenClient> tokenClientMock = new();
+            tokenClientMock.Setup(mock => mock.TokenAsync(It.IsAny<string>(), It.IsAny<CreateConnectionRequest>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(new SessionKeyInfo
             {
-                AuthToken = accessToken
+                Access_token = accessToken
             }));
-            _handler = new LfdsUsernamePasswordHandler(_username, _password, _organization, _repoId, _baseUri, tokenClientMock.Object);
+            _handler = new UsernamePasswordHandler(_repoId, _username, _password, _baseUrl, tokenClientMock.Object);
 
             // Act
             var result = await _handler.BeforeSendAsync(_request, new CancellationToken());
             result = await _handler.BeforeSendAsync(_request, new CancellationToken());
 
             // Assert
-            tokenClientMock.Verify(mock => mock.CreateAsync(It.IsAny<string>(), It.IsAny<CreateConnectionRequest>(), It.IsAny<CancellationToken>()), Times.Once());
+            tokenClientMock.Verify(mock => mock.TokenAsync(It.IsAny<string>(), It.IsAny<CreateConnectionRequest>(), It.IsAny<CancellationToken>()), Times.Once());
             Assert.AreEqual("Bearer", _request.Headers.Authorization.Scheme);
             Assert.IsFalse(string.IsNullOrEmpty(_request.Headers.Authorization.Parameter));
             Assert.IsNotNull(result);
@@ -71,15 +70,24 @@ namespace Laserfiche.Api.Client.UnitTest
         public async Task BeforeSendAsync_FailedAuthentication_ThrowsException()
         {
             //Arrange
-            string message = "Access token is invalid or expired.";
-            Mock<IAccessTokensClient> tokenClientMock = new();
-            tokenClientMock.Setup(mock => mock.CreateAsync(It.IsAny<string>(), It.IsAny<CreateConnectionRequest>(), It.IsAny<CancellationToken>())).Throws(new ApiException(message, 401, null, null, null));
-            _handler = new LfdsUsernamePasswordHandler(_username, _password, _organization, _repoId, _baseUri, tokenClientMock.Object);
+            string type = "accessDenied";
+            string title = "Access token is invalid or expired.";
+            int status = 401;
+
+            Mock<ITokenClient> tokenClientMock = new();
+            tokenClientMock.Setup(mock => mock.TokenAsync(It.IsAny<string>(), It.IsAny<CreateConnectionRequest>(), It.IsAny<CancellationToken>())).Throws(new ApiException<ProblemDetails>(title, status, null, null, new ProblemDetails
+            {
+                Type = type,
+                Title = title,
+                Status = status
+            }, null));
+            _handler = new UsernamePasswordHandler(_repoId, _username, _password, _baseUrl, tokenClientMock.Object);
 
             // Assert
-            var ex = await Assert.ThrowsExceptionAsync<ApiException>(()=>_handler.BeforeSendAsync(_request, new CancellationToken()));
-            Assert.AreEqual((int)HttpStatusCode.Unauthorized, ex.StatusCode);
-            Assert.IsNotNull(ex.Message);
+            var ex = await Assert.ThrowsExceptionAsync<ApiException<ProblemDetails>>(()=>_handler.BeforeSendAsync(_request, new CancellationToken()));
+            Assert.AreEqual(type, ex.Result.Type);
+            Assert.AreEqual(title, ex.Result.Title);
+            Assert.AreEqual(status, ex.Result.Status);
         }
 
         [DataTestMethod]
@@ -94,7 +102,7 @@ namespace Laserfiche.Api.Client.UnitTest
             {
                 StatusCode = statusCode,
             };
-            _handler = new LfdsUsernamePasswordHandler(_username, _password, _organization, _repoId, _baseUri);
+            _handler = new UsernamePasswordHandler(_repoId, _username, _password, _baseUrl);
 
             // Act
             var result = await _handler.AfterSendAsync(response, new CancellationToken());
@@ -111,7 +119,7 @@ namespace Laserfiche.Api.Client.UnitTest
             {
                 StatusCode = System.Net.HttpStatusCode.Unauthorized,
             };
-            _handler = new LfdsUsernamePasswordHandler(_username, _password, _organization, _repoId, _baseUri);
+            _handler = new UsernamePasswordHandler(_repoId, _username, _password, _baseUrl);
 
             // Act
             var result = await _handler.AfterSendAsync(response, new CancellationToken());

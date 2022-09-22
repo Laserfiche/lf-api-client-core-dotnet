@@ -2,33 +2,31 @@
 using Laserfiche.Api.Client.HttpHandlers;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Net.Http;
 using System.Threading;
-using Laserfiche.Api.Client.Lfds;
+using Laserfiche.Api.Client.APIServer;
 using System.Net;
 
 namespace Laserfiche.Api.Client.IntegrationTest
 {
     [TestClass]
-    [TestCategory("LFDS")]
-    public class LfdsUsernamePasswordHandlerTest : BaseTest
+    [TestCategory("APIServer")]
+    public class UsernamePasswordHandlerTest : BaseTest
     {
         private IHttpRequestHandler _httpRequestHandler;
-        private List<string> accessTokensToCleanUp;
+        private List<string> _accessTokensToCleanUp;
 
         [TestInitialize]
         public void Initalize()
         {
-            accessTokensToCleanUp = new();
+            _accessTokensToCleanUp = new();
         }
 
         [TestCleanup]
         public async Task SessionCleanUp()
         {
-            foreach (var accessToken in accessTokensToCleanUp)
+            foreach (var accessToken in _accessTokensToCleanUp)
             {
                 await LogOut(accessToken);
             }
@@ -38,8 +36,8 @@ namespace Laserfiche.Api.Client.IntegrationTest
         {
             using HttpClient client = new();
             client.BaseAddress = new Uri(BaseUrl);
-            string uri = $"v1-alpha/Repositories/{RepoId}/AccessTokens/Invalidate";
-            HttpRequestMessage request = new(HttpMethod.Post, uri);
+            string invalidateUrl = $"v1/Repositories/{RepoId}/AccessTokens/Invalidate";
+            HttpRequestMessage request = new(HttpMethod.Post, invalidateUrl);
             request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", accessToken);
             await client.SendAsync(request);
         }
@@ -48,12 +46,12 @@ namespace Laserfiche.Api.Client.IntegrationTest
         public async Task BeforeSendAsync_NewToken_Success()
         {
             // Arrange
-            _httpRequestHandler = new LfdsUsernamePasswordHandler(Username, Password, Organization, RepoId, BaseUrl);
+            _httpRequestHandler = new UsernamePasswordHandler(RepoId, Username, Password, BaseUrl);
             using var request = new HttpRequestMessage();
 
             // Act
             var result = await _httpRequestHandler.BeforeSendAsync(request, default);
-            accessTokensToCleanUp.Add(request.Headers.Authorization.Parameter);
+            _accessTokensToCleanUp.Add(request.Headers.Authorization.Parameter);
 
             // Assert
             Assert.IsNotNull(result);
@@ -66,16 +64,16 @@ namespace Laserfiche.Api.Client.IntegrationTest
         public async Task BeforeSendAsync_ExistingToken_Success()
         {
             // Arrange
-            _httpRequestHandler = new LfdsUsernamePasswordHandler(Username, Password, Organization, RepoId, BaseUrl);
+            _httpRequestHandler = new UsernamePasswordHandler(RepoId, Username, Password, BaseUrl);
             using var request1 = new HttpRequestMessage();
             using var request2 = new HttpRequestMessage();
 
             // Act
             var result1 = await _httpRequestHandler.BeforeSendAsync(request1, default);
-            accessTokensToCleanUp.Add(request1.Headers.Authorization.Parameter);
+            _accessTokensToCleanUp.Add(request1.Headers.Authorization.Parameter);
 
             var result2 = await _httpRequestHandler.BeforeSendAsync(request2, default);
-            accessTokensToCleanUp.Add(request2.Headers.Authorization.Parameter);
+            _accessTokensToCleanUp.Add(request2.Headers.Authorization.Parameter);
 
             // Assert
             Assert.IsNotNull(result2);
@@ -86,16 +84,17 @@ namespace Laserfiche.Api.Client.IntegrationTest
 
         [DataTestMethod]
         [DynamicData(nameof(GetInvalidCredentials), DynamicDataSourceType.Method)]
-        public async Task BeforeSendAsync_FailedAuthentication_ThrowsException(string username, string password)
+        public async Task BeforeSendAsync_FailedAuthentication_ThrowsException(string repoId, string username, string password, HttpStatusCode status)
         {
             //Arrange
-            _httpRequestHandler = new LfdsUsernamePasswordHandler(username, password, Organization, RepoId, BaseUrl);
+            _httpRequestHandler = new UsernamePasswordHandler(repoId, username, password, BaseUrl);
             using var request = new HttpRequestMessage();
 
             // Assert
-            var ex = await Assert.ThrowsExceptionAsync<ApiException<APIServerException>>(() => _httpRequestHandler.BeforeSendAsync(request, new CancellationToken()));
-            Assert.AreEqual((int)HttpStatusCode.Unauthorized, ex.StatusCode);
-            Assert.IsNotNull(ex.Message);
+            var ex = await Assert.ThrowsExceptionAsync<ApiException<ProblemDetails>>(() => _httpRequestHandler.BeforeSendAsync(request, new CancellationToken()));
+            Assert.AreEqual((int)status, ex.Result.Status);
+            Assert.IsNotNull(ex.Result.Type);
+            Assert.IsNotNull(ex.Result.Title);
         }
 
         private static IEnumerable<object[]> GetInvalidCredentials()
@@ -104,11 +103,15 @@ namespace Laserfiche.Api.Client.IntegrationTest
 
             yield return new object[]
             {
-                "invalid name", baseTest.Password
+                baseTest.RepoId, "fake123", baseTest.Password, HttpStatusCode.Unauthorized
             };
             yield return new object[]
             {
-                baseTest.Username, "invalid password"
+                baseTest.RepoId, baseTest.Username, "fake123", HttpStatusCode.Unauthorized
+            };
+            yield return new object[]
+            {
+                "fake123", baseTest.Username, baseTest.Password, HttpStatusCode.NotFound
             };
         }
 
@@ -116,10 +119,10 @@ namespace Laserfiche.Api.Client.IntegrationTest
         public async Task AfterSendAsync_TokenRemovedWhenUnauthorized()
         {
             // Arrange
-            _httpRequestHandler = new LfdsUsernamePasswordHandler(Username, Password, Organization, RepoId, BaseUrl);
+            _httpRequestHandler = new UsernamePasswordHandler(RepoId, Username, Password, BaseUrl);
             using var request1 = new HttpRequestMessage();
             var result1 = await _httpRequestHandler.BeforeSendAsync(request1, default);
-            accessTokensToCleanUp.Add(request1.Headers.Authorization.Parameter);
+            _accessTokensToCleanUp.Add(request1.Headers.Authorization.Parameter);
 
             // Act
             var retry = await _httpRequestHandler.AfterSendAsync(new HttpResponseMessage(HttpStatusCode.Unauthorized), default);
@@ -128,7 +131,7 @@ namespace Laserfiche.Api.Client.IntegrationTest
             Assert.IsTrue(retry);
             using var request2 = new HttpRequestMessage();
             var result2 = await _httpRequestHandler.BeforeSendAsync(request2, default);
-            accessTokensToCleanUp.Add(request2.Headers.Authorization.Parameter);
+            _accessTokensToCleanUp.Add(request2.Headers.Authorization.Parameter);
             Assert.IsNotNull(result2);
             Assert.IsTrue(string.IsNullOrEmpty(result2?.RegionalDomain));
             Assert.AreEqual("Bearer", request2.Headers.Authorization.Scheme);
