@@ -3,39 +3,40 @@ using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using Laserfiche.Api.Client.SelfHosted;
+using Laserfiche.Api.Client.APIServer;
 
 namespace Laserfiche.Api.Client.HttpHandlers
 {
     /// <summary>
-    /// Self-hosted username password handler to set the authorization header given username, password, grant type, repository ID and base URL.
+    /// Username password handler for self-hosted API Server to set the authorization header given repository ID, username, password, and base URL.
     /// </summary>
-    public class SelfHostedUsernamePasswordHandler : IHttpRequestHandler
+    public class UsernamePasswordHandler : IHttpRequestHandler
     {
         private string _accessToken;
+        private const string GrantType = "password";
+
+        private readonly string _repoId;
         private readonly string _username;
         private readonly string _password;
         private readonly string _baseUrl;
-        private readonly string _repoID;
-        private readonly string _grantType;
+
         private readonly ITokenClient _client;
         private readonly CreateConnectionRequest _request;
 
-        public SelfHostedUsernamePasswordHandler(string username, string password, string grantType, string repoID, string baseUrl) : this(username, password, grantType, repoID, baseUrl, null) { }
+        public UsernamePasswordHandler(string repoId, string username, string password, string baseUrl) : this(repoId, username, password, baseUrl, null) { }
 
-        internal SelfHostedUsernamePasswordHandler(string username, string password, string grantType, string repoID, string baseUrl, ITokenClient client)
+        internal UsernamePasswordHandler(string repoId, string username, string password, string baseUrl, ITokenClient client)
         {
             _username = username;
             _password = password;
             _baseUrl = baseUrl.TrimEnd('/') + "/";
-            _repoID = repoID;
-            _grantType = grantType;
+            _repoId = repoId;
 
             _request = new CreateConnectionRequest
             {
                 Username = _username,
                 Password = _password,
-                Grant_type = _grantType
+                Grant_type = GrantType
             };
             _client = client ?? new TokenClient(new HttpClient { BaseAddress = new Uri(_baseUrl) });
         }
@@ -44,7 +45,7 @@ namespace Laserfiche.Api.Client.HttpHandlers
         {
             if (string.IsNullOrEmpty(_accessToken))
             {
-                var response = await _client.TokenAsync(_repoID, _request, cancellationToken);
+                var response = await _client.TokenAsync(_repoId, _request, cancellationToken);
                 _accessToken = response?.Access_token;
             }
             httpRequestMessage.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _accessToken);

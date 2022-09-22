@@ -13,7 +13,7 @@
 #pragma warning disable 3016 // Disable "CS3016 Arrays as attribute arguments is not CLS-compliant"
 #pragma warning disable 8603 // Disable "CS8603 Possible null reference return"
 
-namespace Laserfiche.Api.Client.SelfHosted
+namespace Laserfiche.Api.Client.APIServer
 {
     using System = global::System;
 
@@ -33,7 +33,6 @@ namespace Laserfiche.Api.Client.SelfHosted
         /// <returns>Create an access token successfuly.</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<SessionKeyInfo> TokenAsync(string repoId, CreateConnectionRequest body = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]

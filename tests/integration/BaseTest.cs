@@ -10,20 +10,18 @@ namespace Laserfiche.Api.Client.IntegrationTest
     {
         public AccessKey AccessKey { get; set; }
         public string ServicePrincipalKey { get; set; }
+        public string RepoId { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
-        public string RepoId { get; set; }
-        public string GrantType { get; set; }
         public string BaseUrl { get; set; }
 
         private const string TestConfigFile = ".env";
         private const string AccessKeyVar = "ACCESS_KEY";
         private const string SpKeyVar = "SERVICE_PRINCIPAL_KEY";
-        private const string UsernameVar = "SELFHOSTED_USERNAME";
-        private const string PasswordVar = "SELFHOSTED_PASSWORD";
         private const string RepoIdVar = "REPOSITORY_ID";
-        private const string GrantTypeVar = "GRANT_TYPE";
-        private const string BaseUrlVar = "SELFHOSTED_REPOSITORY_API_BASE_URI";
+        private const string UsernameVar = "APISERVER_USERNAME";
+        private const string PasswordVar = "APISERVER_PASSWORD";
+        private const string BaseUrlVar = "APISERVER_REPOSITORY_API_BASE_URL";
 
         public BaseTest()
         {
@@ -55,7 +53,6 @@ namespace Laserfiche.Api.Client.IntegrationTest
             Username = Environment.GetEnvironmentVariable(UsernameVar);
             Password = Environment.GetEnvironmentVariable(PasswordVar);
             RepoId = Environment.GetEnvironmentVariable(RepoIdVar);
-            GrantType = Environment.GetEnvironmentVariable(GrantTypeVar);
             BaseUrl = Environment.GetEnvironmentVariable(BaseUrlVar);
         }
     }

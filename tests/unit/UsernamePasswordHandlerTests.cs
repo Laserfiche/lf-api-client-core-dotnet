@@ -4,20 +4,19 @@ using Moq;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using Laserfiche.Api.Client.SelfHosted;
+using Laserfiche.Api.Client.APIServer;
 using System.Net;
 
 namespace Laserfiche.Api.Client.UnitTest
 {
     [TestClass]
-    public class SelfHostedUsernamePasswordHandlerTests
+    public class UsernamePasswordHandlerTests
     {
-        private SelfHostedUsernamePasswordHandler _handler;
+        private UsernamePasswordHandler _handler;
+        private readonly string _repoId = "repoId";
         private readonly string _username = "username";
         private readonly string _password = "password";
-        private readonly string _baseUri = "http://localhost:11211";
-        private readonly string _repoId = "repoId";
-        private readonly string _grantType = "grantType";
+        private readonly string _baseUrl = "http://localhost:11211";
         private readonly HttpRequestMessage _request = new();
 
         [TestMethod]
@@ -30,7 +29,7 @@ namespace Laserfiche.Api.Client.UnitTest
             {
                 Access_token = accessToken
             }));
-            _handler = new SelfHostedUsernamePasswordHandler(_username, _password, _grantType, _repoId, _baseUri, tokenClientMock.Object);
+            _handler = new UsernamePasswordHandler(_repoId, _username, _password, _baseUrl, tokenClientMock.Object);
             
             // Act
             var result = await _handler.BeforeSendAsync(_request, new CancellationToken());
@@ -53,7 +52,7 @@ namespace Laserfiche.Api.Client.UnitTest
             {
                 Access_token = accessToken
             }));
-            _handler = new SelfHostedUsernamePasswordHandler(_username, _password, _grantType, _repoId, _baseUri, tokenClientMock.Object);
+            _handler = new UsernamePasswordHandler(_repoId, _username, _password, _baseUrl, tokenClientMock.Object);
 
             // Act
             var result = await _handler.BeforeSendAsync(_request, new CancellationToken());
@@ -82,7 +81,7 @@ namespace Laserfiche.Api.Client.UnitTest
                 Title = title,
                 Status = status
             }, null));
-            _handler = new SelfHostedUsernamePasswordHandler(_username, _password, _grantType, _repoId, _baseUri, tokenClientMock.Object);
+            _handler = new UsernamePasswordHandler(_repoId, _username, _password, _baseUrl, tokenClientMock.Object);
 
             // Assert
             var ex = await Assert.ThrowsExceptionAsync<ApiException<ProblemDetails>>(()=>_handler.BeforeSendAsync(_request, new CancellationToken()));
@@ -103,7 +102,7 @@ namespace Laserfiche.Api.Client.UnitTest
             {
                 StatusCode = statusCode,
             };
-            _handler = new SelfHostedUsernamePasswordHandler(_username, _password, _grantType, _repoId, _baseUri);
+            _handler = new UsernamePasswordHandler(_repoId, _username, _password, _baseUrl);
 
             // Act
             var result = await _handler.AfterSendAsync(response, new CancellationToken());
@@ -120,7 +119,7 @@ namespace Laserfiche.Api.Client.UnitTest
             {
                 StatusCode = System.Net.HttpStatusCode.Unauthorized,
             };
-            _handler = new SelfHostedUsernamePasswordHandler(_username, _password, _grantType, _repoId, _baseUri);
+            _handler = new UsernamePasswordHandler(_repoId, _username, _password, _baseUrl);
 
             // Act
             var result = await _handler.AfterSendAsync(response, new CancellationToken());
