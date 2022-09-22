@@ -3,7 +3,7 @@
   "defaultVariables": null,
   "documentGenerator": {
     "fromDocument": {
-      "url": "selfhosted-swagger.json",
+      "url": "apiserver-swagger.json",
       "output": null,
       "newLineBehavior": "Auto"
     }
@@ -11,8 +11,8 @@
   "codeGenerators": {
     "openApiToCSharpClient": {
       "classname": "{controller}Client",
-      "namespace": "Laserfiche.Api.Client.SelfHosted",
-      "output": "src/SelfHosted/TokenClient.cs",
+      "namespace": "Laserfiche.Api.Client.APIServer",
+      "output": "src/APIServer/TokenClient.cs",
       "operationGenerationMode": "MultipleClientsFromFirstTagAndPathSegments",
       "generateClientInterfaces": true,
       "generateOptionalParameters": true,
