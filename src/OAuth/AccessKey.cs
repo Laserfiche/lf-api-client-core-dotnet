@@ -11,15 +11,27 @@ namespace Laserfiche.Api.Client.OAuth
     /// </summary>
     public class AccessKey
     {
+        /// <summary>
+        /// The Laserfiche customer id the app is registered in.
+        /// </summary>
         [JsonProperty("customerId")]
         public string CustomerId { set; get; }
 
+        /// <summary>
+        /// The Laserfiche domain the app belongs to, e.g. laserfiche.com.
+        /// </summary>
         [JsonProperty("domain")]
         public string Domain { set; get; }
 
+        /// <summary>
+        /// The app's client id.
+        /// </summary>
         [JsonProperty("clientId")]
         public string ClientId { set; get; }
 
+        /// <summary>
+        /// The app's json web key.
+        /// </summary>
         [JsonProperty("jwk")]
         public JsonWebKey Jwk { set; get; }
 
