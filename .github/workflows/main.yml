@@ -43,15 +43,18 @@ jobs:
   build-documentation:
     runs-on: ubuntu-latest
     timeout-minutes: 10
-    needs: [ build-n-test ] # wait for build to finish
     steps:
     - uses: actions/checkout@v3
 
-    - name: Install doxygen
-      run: sudo apt-get install doxygen
+    - name: Install dependencies
+      run: |
+        sudo apt-get install doxygen
+        sudo apt install graphviz
 
-    - name: Check doxygen version
-      run: doxygen --version
+    - name: Check dependency versions
+      run: |
+        doxygen --version
+        dot -V
 
     - name: Create temporary directory
       run: mkdir -p ./docs_temp/${{ github.ref_name }}
@@ -68,6 +71,9 @@ jobs:
         sed -i "s|OUTPUT_DIRECTORY       =|OUTPUT_DIRECTORY       = ./docs_temp/${{ github.ref_name }}/|i" doxygen.conf
         sed -i 's|RECURSIVE              = NO|RECURSIVE              = YES|i' doxygen.conf
         sed -i 's|GENERATE_LATEX         = YES|GENERATE_LATEX         = NO|i' doxygen.conf
+        sed -i 's|MACRO_EXPANSION        = NO|MACRO_EXPANSION        = YES|i' doxygen.conf
+        sed -i 's|EXPAND_ONLY_PREDEF     = NO|EXPAND_ONLY_PREDEF     = YES|i' doxygen.conf
+        sed -i 's|PREDEFINED             =|PREDEFINED             = protected=private|i' doxygen.conf
 
     - name: Dump doxygen.conf to check rewrite
       run: head -n 200 doxygen.conf

@@ -23,6 +23,14 @@ namespace Laserfiche.Api.Client.OAuth
         [JsonProperty("jwk")]
         public JsonWebKey Jwk { set; get; }
 
+        /// <summary>
+        /// Create an AccessKey using the base-64 encoded access key associated with an OAuth service app,
+        /// which can be exported from the Laserfiche Developer Console.
+        /// </summary>
+        /// <param name="base64EncodedAccessKey">The base-64 encoded access key exported from the Laserfiche Developer Console.</param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="FormatException"></exception>
         public static AccessKey CreateFromBase64EncodedAccessKey(string base64EncodedAccessKey)
         {
             if (string.IsNullOrWhiteSpace(base64EncodedAccessKey))
