@@ -1,10 +1,11 @@
 # Laserfiche API Client Core .NET
 .NET implementation of various foundational APIs for Laserfiche, including authorization APIs such as OAuth 2.0 flows for secure and easy access to Laserfiche APIs.
 
-Documentation [Laserfiche OAuth 2.0 Authorization Server API](https://developer.laserfiche.com/libraries.html).
+Documentation [Laserfiche OAuth 2.0 Authorization Server API](https://developer.laserfiche.com/API.html).
 
 ## Overview
 - `src` contains the implementation of the foundational authentication/authorization related code for APIs of various Laserfiche products.
+- `src\APIServer` contains all self-hosted API Server authentication/authorization related client code.
 - `src\HttpHandlers` contains a client implementation of OAuth 2.0 Client Credentials Flow.
 - `src\OAuth` contains all OAuth related client code.
 - `src\Utils` contains all utility functions and classes for Laserfiche APIs.
@@ -21,4 +22,4 @@ Technically you could use any editors you like. But it's more convenient if you 
 
 ### Build, Test, and Package
 
-See the `./workflow/main.yml`.
+See the [.github/workflows/main.yml](.github/workflows/main.yml).
