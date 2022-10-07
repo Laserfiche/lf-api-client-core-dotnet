@@ -16,7 +16,8 @@
       "operationGenerationMode": "MultipleClientsFromFirstTagAndPathSegments",
       "generateClientInterfaces": true,
       "generateOptionalParameters": true,
-      "useBaseUrl": false
+      "useBaseUrl": false,
+      "generateDataAnnotations": false
     }
   }
 }

@@ -332,7 +332,6 @@ namespace Laserfiche.Api.Client.OAuth
         /// The value MUST be either of "authorization_code", "refresh_token", or "client_credentials".
         /// </summary>
         [Newtonsoft.Json.JsonProperty("grant_type", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required]
         public string Grant_type { get; set; }
 
         /// <summary>
