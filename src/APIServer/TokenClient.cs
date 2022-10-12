@@ -361,7 +361,6 @@ namespace Laserfiche.Api.Client.APIServer
         /// The value MUST be "password".
         /// </summary>
         [Newtonsoft.Json.JsonProperty("grant_type", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required]
         public string Grant_type { get; set; }
 
         /// <summary>

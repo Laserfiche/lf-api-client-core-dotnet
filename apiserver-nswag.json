@@ -15,6 +15,7 @@
       "output": "src/APIServer/TokenClient.cs",
       "operationGenerationMode": "MultipleClientsFromFirstTagAndPathSegments",
       "generateClientInterfaces": true,
+      "generateDataAnnotations": false,
       "generateOptionalParameters": true,
       "useBaseUrl": false
     }
