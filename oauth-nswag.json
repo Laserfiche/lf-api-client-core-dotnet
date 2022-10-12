@@ -15,6 +15,7 @@
       "output": "src/OAuth/OAuthClient.cs",
       "operationGenerationMode": "MultipleClientsFromFirstTagAndPathSegments",
       "generateClientInterfaces": true,
+      "generateDataAnnotations": false,
       "generateOptionalParameters": true,
       "useBaseUrl": false
     }

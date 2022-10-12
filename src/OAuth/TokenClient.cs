@@ -77,5 +77,10 @@ namespace Laserfiche.Api.Client.OAuth
             }, basicAuth);
             return response;
         }
+
+        partial void UpdateJsonSerializerSettings(JsonSerializerSettings settings)
+        {
+            settings.MaxDepth = 128;
+        }
     }
 }
