@@ -22,3 +22,7 @@ Technically you could use any editors you like. But it's more convenient if you 
 ### Build, Test, and Package
 
 See the `./workflow/main.yml`.
+
+### Change Log
+
+See CHANGELOG [here](https://github.com/Laserfiche/lf-api-client-core-dotnet/blob/HEAD/CHANGELOG.md).
