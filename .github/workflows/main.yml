@@ -30,14 +30,14 @@ jobs:
       run: dotnet build --no-restore
 
     - name: Run unit tests
-      run: dotnet test --no-build --verbosity normal --logger "trx;LogFileName=unit-test-results.trx" --filter Laserfiche.Api.Client.UnitTest
+      run: dotnet test tests/unit/Laserfiche.Api.Client.UnitTest.csproj --no-build --verbosity normal --logger "trx;LogFileName=unit-test-results.trx"
 
     - name: Run integration tests
       env:
         ACCESS_KEY: ${{ secrets.DEV_CA_PUBLIC_USE_INTEGRATION_TEST_ACCESS_KEY }}
         SERVICE_PRINCIPAL_KEY:  ${{ secrets.DEV_CA_PUBLIC_USE_TESTOAUTHSERVICEPRINCIPAL_SERVICE_PRINCIPAL_KEY }}
       run:
-        dotnet test --no-build --verbosity normal --logger "trx;LogFileName=integration-test-results.trx" --filter Laserfiche.Api.Client.IntegrationTest&TestCategory=Cloud
+        dotnet test tests/integration/Laserfiche.Api.Client.IntegrationTest.csproj --no-build --verbosity normal --logger "trx;LogFileName=integration-test-results.trx" --filter TestCategory=Cloud
 
     - name: Test Report
       uses: dorny/test-reporter@v1
@@ -46,7 +46,8 @@ jobs:
         name: Test Results
         path: '**/*.trx'
         reporter: dotnet-trx
-        only-summary: "true"
+        only-summary: 'false'
+        list-tests: 'fail'
         fail-on-error: 'false'
 
   build-documentation:
