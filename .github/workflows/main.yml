@@ -44,8 +44,9 @@ jobs:
       if: success() || failure()    # run this step even if previous step failed
       with:
         name: Test Results
-        path: ./*.trx
+        path: '**/*.trx'
         reporter: dotnet-trx
+        fail-on-error: 'true'
 
   build-documentation:
     runs-on: ubuntu-latest
