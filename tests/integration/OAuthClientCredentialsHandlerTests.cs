@@ -10,12 +10,6 @@ namespace Laserfiche.Api.Client.IntegrationTest
     public class OAuthClientCredentialsHandlerTests : BaseTest
     {
         [TestMethod]
-        public void Another_Integration_Test_that_fails()
-        {
-            Assert.Fail();
-        }
-
-        [TestMethod]
         public async Task BeforeSendAsync_Success()
         {
             var httpRequestHandler = new OAuthClientCredentialsHandler(ServicePrincipalKey, AccessKey);
