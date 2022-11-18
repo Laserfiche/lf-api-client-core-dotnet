@@ -8,12 +8,6 @@ namespace Laserfiche.Api.Client.UnitTest
     public class DomainUtilTest
     {
         [TestMethod]
-        public void Unit_Test_that_fails()
-        {
-            Assert.Fail();
-        }
-
-        [TestMethod]
         public void GetOAuthBaseUri_Success()
         {
             string domain = "laserfiche.ca";
