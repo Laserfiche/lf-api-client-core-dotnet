@@ -10,6 +10,12 @@ namespace Laserfiche.Api.Client.IntegrationTest
     public class TokenClientTests : BaseTest
     {
         [TestMethod]
+        public void Integration_Test_that_fails()
+        {
+            Assert.Fail();
+        }
+
+        [TestMethod]
         public async Task GetAccessTokenFromServicePrincipalAsync()
         {
             // Initialize an instance of the handler
