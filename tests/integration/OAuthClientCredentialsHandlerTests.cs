@@ -40,6 +40,23 @@ namespace Laserfiche.Api.Client.IntegrationTest
             Assert.AreEqual(AccessKey.Domain, result2.RegionalDomain);
         }
 
+        [TestMethod]
+        public async Task BeforeSendAsync_FailedAuthentication_ThrowsException()
+        {
+            var httpRequestHandler = new OAuthClientCredentialsHandler("a wrong service principal key", AccessKey);
+            using var request = new System.Net.Http.HttpRequestMessage();
+
+            var exception = await Assert.ThrowsExceptionAsync<ApiException>(async () => await httpRequestHandler.BeforeSendAsync(request, default));
+
+            // Expect the retrieval of access token to fail due to incorrect service principal key
+            Assert.AreEqual(401, exception.ProblemDetails.Status);
+            Assert.AreEqual(exception.ProblemDetails.Status, exception.StatusCode);
+            Assert.IsNotNull(exception.ProblemDetails.Title);
+            Assert.AreEqual(exception.ProblemDetails.Title, exception.Message);
+            Assert.IsNotNull(exception.ProblemDetails.Type);
+            Assert.IsNotNull(exception.ProblemDetails.OperationId);
+        }
+
         [DataTestMethod]
         [DataRow(HttpStatusCode.OK)]
         [DataRow(HttpStatusCode.Forbidden)]
