@@ -1,14 +1,11 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Laserfiche.Api.Client
 {
     public partial class ApiException : Exception
     {
-        public const string OPERATION_ID_HEADER = "X-RequestId";
-
         /// <summary>
         /// The API status code.
         /// </summary>
@@ -86,12 +83,7 @@ namespace Laserfiche.Api.Client
         /// <returns></returns>
         public static ApiException Create(int statusCode, IReadOnlyDictionary<string, IEnumerable<string>> headers, Exception innerException)
         {
-            ProblemDetails problemDetails = new ProblemDetails()
-            {
-                Title = $"HTTP status code {statusCode}.",
-                Status = statusCode,
-                OperationId = headers?.TryGetValue(OPERATION_ID_HEADER, out IEnumerable<string> operationIdHeader) == true ? operationIdHeader.FirstOrDefault() : null,
-            };
+            ProblemDetails problemDetails = ProblemDetails.Create(statusCode, headers);
             return Create(statusCode, headers, problemDetails, innerException);
         }
     }

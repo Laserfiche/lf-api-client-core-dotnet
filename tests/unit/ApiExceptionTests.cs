@@ -65,7 +65,7 @@ namespace Laserfiche.Api.Client.UnitTest
             string operationId = "123456789";
             var headers = new Dictionary<string, IEnumerable<string>>()
             {
-                [ApiException.OPERATION_ID_HEADER] = new List<string>() { operationId }
+                [ProblemDetails.OPERATION_ID_HEADER] = new List<string>() { operationId }
             };
 
             ApiException exception = ApiException.Create(statusCode, headers, null);
@@ -88,7 +88,7 @@ namespace Laserfiche.Api.Client.UnitTest
             string operationId = "123456789";
             var headers = new Dictionary<string, IEnumerable<string>>()
             {
-                [ApiException.OPERATION_ID_HEADER] = new List<string>() { operationId }
+                [ProblemDetails.OPERATION_ID_HEADER] = new List<string>() { operationId }
             };
             Exception innerException = new Exception("An error occurred.");
 
@@ -112,7 +112,7 @@ namespace Laserfiche.Api.Client.UnitTest
             string operationId = "123456789";
             var headers = new Dictionary<string, IEnumerable<string>>()
             {
-                [ApiException.OPERATION_ID_HEADER] = new List<string>() { operationId }
+                [ProblemDetails.OPERATION_ID_HEADER] = new List<string>() { operationId }
             };
             ProblemDetails problemDetails = new ProblemDetails()
             {
@@ -154,7 +154,7 @@ namespace Laserfiche.Api.Client.UnitTest
             string operationId = "123456789";
             var headers = new Dictionary<string, IEnumerable<string>>()
             {
-                [ApiException.OPERATION_ID_HEADER] = new List<string>() { operationId }
+                [ProblemDetails.OPERATION_ID_HEADER] = new List<string>() { operationId }
             };
             ProblemDetails problemDetails = null;
             Exception innerException = new Exception("An error occurred.");
@@ -180,7 +180,7 @@ namespace Laserfiche.Api.Client.UnitTest
             string extensionsKey = "key";
             var headers = new Dictionary<string, IEnumerable<string>>()
             {
-                [ApiException.OPERATION_ID_HEADER] = new List<string>() { operationId }
+                [ProblemDetails.OPERATION_ID_HEADER] = new List<string>() { operationId }
             };
             ProblemDetails problemDetails = new ProblemDetails()
             {
@@ -226,7 +226,7 @@ namespace Laserfiche.Api.Client.UnitTest
             string operationId = "123456789";
             var headers = new Dictionary<string, IEnumerable<string>>()
             {
-                [ApiException.OPERATION_ID_HEADER] = new List<string>() { operationId }
+                [ProblemDetails.OPERATION_ID_HEADER] = new List<string>() { operationId }
             };
             Exception innerException = new Exception("An error occurred.");
 
@@ -250,7 +250,7 @@ namespace Laserfiche.Api.Client.UnitTest
             string operationId = "123456789";
             var headers = new Dictionary<string, IEnumerable<string>>()
             {
-                [ApiException.OPERATION_ID_HEADER] = new List<string>() { operationId }
+                [ProblemDetails.OPERATION_ID_HEADER] = new List<string>() { operationId }
             };
             var responseString = JsonConvert.SerializeObject(new Exception("An error occured."));
             Exception innerException = new Exception("An error occurred.");
