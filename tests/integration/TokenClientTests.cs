@@ -44,7 +44,13 @@ namespace Laserfiche.Api.Client.IntegrationTest
             TokenClient client = new(AccessKey.Domain);
 
             // Expect the retrieval of access token to fail due to incorrect service principal key
-            await Assert.ThrowsExceptionAsync<ApiException<ProblemDetails>>(async () => await client.GetAccessTokenFromServicePrincipalAsync("a wrong service principal key", AccessKey));
+            var exception = await Assert.ThrowsExceptionAsync<ApiException>(async () => await client.GetAccessTokenFromServicePrincipalAsync("a wrong service principal key", AccessKey));
+            Assert.AreEqual(401, exception.ProblemDetails.Status);
+            Assert.AreEqual(exception.ProblemDetails.Status, exception.StatusCode);
+            Assert.IsNotNull(exception.ProblemDetails.Title);
+            Assert.AreEqual(exception.ProblemDetails.Title, exception.Message);
+            Assert.IsNotNull(exception.ProblemDetails.Type);
+            Assert.IsNotNull(exception.ProblemDetails.OperationId);
         }
     }
 }
