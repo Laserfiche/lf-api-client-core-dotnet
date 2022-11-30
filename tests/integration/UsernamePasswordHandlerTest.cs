@@ -1,12 +1,10 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Laserfiche.Api.Client.HttpHandlers;
-using System;
+﻿using Laserfiche.Api.Client.HttpHandlers;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using System.Net;
 using System.Net.Http;
 using System.Threading;
-using Laserfiche.Api.Client.APIServer;
-using System.Net;
+using System.Threading.Tasks;
 
 namespace Laserfiche.Api.Client.IntegrationTest
 {
@@ -61,10 +59,13 @@ namespace Laserfiche.Api.Client.IntegrationTest
             using var request = new HttpRequestMessage();
 
             // Assert
-            var ex = await Assert.ThrowsExceptionAsync<ApiException<ProblemDetails>>(() => _httpRequestHandler.BeforeSendAsync(request, new CancellationToken()));
-            Assert.AreEqual((int)status, ex.Result.Status);
-            Assert.IsNotNull(ex.Result.Type);
-            Assert.IsNotNull(ex.Result.Title);
+            var ex = await Assert.ThrowsExceptionAsync<ApiException>(() => _httpRequestHandler.BeforeSendAsync(request, new CancellationToken()));
+            Assert.AreEqual((int)status, ex.ProblemDetails.Status);
+            Assert.AreEqual(ex.ProblemDetails.Status, ex.StatusCode);
+            Assert.IsNotNull(ex.ProblemDetails.Type);
+            Assert.IsNotNull(ex.ProblemDetails.Title);
+            Assert.AreEqual(ex.ProblemDetails.Title, ex.Message);
+            Assert.IsNotNull(ex.ProblemDetails.OperationId);
         }
 
         private static IEnumerable<object[]> GetInvalidCredentials()

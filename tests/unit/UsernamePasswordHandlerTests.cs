@@ -75,19 +75,20 @@ namespace Laserfiche.Api.Client.UnitTest
             int status = 401;
 
             Mock<ITokenClient> tokenClientMock = new();
-            tokenClientMock.Setup(mock => mock.TokenAsync(It.IsAny<string>(), It.IsAny<CreateConnectionRequest>(), It.IsAny<CancellationToken>())).Throws(new ApiException<ProblemDetails>(title, status, null, null, new ProblemDetails
+            var problemDetails = new ProblemDetails
             {
                 Type = type,
                 Title = title,
                 Status = status
-            }, null));
+            };
+            tokenClientMock.Setup(mock => mock.TokenAsync(It.IsAny<string>(), It.IsAny<CreateConnectionRequest>(), It.IsAny<CancellationToken>())).Throws(ApiException.Create(status, null, problemDetails, null));
             _handler = new UsernamePasswordHandler(_repoId, _username, _password, _baseUrl, tokenClientMock.Object);
 
             // Assert
-            var ex = await Assert.ThrowsExceptionAsync<ApiException<ProblemDetails>>(()=>_handler.BeforeSendAsync(_request, new CancellationToken()));
-            Assert.AreEqual(type, ex.Result.Type);
-            Assert.AreEqual(title, ex.Result.Title);
-            Assert.AreEqual(status, ex.Result.Status);
+            var ex = await Assert.ThrowsExceptionAsync<ApiException>(()=>_handler.BeforeSendAsync(_request, new CancellationToken()));
+            Assert.AreEqual(type, ex.ProblemDetails.Type);
+            Assert.AreEqual(title, ex.ProblemDetails.Title);
+            Assert.AreEqual(status, ex.ProblemDetails.Status);
         }
 
         [DataTestMethod]
