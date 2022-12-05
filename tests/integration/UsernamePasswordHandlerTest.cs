@@ -1,12 +1,10 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Laserfiche.Api.Client.HttpHandlers;
-using System;
+﻿using Laserfiche.Api.Client.HttpHandlers;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using System.Net;
 using System.Net.Http;
 using System.Threading;
-using Laserfiche.Api.Client.APIServer;
-using System.Net;
+using System.Threading.Tasks;
 
 namespace Laserfiche.Api.Client.IntegrationTest
 {
@@ -15,32 +13,6 @@ namespace Laserfiche.Api.Client.IntegrationTest
     public class UsernamePasswordHandlerTest : BaseTest
     {
         private IHttpRequestHandler _httpRequestHandler;
-        private List<string> _accessTokensToCleanUp;
-
-        [TestInitialize]
-        public void Initalize()
-        {
-            _accessTokensToCleanUp = new();
-        }
-
-        [TestCleanup]
-        public async Task SessionCleanUp()
-        {
-            foreach (var accessToken in _accessTokensToCleanUp)
-            {
-                await LogOut(accessToken);
-            }
-        }
-
-        private async Task LogOut(string accessToken)
-        {
-            using HttpClient client = new();
-            client.BaseAddress = new Uri(BaseUrl);
-            string invalidateUrl = $"v1/Repositories/{RepoId}/AccessTokens/Invalidate";
-            HttpRequestMessage request = new(HttpMethod.Post, invalidateUrl);
-            request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", accessToken);
-            await client.SendAsync(request);
-        }
 
         [TestMethod]
         public async Task BeforeSendAsync_NewToken_Success()
@@ -51,7 +23,6 @@ namespace Laserfiche.Api.Client.IntegrationTest
 
             // Act
             var result = await _httpRequestHandler.BeforeSendAsync(request, default);
-            _accessTokensToCleanUp.Add(request.Headers.Authorization.Parameter);
 
             // Assert
             Assert.IsNotNull(result);
@@ -70,10 +41,7 @@ namespace Laserfiche.Api.Client.IntegrationTest
 
             // Act
             var result1 = await _httpRequestHandler.BeforeSendAsync(request1, default);
-            _accessTokensToCleanUp.Add(request1.Headers.Authorization.Parameter);
-
             var result2 = await _httpRequestHandler.BeforeSendAsync(request2, default);
-            _accessTokensToCleanUp.Add(request2.Headers.Authorization.Parameter);
 
             // Assert
             Assert.IsNotNull(result2);
@@ -91,10 +59,13 @@ namespace Laserfiche.Api.Client.IntegrationTest
             using var request = new HttpRequestMessage();
 
             // Assert
-            var ex = await Assert.ThrowsExceptionAsync<ApiException<ProblemDetails>>(() => _httpRequestHandler.BeforeSendAsync(request, new CancellationToken()));
-            Assert.AreEqual((int)status, ex.Result.Status);
-            Assert.IsNotNull(ex.Result.Type);
-            Assert.IsNotNull(ex.Result.Title);
+            var ex = await Assert.ThrowsExceptionAsync<ApiException>(() => _httpRequestHandler.BeforeSendAsync(request, new CancellationToken()));
+            Assert.AreEqual((int)status, ex.ProblemDetails.Status);
+            Assert.AreEqual(ex.ProblemDetails.Status, ex.StatusCode);
+            Assert.IsNotNull(ex.ProblemDetails.Type);
+            Assert.IsNotNull(ex.ProblemDetails.Title);
+            Assert.AreEqual(ex.ProblemDetails.Title, ex.Message);
+            Assert.IsNotNull(ex.ProblemDetails.OperationId);
         }
 
         private static IEnumerable<object[]> GetInvalidCredentials()
@@ -122,7 +93,6 @@ namespace Laserfiche.Api.Client.IntegrationTest
             _httpRequestHandler = new UsernamePasswordHandler(RepoId, Username, Password, BaseUrl);
             using var request1 = new HttpRequestMessage();
             var result1 = await _httpRequestHandler.BeforeSendAsync(request1, default);
-            _accessTokensToCleanUp.Add(request1.Headers.Authorization.Parameter);
 
             // Act
             var retry = await _httpRequestHandler.AfterSendAsync(new HttpResponseMessage(HttpStatusCode.Unauthorized), default);
@@ -131,7 +101,6 @@ namespace Laserfiche.Api.Client.IntegrationTest
             Assert.IsTrue(retry);
             using var request2 = new HttpRequestMessage();
             var result2 = await _httpRequestHandler.BeforeSendAsync(request2, default);
-            _accessTokensToCleanUp.Add(request2.Headers.Authorization.Parameter);
             Assert.IsNotNull(result2);
             Assert.IsTrue(string.IsNullOrEmpty(result2?.RegionalDomain));
             Assert.AreEqual("Bearer", request2.Headers.Authorization.Scheme);

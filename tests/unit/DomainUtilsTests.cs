@@ -8,41 +8,6 @@ namespace Laserfiche.Api.Client.UnitTest
     public class DomainUtilTest
     {
         [TestMethod]
-        public void GetDomainFromAccountId_US()
-        {
-            string accountId = "123123123";
-            string domain = DomainUtils.GetDomainFromAccountId(accountId);
-            Assert.AreEqual("laserfiche.com", domain);
-        }
-
-        [TestMethod]
-        public void GetDomainFromAccountId_CA()
-        {
-            string accountId = "1111111111";
-            string domain = DomainUtils.GetDomainFromAccountId(accountId);
-            Assert.AreEqual("laserfiche.ca", domain);
-        }
-
-        [TestMethod]
-        public void GetDomainFromAccountId_EU()
-        {
-            string accountId = "2222222222";
-            string domain = DomainUtils.GetDomainFromAccountId(accountId);
-            Assert.AreEqual("eu.laserfiche.com", domain);
-        }
-
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
-        [DataTestMethod]
-        [DataRow("")]
-        [DataRow("123")]
-        [DataRow("3333333333")]
-        [DataRow("123123123123")]
-        public void GetDomainFromAccountId_IncorrectAccountId(string accountId)
-        {
-            DomainUtils.GetDomainFromAccountId(accountId);
-        }
-
-        [TestMethod]
         public void GetOAuthBaseUri_Success()
         {
             string domain = "laserfiche.ca";

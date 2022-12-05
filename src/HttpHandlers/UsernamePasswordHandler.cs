@@ -27,10 +27,13 @@ namespace Laserfiche.Api.Client.HttpHandlers
 
         internal UsernamePasswordHandler(string repoId, string username, string password, string baseUrl, ITokenClient client)
         {
-            _username = username;
-            _password = password;
+            if (baseUrl == null)
+                throw new ArgumentNullException(nameof(baseUrl));
+
+            _username = username ?? throw new ArgumentNullException(nameof(username));
+            _password = password ?? throw new ArgumentNullException(nameof(password));
+            _repoId = repoId ?? throw new ArgumentNullException(nameof(repoId));
             _baseUrl = baseUrl.TrimEnd('/') + "/";
-            _repoId = repoId;
 
             _request = new CreateConnectionRequest
             {
