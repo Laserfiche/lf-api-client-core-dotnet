@@ -12,3 +12,4 @@ artifacts/
 *.sln.ide
 *.env
 .vscode/solution-explorer
+docs_temp
