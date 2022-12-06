@@ -40,7 +40,7 @@ namespace Laserfiche.Api.Client.OAuth
         /// which can be exported from the Laserfiche Developer Console.
         /// </summary>
         /// <param name="base64EncodedAccessKey">The base-64 encoded access key exported from the Laserfiche Developer Console.</param>
-        /// <returns></returns>
+        /// <returns>AccessKey</returns>
         /// <exception cref="ArgumentNullException"></exception>
         /// <exception cref="FormatException"></exception>
         public static AccessKey CreateFromBase64EncodedAccessKey(string base64EncodedAccessKey)

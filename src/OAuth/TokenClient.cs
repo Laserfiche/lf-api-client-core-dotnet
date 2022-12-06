@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace Laserfiche.Api.Client.OAuth
 {
     /// <summary>
-    /// The token route API client.
+    /// The Laserfiche Cloud token route API client.
     /// </summary>
     public partial class TokenClient : ITokenClient
     {
@@ -29,13 +29,6 @@ namespace Laserfiche.Api.Client.OAuth
             _settings = new Lazy<JsonSerializerSettings>(CreateSerializerSettings);
         }
 
-        /// <summary>
-        /// Gets an access token given the service principal key and the app access key. These values can be exported from the Laserfiche Developer Console. This is the client credentials flow that applies to service applications.
-        /// </summary>
-        /// <param name="servicePrincipalKey"></param>
-        /// <param name="accessKey"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
         public async Task<GetAccessTokenResponse> GetAccessTokenFromServicePrincipalAsync(string servicePrincipalKey, AccessKey accessKey, CancellationToken cancellationToken = default)
         {
             if (!string.Equals(_httpClient.BaseAddress.AbsoluteUri, DomainUtils.GetOAuthApiBaseUri(accessKey.Domain), StringComparison.InvariantCultureIgnoreCase))
