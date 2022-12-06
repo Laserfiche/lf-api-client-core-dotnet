@@ -86,6 +86,7 @@ jobs:
         sed -i 's|EXPAND_ONLY_PREDEF     = NO|EXPAND_ONLY_PREDEF     = YES|i' doxygen.conf
         sed -i 's|PREDEFINED             =|PREDEFINED             = protected=private|i' doxygen.conf
         sed -i 's|USE_MDFILE_AS_MAINPAGE =|USE_MDFILE_AS_MAINPAGE = README.md|i' doxygen.conf
+        sed -i 's|EXTRACT_STATIC         = NO|EXTRACT_STATIC         = YES|i' doxygen.conf
 
     - name: Dump doxygen.conf to check rewrite
       run: head -n 200 doxygen.conf
