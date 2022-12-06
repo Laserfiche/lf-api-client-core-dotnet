@@ -29,7 +29,7 @@ namespace Laserfiche.Api.Client.HttpHandlers
         /// <param name="repositoryId">The repository ID.</param>
         /// <param name="username">The username.</param>
         /// <param name="password">The password.</param>
-        /// <param name="baseUrl">API server base URL e.g., https://{APIServerName}/LFRepositoryAPI</param>
+        /// <param name="baseUrl">API server base URL e.g., https://{APIServerName}/LFRepositoryAPI.</param>
         public UsernamePasswordHandler(string repositoryId, string username, string password, string baseUrl) : this(repositoryId, username, password, baseUrl, null) { }
 
         internal UsernamePasswordHandler(string repositoryId, string username, string password, string baseUrl, ITokenClient client)

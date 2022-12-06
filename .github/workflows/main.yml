@@ -60,7 +60,7 @@ jobs:
     - name: Install dependencies
       run: |
         sudo apt-get install doxygen
-        sudo apt install graphviz
+        sudo apt-get install graphviz
 
     - name: Check dependency versions
       run: |
