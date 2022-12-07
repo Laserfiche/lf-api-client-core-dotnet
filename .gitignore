@@ -13,3 +13,4 @@ artifacts/
 *.env
 .vscode/solution-explorer
 docs_temp
+doxygen.conf
