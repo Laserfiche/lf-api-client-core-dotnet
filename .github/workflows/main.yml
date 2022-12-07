@@ -72,6 +72,7 @@ jobs:
 
     - name: Generate doxygen config
       run: doxygen -g doxygen.conf
+
     - name: Rewrite doxygen config
       run: |
         sed -i 's|"My Project"|${{ github.event.repository.name }}|i' doxygen.conf
