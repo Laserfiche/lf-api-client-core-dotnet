@@ -4,6 +4,9 @@ using System.Collections.Generic;
 
 namespace Laserfiche.Api.Client
 {
+    /// <summary>
+    /// Represents errors that occur from error API responses.
+    /// </summary>
     public partial class ApiException : Exception
     {
         /// <summary>
@@ -37,7 +40,7 @@ namespace Laserfiche.Api.Client
         /// <param name="response">The response body.</param>
         /// <param name="jsonSerializerSettings">The json serializer settings used to deserialize the response.</param>
         /// <param name="innerException">The inner exception.</param>
-        /// <returns></returns>
+        /// <returns>ApiException</returns>
         public static ApiException Create(int statusCode, IReadOnlyDictionary<string, IEnumerable<string>> headers, string response, JsonSerializerSettings jsonSerializerSettings, Exception innerException)
         {
             if (!string.IsNullOrWhiteSpace(response))
@@ -63,7 +66,7 @@ namespace Laserfiche.Api.Client
         /// <param name="headers">The response headers.</param>
         /// <param name="problemDetails">The <see cref="Client.ProblemDetails"/> response.</param>
         /// <param name="innerException">The inner exception.</param>
-        /// <returns></returns>
+        /// <returns>ApiException</returns>
         public static ApiException Create(int statusCode, IReadOnlyDictionary<string, IEnumerable<string>> headers, ProblemDetails problemDetails, Exception innerException)
         {
             if (problemDetails == null)
@@ -80,7 +83,7 @@ namespace Laserfiche.Api.Client
         /// <param name="statusCode">The response status code.</param>
         /// <param name="headers">The response headers.</param>
         /// <param name="innerException">The inner exception.</param>
-        /// <returns></returns>
+        /// <returns>ApiException</returns>
         public static ApiException Create(int statusCode, IReadOnlyDictionary<string, IEnumerable<string>> headers, Exception innerException)
         {
             ProblemDetails problemDetails = ProblemDetails.Create(statusCode, headers);

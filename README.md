@@ -5,8 +5,9 @@ Documentation [Laserfiche OAuth 2.0 Authorization Server API](https://developer.
 
 ## Overview
 - `src` contains the implementation of the foundational authentication/authorization related code for APIs of various Laserfiche products.
+- `src\APIServer` contains all Laserfiche Self-Hosted API Server authentication/authorization related client code.
 - `src\HttpHandlers` contains a client implementation of OAuth 2.0 Client Credentials Flow.
-- `src\OAuth` contains all OAuth related client code.
+- `src\OAuth` contains all Laserfiche Cloud OAuth related client code.
 - `src\Utils` contains all utility functions and classes for Laserfiche APIs.
 - `tests\integration` contains all integration tests. To run them, you either use GitHub Workflows, or you could provide the `.env` files in your file system and run them there.
 - `test\unit` contains all unit tests.
@@ -21,7 +22,7 @@ Technically you could use any editors you like. But it's more convenient if you 
 
 ### Build, Test, and Package
 
-See the `./workflow/main.yml`.
+See the [.github/workflows/main.yml](https://github.com/Laserfiche/lf-api-client-core-dotnet/blob/HEAD/.github/workflows/main.yml).
 
 ### Change Log
 
