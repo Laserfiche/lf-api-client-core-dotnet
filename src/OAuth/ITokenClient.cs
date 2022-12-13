@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 namespace Laserfiche.Api.Client.OAuth
 {
     /// <summary>
-    /// The Laserfiche Cloud token route API client.
+    /// The API client for the Laserfiche Cloud token route.
     /// </summary>
     public partial interface ITokenClient
     {

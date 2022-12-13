@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace Laserfiche.Api.Client
 {
     /// <summary>
-    /// An exception thrown from error API responses.
+    /// Represents errors that occur from error API responses.
     /// </summary>
     public partial class ApiException : Exception
     {

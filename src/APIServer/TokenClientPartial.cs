@@ -3,14 +3,14 @@
 namespace Laserfiche.Api.Client.APIServer
 {
     /// <summary>
-    /// The Laserfiche Self-Hosted token route API client.
+    /// The API client for the Laserfiche Self-Hosted token route.
     /// </summary>
     public partial interface ITokenClient
     {
     }
 
     /// <summary>
-    /// The Laserfiche Self-Hosted token route API client.
+    /// The API client for the Laserfiche Self-Hosted token route.
     /// </summary>
     partial class TokenClient
     {
