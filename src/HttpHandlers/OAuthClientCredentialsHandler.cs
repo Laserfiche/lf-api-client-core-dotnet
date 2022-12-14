@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace Laserfiche.Api.Client.HttpHandlers
 {
     /// <summary>
-    /// OAuth client credentials handler to set the authorization header JWT given access key and service principal key.
+    /// Laserfiche Cloud OAuth client credentials handler to set the authorization header JWT given an access key and a service principal key associated with an OAuth service app.
     /// </summary>
     public class OAuthClientCredentialsHandler : IHttpRequestHandler
     {
@@ -25,8 +25,8 @@ namespace Laserfiche.Api.Client.HttpHandlers
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="servicePrincipalKey"></param>
-        /// <param name="accessKey"></param>
+        /// <param name="servicePrincipalKey">The service principal key created for the service principal from the Laserfiche Account Administration.</param>
+        /// <param name="accessKey">The access key exported from the Laserfiche Developer Console.</param>
         public OAuthClientCredentialsHandler(string servicePrincipalKey, AccessKey accessKey)
         {
             _servicePrincipalKey = servicePrincipalKey;

@@ -76,7 +76,7 @@ namespace Laserfiche.Api.Client
         /// </summary>
         /// <param name="statusCode">The response status code.</param>
         /// <param name="headers">The response headers.</param>
-        /// <returns></returns>
+        /// <returns>ProblemDetails</returns>
         public static ProblemDetails Create(int statusCode, IReadOnlyDictionary<string, IEnumerable<string>> headers)
         {
             return new ProblemDetails()

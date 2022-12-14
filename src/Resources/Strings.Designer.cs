@@ -19,10 +19,10 @@ namespace Laserfiche.Api.Client.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class Strings {
+    internal class Strings {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace Laserfiche.Api.Client.Resources {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Resources.ResourceManager ResourceManager {
+        internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Laserfiche.Api.Client.Resources.Strings", typeof(Strings).Assembly);
@@ -51,7 +51,7 @@ namespace Laserfiche.Api.Client.Resources {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Globalization.CultureInfo Culture {
+        internal static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,7 +63,7 @@ namespace Laserfiche.Api.Client.Resources {
         /// <summary>
         ///   Looks up a localized string similar to The access key is invalid or null..
         /// </summary>
-        public static string INVALID_ACCESS_KEY {
+        internal static string INVALID_ACCESS_KEY {
             get {
                 return ResourceManager.GetString("INVALID_ACCESS_KEY", resourceCulture);
             }
@@ -72,7 +72,7 @@ namespace Laserfiche.Api.Client.Resources {
         /// <summary>
         ///   Looks up a localized string similar to The client ID is either not set or incorrect..
         /// </summary>
-        public static string INVALID_CLIENT_ID {
+        internal static string INVALID_CLIENT_ID {
             get {
                 return ResourceManager.GetString("INVALID_CLIENT_ID", resourceCulture);
             }
@@ -81,7 +81,7 @@ namespace Laserfiche.Api.Client.Resources {
         /// <summary>
         ///   Looks up a localized string similar to The customer ID is either not set or incorrect..
         /// </summary>
-        public static string INVALID_CUSTOMER_ID {
+        internal static string INVALID_CUSTOMER_ID {
             get {
                 return ResourceManager.GetString("INVALID_CUSTOMER_ID", resourceCulture);
             }
@@ -90,7 +90,7 @@ namespace Laserfiche.Api.Client.Resources {
         /// <summary>
         ///   Looks up a localized string similar to The domain is either not set or incorrect..
         /// </summary>
-        public static string INVALID_DOMAIN {
+        internal static string INVALID_DOMAIN {
             get {
                 return ResourceManager.GetString("INVALID_DOMAIN", resourceCulture);
             }
@@ -99,7 +99,7 @@ namespace Laserfiche.Api.Client.Resources {
         /// <summary>
         ///   Looks up a localized string similar to The service principal key is either not set or incorrect..
         /// </summary>
-        public static string INVALID_SERVICE_PRINCIPAL_KEY {
+        internal static string INVALID_SERVICE_PRINCIPAL_KEY {
             get {
                 return ResourceManager.GetString("INVALID_SERVICE_PRINCIPAL_KEY", resourceCulture);
             }
@@ -108,7 +108,7 @@ namespace Laserfiche.Api.Client.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Unable to read the oauth response..
         /// </summary>
-        public static string UNABLE_TO_READ_RESPONSE {
+        internal static string UNABLE_TO_READ_RESPONSE {
             get {
                 return ResourceManager.GetString("UNABLE_TO_READ_RESPONSE", resourceCulture);
             }
