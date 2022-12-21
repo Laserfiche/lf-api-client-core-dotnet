@@ -73,7 +73,9 @@ jobs:
   publish-documentation:
     runs-on: ubuntu-latest
     timeout-minutes: 10
-    environment: documentation
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     if: ${{ github.run_attempt != 1 }}
     needs: [ build-documentation ] # wait for build to finish
     steps:
@@ -86,4 +88,14 @@ jobs:
         name: documentation-artifact
         path: ${{ github.workspace }}/docs_temp/${{ github.ref_name }}/html/
 
+    - name: Setup Pages
+      uses: actions/configure-pages@v2
+    - name: Upload artifact
+      uses: actions/upload-pages-artifact@v1
+      with:
+        # Upload entire repository
+        path: './docs_temp/${{ github.ref_name }}/html/'
+    - name: Deploy to GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v1
 
