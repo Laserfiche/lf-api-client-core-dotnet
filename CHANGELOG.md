@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.1
+
+### Features
+
+- Self Hosted `UsernamePasswordHandler` should not try to set the access bearer token when no given username and password.
+
 ## 1.3.0
 
 ### Fixes
