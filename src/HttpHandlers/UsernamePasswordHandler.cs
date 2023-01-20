@@ -16,9 +16,6 @@ namespace Laserfiche.Api.Client.HttpHandlers
         private const string GrantType = "password";
 
         private readonly string _repositoryId;
-        private readonly string _username;
-        private readonly string _password;
-        private readonly string _baseUrl;
 
         private readonly ITokenClient _client;
         private readonly CreateConnectionRequest _request;
@@ -37,28 +34,29 @@ namespace Laserfiche.Api.Client.HttpHandlers
             if (baseUrl == null)
                 throw new ArgumentNullException(nameof(baseUrl));
 
-            _username = username ?? throw new ArgumentNullException(nameof(username));
-            _password = password ?? throw new ArgumentNullException(nameof(password));
             _repositoryId = repositoryId ?? throw new ArgumentNullException(nameof(repositoryId));
-            _baseUrl = baseUrl.TrimEnd('/') + "/";
+            baseUrl = baseUrl.TrimEnd('/') + "/";
 
             _request = new CreateConnectionRequest
             {
-                Username = _username,
-                Password = _password,
+                Username = username,
+                Password = password,
                 Grant_type = GrantType
             };
-            _client = client ?? new TokenClient(new HttpClient { BaseAddress = new Uri(_baseUrl) });
+            _client = client ?? new TokenClient(new HttpClient { BaseAddress = new Uri(baseUrl) });
         }
 
         public async Task<BeforeSendResult> BeforeSendAsync(HttpRequestMessage httpRequestMessage, CancellationToken cancellationToken)
         {
-            if (string.IsNullOrEmpty(_accessToken))
+            if (string.IsNullOrEmpty(_accessToken) && !string.IsNullOrEmpty(_request.Username) && !string.IsNullOrEmpty(_request.Password))
             {
                 var response = await _client.TokenAsync(_repositoryId, _request, cancellationToken);
                 _accessToken = response?.Access_token;
             }
-            httpRequestMessage.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _accessToken);
+            if (_accessToken != null)
+            {
+                httpRequestMessage.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _accessToken);
+            }
             return new BeforeSendResult();
         }
 
