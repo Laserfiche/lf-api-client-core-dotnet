@@ -32,6 +32,22 @@ namespace Laserfiche.Api.Client.IntegrationTest
         }
 
         [TestMethod]
+        public async Task BeforeSendAsync_NoAccessTokenCreated_Success()
+        {
+            // Arrange
+            _httpRequestHandler = new UsernamePasswordHandler(RepoId, null, null, BaseUrl);
+            using var request = new HttpRequestMessage();
+
+            // Act
+            var result = await _httpRequestHandler.BeforeSendAsync(request, default);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.IsTrue(string.IsNullOrEmpty(result?.RegionalDomain));
+            Assert.AreEqual(null, request.Headers.Authorization);
+        }
+
+        [TestMethod]
         public async Task BeforeSendAsync_ExistingToken_Success()
         {
             // Arrange
