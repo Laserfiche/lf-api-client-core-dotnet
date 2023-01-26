@@ -7,6 +7,8 @@ namespace Laserfiche.Api.Client.UnitTest
     [TestClass]
     public class ProblemDetailsTests
     {
+        private static JsonSerializerSettings jsonSerializerSettings = new JsonSerializerSettings() { MaxDepth = 128 };
+
         [TestMethod]
         public void Create_ReturnMinimalProblemDetails()
         {
@@ -59,9 +61,9 @@ namespace Laserfiche.Api.Client.UnitTest
                 Status = 400,
                 Description = "a description extension property"
             };
-            var serializedObject = JsonConvert.SerializeObject(mockProblemDetails);
+            var serializedObject = JsonConvert.SerializeObject(mockProblemDetails, jsonSerializerSettings);
 
-            var result = JsonConvert.DeserializeObject<ProblemDetails>(serializedObject);
+            var result = JsonConvert.DeserializeObject<ProblemDetails>(serializedObject, jsonSerializerSettings);
 
             Assert.AreEqual(mockProblemDetails.Title, result.Title);
             Assert.AreEqual(mockProblemDetails.Status, result.Status);
@@ -77,9 +79,9 @@ namespace Laserfiche.Api.Client.UnitTest
                 Id = 1,
                 Name = "John",
             };
-            var serializedObject = JsonConvert.SerializeObject(obj);
+            var serializedObject = JsonConvert.SerializeObject(obj, jsonSerializerSettings);
 
-            Assert.ThrowsException<JsonSerializationException>(() => JsonConvert.DeserializeObject<ProblemDetails>(serializedObject));
+            Assert.ThrowsException<JsonSerializationException>(() => JsonConvert.DeserializeObject<ProblemDetails>(serializedObject, jsonSerializerSettings));
         }
 
         private class Student
