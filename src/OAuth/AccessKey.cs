@@ -35,6 +35,8 @@ namespace Laserfiche.Api.Client.OAuth
         [JsonProperty("jwk")]
         public JsonWebKey Jwk { set; get; }
 
+        private static JsonSerializerSettings jsonSerializerSettings = new JsonSerializerSettings() { MaxDepth = 128 };
+
         /// <summary>
         /// Creates an AccessKey using the base-64 encoded access key associated with an OAuth service app,
         /// which can be exported from the Laserfiche Developer Console.
@@ -52,7 +54,7 @@ namespace Laserfiche.Api.Client.OAuth
             var accessKeyStr = Encoding.UTF8.GetString(Convert.FromBase64String(base64EncodedAccessKey));
             try
             {
-                AccessKey accessKey = JsonConvert.DeserializeObject<AccessKey>(accessKeyStr);
+                AccessKey accessKey = JsonConvert.DeserializeObject<AccessKey>(accessKeyStr, jsonSerializerSettings);
                 return accessKey;
             }
             catch(JsonReaderException e)

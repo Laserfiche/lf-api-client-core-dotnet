@@ -8,6 +8,8 @@ namespace Laserfiche.Api.Client.UnitTest
     [TestClass]
     public class ApiExceptionTests
     {
+        private static JsonSerializerSettings jsonSerializerSettings = new JsonSerializerSettings() { MaxDepth = 128 };
+
         private void AssertNullProblemDetailsOptionalProperties(ProblemDetails problemDetails)
         {
             Assert.IsNull(problemDetails.Type);
@@ -195,10 +197,10 @@ namespace Laserfiche.Api.Client.UnitTest
                 TraceId = "TraceId",
                 Extensions = new Dictionary<string, object>() { [extensionsKey] = "value" }
             };
-            string problemDetailsResponseString = JsonConvert.SerializeObject(problemDetails);
+            string problemDetailsResponseString = JsonConvert.SerializeObject(problemDetails, jsonSerializerSettings);
             Exception innerException = new Exception("An error occurred.");
 
-            ApiException exception = ApiException.Create(statusCode, headers, problemDetailsResponseString, null, innerException);
+            ApiException exception = ApiException.Create(statusCode, headers, problemDetailsResponseString, jsonSerializerSettings, innerException);
 
             Assert.AreEqual(problemDetails.Title, exception.ProblemDetails.Title);
             Assert.AreEqual(problemDetails.Type, exception.ProblemDetails.Type);
@@ -230,7 +232,7 @@ namespace Laserfiche.Api.Client.UnitTest
             };
             Exception innerException = new Exception("An error occurred.");
 
-            ApiException exception = ApiException.Create(statusCode, headers, responseString, null, innerException);
+            ApiException exception = ApiException.Create(statusCode, headers, responseString, jsonSerializerSettings, innerException);
 
             Assert.AreEqual($"HTTP status code {statusCode}.", exception.ProblemDetails.Title);
             Assert.AreEqual(statusCode, exception.ProblemDetails.Status);
@@ -252,10 +254,10 @@ namespace Laserfiche.Api.Client.UnitTest
             {
                 [ProblemDetails.OPERATION_ID_HEADER] = new List<string>() { operationId }
             };
-            var responseString = JsonConvert.SerializeObject(new Exception("An error occured."));
+            var responseString = JsonConvert.SerializeObject(new Exception("An error occured."), jsonSerializerSettings);
             Exception innerException = new Exception("An error occurred.");
 
-            ApiException exception = ApiException.Create(statusCode, headers, responseString, null, innerException);
+            ApiException exception = ApiException.Create(statusCode, headers, responseString, jsonSerializerSettings, innerException);
 
             Assert.AreEqual($"HTTP status code {statusCode}.", exception.ProblemDetails.Title);
             Assert.AreEqual(statusCode, exception.ProblemDetails.Status);
