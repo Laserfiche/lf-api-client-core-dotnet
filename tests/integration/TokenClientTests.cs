@@ -28,6 +28,47 @@ namespace Laserfiche.Api.Client.IntegrationTest
         }
 
         [TestMethod]
+        public async Task GetAccessTokenFromServicePrincipalAsync_WithValidScope()
+        {
+            // Initialize an instance of the handler
+            TokenClient client = new(AccessKey.Domain);
+            string scope = "repository.Read";
+
+            // Get tokens for that application
+            var response = await client.GetAccessTokenFromServicePrincipalAsync(ServicePrincipalKey, AccessKey, scope);
+            Assert.IsNotNull(response);
+
+            var tokenResponse = response;
+
+            Assert.IsNotNull(tokenResponse.Access_token);
+            Assert.IsNotNull(tokenResponse.Expires_in);
+            Assert.IsNotNull(tokenResponse.Token_type);
+            Assert.IsNull(tokenResponse.Refresh_token);
+            Assert.IsNotNull(tokenResponse.Scope);
+            Assert.AreEqual(scope, tokenResponse.Scope);
+        }
+
+        [TestMethod]
+        public async Task GetAccessTokenFromServicePrincipalAsync_WithInvalidScope()
+        {
+            // Initialize an instance of the handler
+            TokenClient client = new(AccessKey.Domain);
+            string scope = "repository.read";
+
+            // Get tokens for that application
+            var response = await client.GetAccessTokenFromServicePrincipalAsync(ServicePrincipalKey, AccessKey, scope);
+            Assert.IsNotNull(response);
+
+            var tokenResponse = response;
+
+            Assert.IsNotNull(tokenResponse.Access_token);
+            Assert.IsNotNull(tokenResponse.Expires_in);
+            Assert.IsNotNull(tokenResponse.Token_type);
+            Assert.IsNull(tokenResponse.Refresh_token);
+            Assert.IsNull(tokenResponse.Scope);
+        }
+
+        [TestMethod]
         public async Task GetAccessTokenFromServicePrincipalAsync_WrongDomain()
         {
             // Initialize an instance of the client
