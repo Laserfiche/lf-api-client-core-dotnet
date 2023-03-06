@@ -22,12 +22,15 @@ namespace Laserfiche.Api.Client.HttpHandlers
 
         private readonly ITokenClient _tokenClient;
 
+        private readonly string _scope;
+
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="servicePrincipalKey">The service principal key created for the service principal from the Laserfiche Account Administration.</param>
         /// <param name="accessKey">The access key exported from the Laserfiche Developer Console.</param>
-        public OAuthClientCredentialsHandler(string servicePrincipalKey, AccessKey accessKey)
+        /// <param name="scope">(optional) Specifies the request scopes for the authorization request. Scopes are case-sensitive and space delimited.</param>
+        public OAuthClientCredentialsHandler(string servicePrincipalKey, AccessKey accessKey, string scope = null)
         {
             _servicePrincipalKey = servicePrincipalKey;
             if (string.IsNullOrEmpty(_servicePrincipalKey))
@@ -37,8 +40,8 @@ namespace Laserfiche.Api.Client.HttpHandlers
 
             _accessKey = accessKey;
             _accessKey.IsValid();
-
             _tokenClient = new TokenClient(_accessKey.Domain);
+            _scope = scope;
         }
 
         /// <summary>
@@ -51,7 +54,7 @@ namespace Laserfiche.Api.Client.HttpHandlers
         {
             if (string.IsNullOrEmpty(_accessToken))
             {
-                var response = await _tokenClient.GetAccessTokenFromServicePrincipalAsync(_servicePrincipalKey, _accessKey, cancellationToken);
+                var response = await _tokenClient.GetAccessTokenFromServicePrincipalAsync(_servicePrincipalKey, _accessKey, _scope, cancellationToken);
                 _accessToken = response.Access_token;
             }
 

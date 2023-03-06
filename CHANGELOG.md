@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.3.1
+
+### Features
+- An optional `scope` parameter has been added when requesting an access token for `GetAccessTokenFromCode` and `GetAccessTokenFromServicePrincipalAsync`.
+
 ## 1.3.0
 
 ### Fixes
