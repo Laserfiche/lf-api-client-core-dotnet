@@ -25,10 +25,10 @@ namespace Laserfiche.Api.Client.OAuth
         /// <param name="redirectUri">Authorization endpoint redirect URI.</param>
         /// <param name="clientId">OAuth application client ID.</param>
         /// <param name="clientSecret">OPTIONAL OAuth application client secret. Required for web apps.</param>
-        /// <param name="scope">(optional) The requested space-delimited scopes for the access token.</param>
         /// <param name="codeVerifier">OPTIONAL PKCE code verifier. Required for SPA apps.</param>
+        /// <param name="scope">(optional) The requested space-delimited scopes for the access token.</param>
         /// <returns>A response that contains an access token.</returns>
-        Task<GetAccessTokenResponse> GetAccessTokenFromCode(string code, string redirectUri, string clientId, string clientSecret = null, string scope = null, string codeVerifier = null);
+        Task<GetAccessTokenResponse> GetAccessTokenFromCode(string code, string redirectUri, string clientId, string clientSecret = null, string codeVerifier = null, string scope = null);
 
         /// <summary>
         /// Gets a refreshed access token given a refresh token. These values can be exported from the Laserfiche Developer Console. This is for the authorization code flow for web apps and spa.
