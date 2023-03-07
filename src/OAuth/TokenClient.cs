@@ -29,7 +29,7 @@ namespace Laserfiche.Api.Client.OAuth
             _settings = new Lazy<JsonSerializerSettings>(CreateSerializerSettings);
         }
 
-        public async Task<GetAccessTokenResponse> GetAccessTokenFromServicePrincipalAsync(string servicePrincipalKey, AccessKey accessKey, CancellationToken cancellationToken = default)
+        public async Task<GetAccessTokenResponse> GetAccessTokenFromServicePrincipalAsync(string servicePrincipalKey, AccessKey accessKey, string scope = null, CancellationToken cancellationToken = default)
         {
             if (!string.Equals(_httpClient.BaseAddress.AbsoluteUri, DomainUtils.GetOAuthApiBaseUri(accessKey.Domain), StringComparison.InvariantCultureIgnoreCase))
             {
@@ -40,11 +40,12 @@ namespace Laserfiche.Api.Client.OAuth
             var response = await TokenAsync(new GetAccessTokenRequest()
             {
                 Grant_type = "client_credentials",
+                Scope = scope
             }, bearerAuth);
             return response;
         }
 
-        public async Task<GetAccessTokenResponse> GetAccessTokenFromCode(string code, string redirectUri, string clientId, string clientSecret = null, string codeVerifier = null)
+        public async Task<GetAccessTokenResponse> GetAccessTokenFromCode(string code, string redirectUri, string clientId, string clientSecret = null, string codeVerifier = null, string scope = null)
         {
             string basicAuth = JwtUtils.CreateBasicAuth(clientId, clientSecret);
             var response = await TokenAsync(new GetAccessTokenRequest()
@@ -53,8 +54,8 @@ namespace Laserfiche.Api.Client.OAuth
                 Client_id = clientId,
                 Code = code,
                 Redirect_uri = redirectUri,
-                Code_verifier = codeVerifier
-
+                Code_verifier = codeVerifier,
+                Scope = scope
             }, basicAuth);
             return response;
         }
