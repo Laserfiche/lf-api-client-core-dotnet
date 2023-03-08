@@ -34,6 +34,33 @@ namespace Laserfiche.Api.Client.UnitTest
         }
 
         [TestMethod]
+        public void Create_ReturnMinimalProblemDetails_WithErrorMessageInHeader()
+        {
+            int statusCode = 400;
+            string operationId = "123456789";
+            string errorMessage = "Error%3A%20Repository%20with%20the%20given%20Id%20not%20found%20or%20no%20connection%20could%20be%20made.";
+
+            var headers = new Dictionary<string, IEnumerable<string>>()
+            {
+                [ProblemDetails.OPERATION_ID_HEADER] = new List<string>() { operationId },
+                [ProblemDetails.API_SERVER_ERROR_HEADER] = new List<string>() { errorMessage }
+            };
+
+            ProblemDetails result = ProblemDetails.Create(statusCode, headers);
+
+            Assert.AreEqual("Error: Repository with the given Id not found or no connection could be made.", result.Title);
+            Assert.AreEqual(statusCode, result.Status);
+            Assert.AreEqual(operationId, result.OperationId);
+            Assert.IsNull(result.Type);
+            Assert.IsNull(result.Instance);
+            Assert.IsNull(result.Detail);
+            Assert.IsNull(result.ErrorSource);
+            Assert.IsNull(result.TraceId);
+            Assert.AreEqual(default, result.ErrorCode);
+            Assert.AreEqual(0, result.Extensions.Count);
+        }
+
+        [TestMethod]
         public void Create_NullHeaders_ReturnMinimalProblemDetails_NoOperationId()
         {
             int statusCode = 400;
