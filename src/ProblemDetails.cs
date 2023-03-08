@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 
 namespace Laserfiche.Api.Client
 {
@@ -10,6 +11,7 @@ namespace Laserfiche.Api.Client
     public partial class ProblemDetails
     {
         internal const string OPERATION_ID_HEADER = "X-RequestId";
+        internal const string API_SERVER_ERROR_HEADER = "X-APIServer-Error";
 
         /// <summary>
         /// The problem type.
@@ -79,11 +81,11 @@ namespace Laserfiche.Api.Client
         /// <returns>ProblemDetails</returns>
         public static ProblemDetails Create(int statusCode, IReadOnlyDictionary<string, IEnumerable<string>> headers)
         {
-            return new ProblemDetails()
+            return new ProblemDetails
             {
-                Title = $"HTTP status code {statusCode}.",
                 Status = statusCode,
-                OperationId = headers?.TryGetValue(OPERATION_ID_HEADER, out IEnumerable<string> operationIdHeader) == true ? operationIdHeader.FirstOrDefault() : null,
+                Title = headers?.TryGetValue(API_SERVER_ERROR_HEADER, out IEnumerable<string> apiServerErrorHeader) == true ? WebUtility.UrlDecode(apiServerErrorHeader?.FirstOrDefault()) : $"HTTP status code {statusCode}.",
+                OperationId = headers?.TryGetValue(OPERATION_ID_HEADER, out IEnumerable<string> operationIdHeader) == true ? operationIdHeader.FirstOrDefault() : null
             };
         }
     }
