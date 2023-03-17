@@ -8,16 +8,35 @@ using System.Security.Cryptography;
 
 namespace Laserfiche.Api.Client.Utils
 {
-    internal static class JwtUtils
+    public static class JwtUtils
     {
-        internal static string CreateClientCredentialsAuthorizationJwt(string servicePrincipalKey, AccessKey accessKey, string audience = "laserfiche.com", DateTime? validTo = null)
+        /// <summary>
+        /// Create OAuth 2.0 client_credentials Authorization JWT that can be used with Laserfiche Cloud Token endpoint to request an Access Token.
+        /// The Authorization JWT will expire after 30 minutes.
+        /// </summary>
+        /// <param name="servicePrincipalKey">The service principal key created for the service principal from the Laserfiche Account Administration.</param>
+        /// <param name="accessKey">AccessKey exported from the Laserfiche Developer Console.</param>
+        /// <returns>Authorization JWT.</returns>
+        public static string CreateClientCredentialsAuthorizationJwt(string servicePrincipalKey, AccessKey accessKey)
+        {
+            return CreateClientCredentialsAuthorizationJwt(servicePrincipalKey, accessKey, DateTime.UtcNow.AddMinutes(30));
+        }
+
+        /// <summary>
+        /// Create OAuth 2.0 client_credentials Authorization JWT that can be used with Laserfiche Cloud Token endpoint to request an Access Token.
+        /// </summary>
+        /// <param name="servicePrincipalKey">The service principal key created for the service principal from the Laserfiche Account Administration.</param>
+        /// <param name="accessKey">AccessKey exported from the Laserfiche Developer Console.</param>
+        /// <param name="validTo">The expiration time in UTC for when the authorization JWT expires. Set to null if the JWT never expires.</param>
+        /// <returns>Authorization JWT.</returns>
+        public static string CreateClientCredentialsAuthorizationJwt(string servicePrincipalKey, AccessKey accessKey, DateTime? validTo)
         {
             var claims = new[]
                 {
                     new Claim("client_id", accessKey.ClientId),
                     new Claim("client_secret", servicePrincipalKey),
                 };
-            return CreateSignedJwt(claims, accessKey.Jwk, audience, validTo);
+            return CreateSignedJwt(claims, accessKey.Jwk, "laserfiche.com", validTo);
         }
 
         private static SigningCredentials GetSigningCredentials(JsonWebKey key)
@@ -35,17 +54,18 @@ namespace Laserfiche.Api.Client.Utils
         private static string CreateSignedJwt(IEnumerable<Claim> claims, JsonWebKey key, string audience = "laserfiche.com",
             DateTime? validTo = null)
         {
-            if(validTo == null)
-                validTo = DateTime.UtcNow.AddMinutes(30);
             var signingCredentials = GetSigningCredentials(key);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Audience = audience,
                 Expires = validTo,
                 Subject = new ClaimsIdentity(claims),
-                SigningCredentials = signingCredentials
+                SigningCredentials = signingCredentials,
+                NotBefore = DateTime.UtcNow,
+                IssuedAt = DateTime.UtcNow,
             };
-            return new JsonWebTokenHandler().CreateToken(tokenDescriptor);
+            var tokenHandler = new JsonWebTokenHandler() { SetDefaultTimesOnTokenCreation = false };
+            return tokenHandler.CreateToken(tokenDescriptor);
         }
 
         internal static string CreateBasicAuth(string clientId, string clientSecret)
