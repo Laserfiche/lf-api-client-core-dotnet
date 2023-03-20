@@ -47,7 +47,7 @@ namespace Laserfiche.Api.Client.UnitTest
         }
 
         [TestMethod]
-        public void CreateClientCredentialsAuthorizationJwt_WithoutExpiration()
+        public void CreateClientCredentialsAuthorizationJwt_WithNullExpiration()
         {
             string result = JwtUtils.CreateClientCredentialsAuthorizationJwt(ServicePrincipalKey, AccessKey, null);
 

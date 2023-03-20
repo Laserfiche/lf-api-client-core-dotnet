@@ -10,6 +10,8 @@ namespace Laserfiche.Api.Client.Utils
 {
     public static class JwtUtils
     {
+        private const string AudienceClaim = "laserfiche.com";
+
         /// <summary>
         /// Create OAuth 2.0 client_credentials Authorization JWT that can be used with Laserfiche Cloud Token endpoint to request an Access Token.
         /// The Authorization JWT will expire after 30 minutes.
@@ -36,7 +38,7 @@ namespace Laserfiche.Api.Client.Utils
                     new Claim("client_id", accessKey.ClientId),
                     new Claim("client_secret", servicePrincipalKey),
                 };
-            return CreateSignedJwt(claims, accessKey.Jwk, "laserfiche.com", validTo);
+            return CreateSignedJwt(claims, accessKey.Jwk, validTo);
         }
 
         private static SigningCredentials GetSigningCredentials(JsonWebKey key)
@@ -51,13 +53,12 @@ namespace Laserfiche.Api.Client.Utils
             return new SigningCredentials(ecdsaSecurityKey, SecurityAlgorithms.EcdsaSha256);
         }
 
-        private static string CreateSignedJwt(IEnumerable<Claim> claims, JsonWebKey key, string audience = "laserfiche.com",
-            DateTime? validTo = null)
+        private static string CreateSignedJwt(IEnumerable<Claim> claims, JsonWebKey key, DateTime? validTo = null)
         {
             var signingCredentials = GetSigningCredentials(key);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Audience = audience,
+                Audience = AudienceClaim,
                 Expires = validTo,
                 Subject = new ClaimsIdentity(claims),
                 SigningCredentials = signingCredentials,
