@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.3.2
+
+### Features
+- Expose the `JwtUtils` class allowing clients to create an Authorization JWT used to request an Access Token.
+
 ## 1.3.1
 
 ### Features
