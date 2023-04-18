@@ -15,7 +15,7 @@ namespace Laserfiche.Api.Client.IntegrationTest
             var httpRequestHandler = new OAuthClientCredentialsHandler(ServicePrincipalKey, AccessKey);
             using var request = new System.Net.Http.HttpRequestMessage();
 
-            var result = await httpRequestHandler.BeforeSendAsync(request, default);
+            var result = await httpRequestHandler.BeforeSendAsync(request, default).ConfigureAwait(false);
 
             Assert.AreEqual("Bearer", request.Headers.Authorization.Scheme);
             Assert.IsFalse(string.IsNullOrWhiteSpace(request.Headers.Authorization.Parameter));
@@ -29,8 +29,8 @@ namespace Laserfiche.Api.Client.IntegrationTest
             using var request1 = new System.Net.Http.HttpRequestMessage();
             using var request2 = new System.Net.Http.HttpRequestMessage();
 
-            var result1 = await httpRequestHandler.BeforeSendAsync(request1, default);
-            var result2 = await httpRequestHandler.BeforeSendAsync(request2, default);
+            var result1 = await httpRequestHandler.BeforeSendAsync(request1, default).ConfigureAwait(false);
+            var result2 = await httpRequestHandler.BeforeSendAsync(request2, default).ConfigureAwait(false);
 
             Assert.AreEqual("Bearer", request1.Headers.Authorization.Scheme);
             Assert.AreEqual("Bearer", request2.Headers.Authorization.Scheme);
@@ -46,7 +46,7 @@ namespace Laserfiche.Api.Client.IntegrationTest
             var httpRequestHandler = new OAuthClientCredentialsHandler("a wrong service principal key", AccessKey);
             using var request = new System.Net.Http.HttpRequestMessage();
 
-            var exception = await Assert.ThrowsExceptionAsync<ApiException>(async () => await httpRequestHandler.BeforeSendAsync(request, default));
+            var exception = await Assert.ThrowsExceptionAsync<ApiException>(async () => await httpRequestHandler.BeforeSendAsync(request, default).ConfigureAwait(false)).ConfigureAwait(false);
 
             // Expect the retrieval of access token to fail due to incorrect service principal key
             Assert.AreEqual(401, exception.ProblemDetails.Status);
@@ -67,7 +67,7 @@ namespace Laserfiche.Api.Client.IntegrationTest
             var httpRequestHandler = new OAuthClientCredentialsHandler(ServicePrincipalKey, AccessKey);
             using var response = new System.Net.Http.HttpResponseMessage(statusCode);
 
-            var retry = await httpRequestHandler.AfterSendAsync(response, default);
+            var retry = await httpRequestHandler.AfterSendAsync(response, default).ConfigureAwait(false);
 
             Assert.IsFalse(retry);
         }
@@ -78,7 +78,7 @@ namespace Laserfiche.Api.Client.IntegrationTest
             var httpRequestHandler = new OAuthClientCredentialsHandler(ServicePrincipalKey, AccessKey);
             using var response = new System.Net.Http.HttpResponseMessage(HttpStatusCode.Unauthorized);
 
-            var retry = await httpRequestHandler.AfterSendAsync(response, default);
+            var retry = await httpRequestHandler.AfterSendAsync(response, default).ConfigureAwait(false);
 
             Assert.IsTrue(retry);
         }
@@ -90,7 +90,7 @@ namespace Laserfiche.Api.Client.IntegrationTest
 
             // Get an access token
             using var request1 = new System.Net.Http.HttpRequestMessage();
-            var result1 = await httpRequestHandler.BeforeSendAsync(request1, default);
+            var result1 = await httpRequestHandler.BeforeSendAsync(request1, default).ConfigureAwait(false);
             Assert.AreEqual("Bearer", request1.Headers.Authorization.Scheme);
             Assert.IsFalse(string.IsNullOrWhiteSpace(request1.Headers.Authorization.Parameter));
             Assert.AreEqual(AccessKey.Domain, result1.RegionalDomain);
@@ -98,12 +98,12 @@ namespace Laserfiche.Api.Client.IntegrationTest
 
             // Remove the access token
             using var response = new System.Net.Http.HttpResponseMessage(HttpStatusCode.Unauthorized);
-            var retry = await httpRequestHandler.AfterSendAsync(response, default);
+            var retry = await httpRequestHandler.AfterSendAsync(response, default).ConfigureAwait(false);
             Assert.IsTrue(retry);
 
             // Get a new access token
             using var request2 = new System.Net.Http.HttpRequestMessage();
-            var result2 = await httpRequestHandler.BeforeSendAsync(request2, default);
+            var result2 = await httpRequestHandler.BeforeSendAsync(request2, default).ConfigureAwait(false);
             Assert.AreEqual("Bearer", request2.Headers.Authorization.Scheme);
             Assert.IsFalse(string.IsNullOrWhiteSpace(request2.Headers.Authorization.Parameter));
             Assert.AreEqual(AccessKey.Domain, result2.RegionalDomain);

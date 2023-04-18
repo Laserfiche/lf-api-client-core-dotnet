@@ -26,6 +26,7 @@
     <RepositoryUrl>https://github.com/Laserfiche/lf-api-client-core-dotnet</RepositoryUrl>
     <RepositoryType>GitHub</RepositoryType>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
   </PropertyGroup>
 
   <ItemGroup>

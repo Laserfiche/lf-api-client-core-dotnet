@@ -22,7 +22,7 @@ namespace Laserfiche.Api.Client.IntegrationTest
             using var request = new HttpRequestMessage();
 
             // Act
-            var result = await _httpRequestHandler.BeforeSendAsync(request, default);
+            var result = await _httpRequestHandler.BeforeSendAsync(request, default).ConfigureAwait(false);
 
             // Assert
             Assert.IsNotNull(result);
@@ -40,8 +40,8 @@ namespace Laserfiche.Api.Client.IntegrationTest
             using var request2 = new HttpRequestMessage();
 
             // Act
-            var result1 = await _httpRequestHandler.BeforeSendAsync(request1, default);
-            var result2 = await _httpRequestHandler.BeforeSendAsync(request2, default);
+            var result1 = await _httpRequestHandler.BeforeSendAsync(request1, default).ConfigureAwait(false);
+            var result2 = await _httpRequestHandler.BeforeSendAsync(request2, default).ConfigureAwait(false);
 
             // Assert
             Assert.IsNotNull(result2);
@@ -59,7 +59,7 @@ namespace Laserfiche.Api.Client.IntegrationTest
             using var request = new HttpRequestMessage();
 
             // Assert
-            var ex = await Assert.ThrowsExceptionAsync<ApiException>(() => _httpRequestHandler.BeforeSendAsync(request, new CancellationToken()));
+            var ex = await Assert.ThrowsExceptionAsync<ApiException>(() => _httpRequestHandler.BeforeSendAsync(request, new CancellationToken())).ConfigureAwait(false);
             Assert.AreEqual((int)status, ex.ProblemDetails.Status);
             Assert.AreEqual(ex.ProblemDetails.Status, ex.StatusCode);
             Assert.IsNotNull(ex.ProblemDetails.Type);
@@ -92,15 +92,15 @@ namespace Laserfiche.Api.Client.IntegrationTest
             // Arrange
             _httpRequestHandler = new UsernamePasswordHandler(RepoId, Username, Password, BaseUrl);
             using var request1 = new HttpRequestMessage();
-            var result1 = await _httpRequestHandler.BeforeSendAsync(request1, default);
+            var result1 = await _httpRequestHandler.BeforeSendAsync(request1, default).ConfigureAwait(false);
 
             // Act
-            var retry = await _httpRequestHandler.AfterSendAsync(new HttpResponseMessage(HttpStatusCode.Unauthorized), default);
+            var retry = await _httpRequestHandler.AfterSendAsync(new HttpResponseMessage(HttpStatusCode.Unauthorized), default).ConfigureAwait(false);
 
             // Assert
             Assert.IsTrue(retry);
             using var request2 = new HttpRequestMessage();
-            var result2 = await _httpRequestHandler.BeforeSendAsync(request2, default);
+            var result2 = await _httpRequestHandler.BeforeSendAsync(request2, default).ConfigureAwait(false);
             Assert.IsNotNull(result2);
             Assert.IsTrue(string.IsNullOrEmpty(result2?.RegionalDomain));
             Assert.AreEqual("Bearer", request2.Headers.Authorization.Scheme);

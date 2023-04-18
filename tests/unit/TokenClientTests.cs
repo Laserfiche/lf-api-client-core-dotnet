@@ -48,7 +48,7 @@ namespace Laserfiche.Api.Client.UnitTest
         public async Task GetAccessTokenFromServicePrincipalAsync_Success()
         {
             TokenClient client = mockTokenClient.Object;
-            await client.GetAccessTokenFromServicePrincipalAsync(servicePrincipalKey, accessKey);
+            await client.GetAccessTokenFromServicePrincipalAsync(servicePrincipalKey, accessKey).ConfigureAwait(false);
             mockTokenClient.Verify(tokenClient => tokenClient.TokenAsync(It.Is<GetAccessTokenRequest>(request => request.Grant_type == "client_credentials"), It.IsNotNull<string>(), It.IsAny<CancellationToken>()));
         }
     }

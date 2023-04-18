@@ -16,7 +16,7 @@ namespace Laserfiche.Api.Client.IntegrationTest
             TokenClient client = new(AccessKey.Domain);
 
             // Get tokens for that application
-            var response = await client.GetAccessTokenFromServicePrincipalAsync(ServicePrincipalKey, AccessKey);
+            var response = await client.GetAccessTokenFromServicePrincipalAsync(ServicePrincipalKey, AccessKey).ConfigureAwait(false);
             Assert.IsNotNull(response);
 
             var tokenResponse = response;
@@ -35,7 +35,7 @@ namespace Laserfiche.Api.Client.IntegrationTest
             string scope = "repository.Read";
 
             // Get tokens for that application
-            var response = await client.GetAccessTokenFromServicePrincipalAsync(ServicePrincipalKey, AccessKey, scope);
+            var response = await client.GetAccessTokenFromServicePrincipalAsync(ServicePrincipalKey, AccessKey, scope).ConfigureAwait(false);
             Assert.IsNotNull(response);
 
             var tokenResponse = response;
@@ -56,7 +56,7 @@ namespace Laserfiche.Api.Client.IntegrationTest
             string scope = "repository.read";
 
             // Get tokens for that application
-            var response = await client.GetAccessTokenFromServicePrincipalAsync(ServicePrincipalKey, AccessKey, scope);
+            var response = await client.GetAccessTokenFromServicePrincipalAsync(ServicePrincipalKey, AccessKey, scope).ConfigureAwait(false);
             Assert.IsNotNull(response);
 
             var tokenResponse = response;
@@ -75,7 +75,7 @@ namespace Laserfiche.Api.Client.IntegrationTest
             TokenClient client = new("some.random.string");
 
             // Expect failed attempt to get access token since the domain is wrong
-            await Assert.ThrowsExceptionAsync<ArgumentOutOfRangeException>(async () => await client.GetAccessTokenFromServicePrincipalAsync(ServicePrincipalKey, AccessKey));
+            await Assert.ThrowsExceptionAsync<ArgumentOutOfRangeException>(async () => await client.GetAccessTokenFromServicePrincipalAsync(ServicePrincipalKey, AccessKey).ConfigureAwait(false)).ConfigureAwait(false);
         }
 
         [TestMethod]
@@ -85,7 +85,7 @@ namespace Laserfiche.Api.Client.IntegrationTest
             TokenClient client = new(AccessKey.Domain);
 
             // Expect the retrieval of access token to fail due to incorrect service principal key
-            var exception = await Assert.ThrowsExceptionAsync<ApiException>(async () => await client.GetAccessTokenFromServicePrincipalAsync("a wrong service principal key", AccessKey));
+            var exception = await Assert.ThrowsExceptionAsync<ApiException>(async () => await client.GetAccessTokenFromServicePrincipalAsync("a wrong service principal key", AccessKey).ConfigureAwait(false)).ConfigureAwait(false);
             Assert.AreEqual(401, exception.ProblemDetails.Status);
             Assert.AreEqual(exception.ProblemDetails.Status, exception.StatusCode);
             Assert.IsNotNull(exception.ProblemDetails.Title);
