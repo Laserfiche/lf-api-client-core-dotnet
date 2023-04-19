@@ -41,7 +41,7 @@ namespace Laserfiche.Api.Client.OAuth
             {
                 Grant_type = "client_credentials",
                 Scope = scope
-            }, bearerAuth);
+            }, bearerAuth).ConfigureAwait(false);
             return response;
         }
 
@@ -56,7 +56,7 @@ namespace Laserfiche.Api.Client.OAuth
                 Redirect_uri = redirectUri,
                 Code_verifier = codeVerifier,
                 Scope = scope
-            }, basicAuth);
+            }, basicAuth).ConfigureAwait(false);
             return response;
         }
 
@@ -68,7 +68,7 @@ namespace Laserfiche.Api.Client.OAuth
                 Grant_type = "refresh_token",
                 Client_id = clientId,
                 Refresh_token = refreshToken
-            }, basicAuth);
+            }, basicAuth).ConfigureAwait(false);
             return response;
         }
 

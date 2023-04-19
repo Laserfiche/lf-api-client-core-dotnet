@@ -32,7 +32,7 @@ namespace Laserfiche.Api.Client.UnitTest
             _handler = new UsernamePasswordHandler(_repoId, _username, _password, _baseUrl, tokenClientMock.Object);
             
             // Act
-            var result = await _handler.BeforeSendAsync(_request, new CancellationToken());
+            var result = await _handler.BeforeSendAsync(_request, new CancellationToken()).ConfigureAwait(false);
 
             // Assert
             tokenClientMock.Verify(mock => mock.TokenAsync(It.IsAny<string>(), It.IsAny<CreateConnectionRequest>(), It.IsAny<CancellationToken>()), Times.Once());
@@ -55,8 +55,8 @@ namespace Laserfiche.Api.Client.UnitTest
             _handler = new UsernamePasswordHandler(_repoId, _username, _password, _baseUrl, tokenClientMock.Object);
 
             // Act
-            var result = await _handler.BeforeSendAsync(_request, new CancellationToken());
-            result = await _handler.BeforeSendAsync(_request, new CancellationToken());
+            var result = await _handler.BeforeSendAsync(_request, new CancellationToken()).ConfigureAwait(false);
+            result = await _handler.BeforeSendAsync(_request, new CancellationToken()).ConfigureAwait(false);
 
             // Assert
             tokenClientMock.Verify(mock => mock.TokenAsync(It.IsAny<string>(), It.IsAny<CreateConnectionRequest>(), It.IsAny<CancellationToken>()), Times.Once());
@@ -85,7 +85,7 @@ namespace Laserfiche.Api.Client.UnitTest
             _handler = new UsernamePasswordHandler(_repoId, _username, _password, _baseUrl, tokenClientMock.Object);
 
             // Assert
-            var ex = await Assert.ThrowsExceptionAsync<ApiException>(()=>_handler.BeforeSendAsync(_request, new CancellationToken()));
+            var ex = await Assert.ThrowsExceptionAsync<ApiException>(() => _handler.BeforeSendAsync(_request, new CancellationToken())).ConfigureAwait(false);
             Assert.AreEqual(type, ex.ProblemDetails.Type);
             Assert.AreEqual(title, ex.ProblemDetails.Title);
             Assert.AreEqual(status, ex.ProblemDetails.Status);
@@ -106,7 +106,7 @@ namespace Laserfiche.Api.Client.UnitTest
             _handler = new UsernamePasswordHandler(_repoId, _username, _password, _baseUrl);
 
             // Act
-            var result = await _handler.AfterSendAsync(response, new CancellationToken());
+            var result = await _handler.AfterSendAsync(response, new CancellationToken()).ConfigureAwait(false);
 
             // Assert
             Assert.IsFalse(result);
@@ -123,7 +123,7 @@ namespace Laserfiche.Api.Client.UnitTest
             _handler = new UsernamePasswordHandler(_repoId, _username, _password, _baseUrl);
 
             // Act
-            var result = await _handler.AfterSendAsync(response, new CancellationToken());
+            var result = await _handler.AfterSendAsync(response, new CancellationToken()).ConfigureAwait(false);
 
             // Assert
             Assert.IsTrue(result);

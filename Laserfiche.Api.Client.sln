@@ -1,13 +1,18 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.32228.343
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33424.131
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Laserfiche.Api.Client.Core", "src\Laserfiche.Api.Client.Core.csproj", "{72D079E4-86F9-4BFE-974A-FAD4DF0A06AB}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Laserfiche.Api.Client.IntegrationTest", "tests\integration\Laserfiche.Api.Client.IntegrationTest.csproj", "{A2CA5D42-FDB4-4CF3-949E-64B9570D53A2}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Laserfiche.Api.Client.UnitTest", "tests\unit\Laserfiche.Api.Client.UnitTest.csproj", "{DD5EF380-51BC-4625-B9AF-32306A97736A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E4E4BCE6-6D1E-413C-95AF-92F8DCEA9C63}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

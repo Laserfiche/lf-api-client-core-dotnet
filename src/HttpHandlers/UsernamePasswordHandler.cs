@@ -55,7 +55,7 @@ namespace Laserfiche.Api.Client.HttpHandlers
         {
             if (string.IsNullOrEmpty(_accessToken))
             {
-                var response = await _client.TokenAsync(_repositoryId, _request, cancellationToken);
+                var response = await _client.TokenAsync(_repositoryId, _request, cancellationToken).ConfigureAwait(false);
                 _accessToken = response?.Access_token;
             }
             httpRequestMessage.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _accessToken);
