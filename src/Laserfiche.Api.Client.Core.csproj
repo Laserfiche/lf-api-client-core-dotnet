@@ -11,7 +11,7 @@
     <PackageProjectUrl>https://github.com/Laserfiche/lf-api-client-core-dotnet</PackageProjectUrl>
     <TargetFramework>netstandard2.0</TargetFramework>
     <PackageTags>Laserfiche OAuth OAuth2 Authentication Authorization</PackageTags>
-	<PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <NoWarn>$(NoWarn);1591</NoWarn>
     <AssemblyName>Laserfiche.Api.Client.Core</AssemblyName>
@@ -61,7 +61,7 @@
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
-	<None Include="..\README.md" Pack="true" PackagePath="\"/>
+    <None Include="..\README.md" Pack="true" PackagePath="\"/>
   </ItemGroup>
 
 </Project>
