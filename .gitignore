@@ -12,4 +12,4 @@ artifacts/
 *.sln.ide
 *.env
 .vscode/solution-explorer
-generated-documentation
+generated_documentation
