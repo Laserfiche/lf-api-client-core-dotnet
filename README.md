@@ -17,7 +17,7 @@ Technically you could use any editors you like. But it's more convenient if you 
 
 ### Generate the oauth client
 1. Download the `nswag` command line tool. Instructions can be found [here](https://github.com/RicoSuter/NSwag/wiki/CommandLine).
-2. From the root directory of this Git repository, run the command `nswag run oauth-nswag.json`
+2. From the root directory of this Git repository, run the command `pwsh generate-client.ps1`
 
 
 ### Build, Test, and Package
