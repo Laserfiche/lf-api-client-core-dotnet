@@ -14,7 +14,24 @@
       "namespace": "Laserfiche.Api.Client.APIServer",
       "output": "src/APIServer/TokenClient.cs",
       "operationGenerationMode": "MultipleClientsFromFirstTagAndPathSegments",
-      "excludedTypeNames": [ "ProblemDetails" ],
+      "additionalNamespaceUsages": [
+        "System",
+        "System.CodeDom.Compiler",
+        "System.Collections.Generic",
+        "System.Globalization",
+        "System.IO",
+        "System.Linq",
+        "System.Net.Http",
+        "System.Net.Http.Headers",
+        "System.Reflection",
+        "System.Runtime.Serialization",
+        "System.Text",
+        "System.Threading",
+        "System.Threading.Tasks"
+      ],
+      "excludedTypeNames": [
+        "ProblemDetails"
+      ],
       "generateClientInterfaces": true,
       "generateDataAnnotations": false,
       "generateExceptionClasses": false,
