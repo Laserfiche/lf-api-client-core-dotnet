@@ -84,7 +84,7 @@ jobs:
 
     - name: Rewrite doxygen config
       run: |
-        sed -i 's|PROJECT_NUMBER = version|PROJECT_NUMBER = ${{ env.VERSION_PREFIX }}|i' doxygen.conf
+        sed -i 's|PROJECT_NUMBER         = version|PROJECT_NUMBER         = ${{ env.VERSION_PREFIX }}|i' doxygen.conf
 
     - name: Dump doxygen.conf to check rewrite
       run: head -n 200 doxygen.conf
