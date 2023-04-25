@@ -3,7 +3,7 @@ nswag run apiserver-nswag.json
 nswag run oauth-nswag.json
 
 # Remove long namespaces from class names in the generated client
-$client_filepaths = @("./src/APIServer/TokenClient.cs", "src/OAuth/OAuthClient.cs")
+$client_filepaths = @("./src/APIServer/TokenClient.cs", "./src/OAuth/OAuthClient.cs")
 foreach ( $client_filepath in $client_filepaths )
 {
     (Get-Content $client_filepath) `
