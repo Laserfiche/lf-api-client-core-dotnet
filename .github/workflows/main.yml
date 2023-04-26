@@ -9,7 +9,8 @@ on:
   workflow_dispatch:
 
 env:
-  VERSION_PREFIX: "1.3.3"
+  VERSION_PREFIX: '1.3.3'
+  GITHUB_PAGES_BRANCH: 'gh-pages'
 
 jobs:
   build-n-test:
@@ -102,36 +103,6 @@ jobs:
       run: rm -r ./generated_documentation
 
 
-  publish-documentation:
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    environment: documentation
-    if: ${{ github.run_attempt != 1 }}
-    needs: [ build-n-test, build-documentation ] # wait for build to finish
-    steps:
-    - name: Create temporary directory
-      run: mkdir -p ./generated_documentation/html/
-
-    - name: Download a Build Artifact
-      uses: actions/download-artifact@v3.0.0
-      with:
-        name: documentation-artifact
-        path: ${{ github.workspace }}/generated_documentation/html/
-
-    - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: us-west-2 # Use your bucket region here
-
-    - name: Upload docs to S3 bucket
-      run: aws s3 sync ./generated_documentation/html/ s3://apiserver-publish-client-library-docs/${{ github.event.repository.name }}/docs/${{ github.ref_name }} --delete
-
-    - name: Delete temporary directory
-      run: rm -r ./generated_documentation/html/
-
-
   publish-preview-package:
     runs-on: ubuntu-latest
     timeout-minutes: 10
@@ -204,3 +175,43 @@ jobs:
         tag: ${{ env.PACKAGE_VERSION }}
         commit_sha: ${{ github.sha }}
         message: Workflow run ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+
+  publish-documentation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    needs: [ publish-production-package ]
+    steps:
+    - name: Set MAJOR_VERSION environment variable
+      run: |
+        if ${{ github.event_name == 'pull_request' }}; then
+          echo "MAJOR_VERSION=${{ github.base_ref }}" >> $GITHUB_ENV
+        else
+          echo "MAJOR_VERSION=${{ github.ref_name }}" >> $GITHUB_ENV
+        fi
+
+    - uses: actions/checkout@v3
+      with:
+        ref: ${{ env.GITHUB_PAGES_BRANCH }}
+
+    - name: Delete documentation directory
+      run: rm -f -r ./docs/${{ env.MAJOR_VERSION }}
+
+    - name: Create documentation directory
+      run: mkdir -p ./docs/${{ env.MAJOR_VERSION }}
+
+    - name: Download documentation build artifact
+      uses: actions/download-artifact@v3.0.0
+      with:
+        name: documentation-artifact
+        path: ./docs/${{ env.MAJOR_VERSION }}
+
+    - name: Create Pull Request
+      uses: peter-evans/create-pull-request@v4.2.3
+      with:
+        branch: ${{ env.GITHUB_PAGES_BRANCH }}-${{ env.MAJOR_VERSION }}-patch
+        delete-branch: true
+        title: "Automated documentation update for branch ${{ env.MAJOR_VERSION }}"
+        commit-message: "Update for branch ${{ env.MAJOR_VERSION }} created by action ${{ github.run_id }}"
+        body: "Automated pull request for updating the ${{ env.GITHUB_PAGES_BRANCH }} branch ${{ env.MAJOR_VERSION }} version documentation."
+        assignees: ${{ github.actor }}
