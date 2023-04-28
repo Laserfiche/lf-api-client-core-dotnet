@@ -1,0 +1,7 @@
+var namespace_laserfiche_1_1_api_1_1_client_1_1_http_handlers =
+[
+    [ "BeforeSendResult", "class_laserfiche_1_1_api_1_1_client_1_1_http_handlers_1_1_before_send_result.html", "class_laserfiche_1_1_api_1_1_client_1_1_http_handlers_1_1_before_send_result" ],
+    [ "IHttpRequestHandler", "interface_laserfiche_1_1_api_1_1_client_1_1_http_handlers_1_1_i_http_request_handler.html", "interface_laserfiche_1_1_api_1_1_client_1_1_http_handlers_1_1_i_http_request_handler" ],
+    [ "OAuthClientCredentialsHandler", "class_laserfiche_1_1_api_1_1_client_1_1_http_handlers_1_1_o_auth_client_credentials_handler.html", "class_laserfiche_1_1_api_1_1_client_1_1_http_handlers_1_1_o_auth_client_credentials_handler" ],
+    [ "UsernamePasswordHandler", "class_laserfiche_1_1_api_1_1_client_1_1_http_handlers_1_1_username_password_handler.html", "class_laserfiche_1_1_api_1_1_client_1_1_http_handlers_1_1_username_password_handler" ]
+];
