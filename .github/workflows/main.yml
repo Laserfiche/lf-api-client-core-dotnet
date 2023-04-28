@@ -160,36 +160,43 @@ jobs:
     timeout-minutes: 10
     needs: [ publish-preview-package ]
     steps:
-    - name: Set MAJOR_VERSION environment variable
+    - name: Set DOCUMENTATION_VERSION environment variable
       run: |
-        if ${{ github.event_name == 'pull_request' }}; then
-          echo "MAJOR_VERSION=${{ github.base_ref }}" >> $GITHUB_ENV
+        if [[ '${{ github.event_name }}' == 'pull_request' ]]; then
+          echo 'DOCUMENTATION_VERSION=${{ github.base_ref }}' >> $GITHUB_ENV
+        elif [[ '${{ github.ref_protected }}' == 'true' && '${{ github.ref_type }}' == 'branch' ]]; then
+          echo 'DOCUMENTATION_VERSION=${{ github.ref_name }}' >> $GITHUB_ENV
         else
-          echo "MAJOR_VERSION=${{ github.ref_name }}" >> $GITHUB_ENV
+          echo 'Unable to publish documentation for the current branch.'
+          exit 1
         fi
+
+    - name: Print DOCUMENTATION_VERSION environment variable
+      run: |
+        echo 'Publishing documentation to ${{ env.GITHUB_PAGES_BRANCH }} for ${{ env.DOCUMENTATION_VERSION }}.'
 
     - uses: actions/checkout@v3
       with:
         ref: ${{ env.GITHUB_PAGES_BRANCH }}
 
     - name: Delete documentation directory
-      run: rm -f -r ./docs/${{ env.MAJOR_VERSION }}
+      run: rm -f -r ./docs/${{ env.DOCUMENTATION_VERSION }}
 
     - name: Create documentation directory
-      run: mkdir -p ./docs/${{ env.MAJOR_VERSION }}
+      run: mkdir -p ./docs/${{ env.DOCUMENTATION_VERSION }}
 
     - name: Download documentation build artifact
       uses: actions/download-artifact@v3.0.0
       with:
         name: documentation-artifact
-        path: ./docs/${{ env.MAJOR_VERSION }}
+        path: ./docs/${{ env.DOCUMENTATION_VERSION }}
 
     - name: Create Pull Request
       uses: peter-evans/create-pull-request@v4.2.3
       with:
-        branch: ${{ env.GITHUB_PAGES_BRANCH }}-${{ env.MAJOR_VERSION }}-patch
+        branch: ${{ env.GITHUB_PAGES_BRANCH }}-${{ env.DOCUMENTATION_VERSION }}-patch
         delete-branch: true
-        title: "Automated documentation update for branch ${{ env.MAJOR_VERSION }}"
-        commit-message: "Update for branch ${{ env.MAJOR_VERSION }} created by action ${{ github.run_id }}"
-        body: "Automated pull request for updating the ${{ env.GITHUB_PAGES_BRANCH }} branch ${{ env.MAJOR_VERSION }} version documentation."
+        title: "Automated documentation update for ${{ env.DOCUMENTATION_VERSION }} by action ${{ github.run_id }}"
+        commit-message: "Automated documentation update for ${{ env.DOCUMENTATION_VERSION }} by action ${{ github.run_id }}"
+        body: "Automated documentation update for ${{ env.DOCUMENTATION_VERSION }} by action ${{ github.run_id }}"
         assignees: ${{ github.actor }}
