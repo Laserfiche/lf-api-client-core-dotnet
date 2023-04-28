@@ -1,7 +1,0 @@
-{
-	"recommendations": [
-		"jorgeserrano.vscode-csharp-snippets",
-        "fernandoescolar.vscode-solution-explorer",
-        "ms-dotnettools.csharp",
-	]
-}
