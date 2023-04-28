@@ -158,6 +158,7 @@ jobs:
   publish-documentation:
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    environment: github-pages
     needs: [ publish-preview-package ]
     steps:
     - name: Set DOCUMENTATION_VERSION environment variable
