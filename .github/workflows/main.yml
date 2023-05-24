@@ -38,6 +38,8 @@ jobs:
         $dll = Get-Childitem -Path "./src/bin*" -Include "Laserfiche.Api.Client.Core.dll" -Recurse
         $productVersion = $dll[0].VersionInfo.ProductVersion
         echo "Found '$($dll[0].FullName)' with version '$productVersion'"
+        echo "::notice::VERSION_PREFIX=$productVersion"
+        echo "Summary: VERSION_PREFIX=$productVersion" >> $env:GITHUB_STEP_SUMMARY
         echo "VERSION_PREFIX=$productVersion" >> $env:GITHUB_OUTPUT
 
     # - name: Run unit tests
