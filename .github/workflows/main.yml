@@ -17,6 +17,8 @@ jobs:
     timeout-minutes: 10
     outputs:
       VERSION_PREFIX: ${{ steps.get_version_prefix.outputs.VERSION_PREFIX }}
+      output1: ${{ steps.step1.outputs.test }}
+      output2: ${{ steps.step2.outputs.test }}
     steps:
     - uses: actions/checkout@v3
 
@@ -39,6 +41,11 @@ jobs:
         $productVersion = $dll[0].VersionInfo.ProductVersion
         echo "Found '$($dll[0].FullName)' with version '$productVersion'"
         echo "VERSION_PREFIX=$productVersion" >> $GITHUB_OUTPUT
+
+    - id: step1
+      run: echo "test=hello" >> "$GITHUB_OUTPUT"
+    - id: step2
+      run: echo "test=world" >> "$GITHUB_OUTPUT"
 
     # - name: Run unit tests
     #   run: dotnet test tests/unit/Laserfiche.Api.Client.UnitTest.csproj --no-build --verbosity normal --logger "trx;LogFileName=unit-test-results.trx"
@@ -78,6 +85,11 @@ jobs:
     timeout-minutes: 10
     needs: [ build-n-test ] # wait for build to finish
     steps:
+    - env:
+        OUTPUT1: ${{ needs.build-n-test.outputs.output1 }}
+        OUTPUT2: ${{ needs.build-n-test.outputs.output2 }}
+      run: echo "$OUTPUT1 $OUTPUT2"
+
     - uses: actions/checkout@v3
 
     - name: Install dependencies
@@ -94,8 +106,10 @@ jobs:
       run: mkdir -p ./generated_documentation/
 
     - name: Rewrite doxygen config
+      env:
+        VERSION_PREFIX: ${{ needs.build-n-test.outputs.VERSION_PREFIX }}
       run: |
-        sed -i 's|PROJECT_NUMBER         = version|PROJECT_NUMBER         = ${{ needs.build-n-test.outputs.VERSION_PREFIX }}|i' ./doxygen/doxygen.conf
+        sed -i 's|PROJECT_NUMBER         = version|PROJECT_NUMBER         = $VERSION_PREFIX|i' ./doxygen/doxygen.conf
 
     - name: Dump doxygen.conf to check rewrite
       run: head -n 200 ./doxygen/doxygen.conf
