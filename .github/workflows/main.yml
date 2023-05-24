@@ -43,7 +43,6 @@ jobs:
         echo "VERSION_PREFIX=$productVersion" >> $env:GITHUB_OUTPUT
 
     - id: step1
-      shell: pwsh
       run: echo "test=hello" >> "$GITHUB_OUTPUT"
     - id: step2
       run: echo "test=world" >> "$GITHUB_OUTPUT"
@@ -110,7 +109,7 @@ jobs:
       env:
         VERSION_PREFIX: ${{ needs.build-n-test.outputs.VERSION_PREFIX }}
       run: |
-        sed -i 's|PROJECT_NUMBER         = version|PROJECT_NUMBER         = $VERSION_PREFIX|i' ./doxygen/doxygen.conf
+        sed -i 's|PROJECT_NUMBER         = version|PROJECT_NUMBER         = ${{ env.VERSION_PREFIX }}|i' ./doxygen/doxygen.conf
 
     - name: Dump doxygen.conf to check rewrite
       run: head -n 200 ./doxygen/doxygen.conf
