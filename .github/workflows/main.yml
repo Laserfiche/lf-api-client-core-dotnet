@@ -40,7 +40,7 @@ jobs:
         $dll = Get-Childitem -Path "./src/bin*" -Include "Laserfiche.Api.Client.Core.dll" -Recurse
         $productVersion = $dll[0].VersionInfo.ProductVersion
         echo "Found '$($dll[0].FullName)' with version '$productVersion'"
-        echo "VERSION_PREFIX=1.3.3" >> "$GITHUB_OUTPUT"
+        echo "VERSION_PREFIX=$productVersion" >> $env:GITHUB_OUTPUT
 
     - id: step1
       shell: pwsh
