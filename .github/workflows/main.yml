@@ -17,8 +17,6 @@ jobs:
     timeout-minutes: 10
     outputs:
       VERSION_PREFIX: ${{ steps.get_version_prefix.outputs.VERSION_PREFIX }}
-      output1: ${{ steps.step1.outputs.test }}
-      output2: ${{ steps.step2.outputs.test }}
     steps:
     - uses: actions/checkout@v3
 
@@ -41,11 +39,6 @@ jobs:
         $productVersion = $dll[0].VersionInfo.ProductVersion
         echo "Found '$($dll[0].FullName)' with version '$productVersion'"
         echo "VERSION_PREFIX=$productVersion" >> $env:GITHUB_OUTPUT
-
-    - id: step1
-      run: echo "test=hello" >> "$GITHUB_OUTPUT"
-    - id: step2
-      run: echo "test=world" >> "$GITHUB_OUTPUT"
 
     # - name: Run unit tests
     #   run: dotnet test tests/unit/Laserfiche.Api.Client.UnitTest.csproj --no-build --verbosity normal --logger "trx;LogFileName=unit-test-results.trx"
@@ -84,12 +77,9 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     needs: [ build-n-test ] # wait for build to finish
+    env:
+      VERSION_PREFIX: ${{ needs.build-n-test.outputs.VERSION_PREFIX }}
     steps:
-    - env:
-        OUTPUT1: ${{ needs.build-n-test.outputs.output1 }}
-        OUTPUT2: ${{ needs.build-n-test.outputs.output2 }}
-      run: echo "$OUTPUT1 $OUTPUT2"
-
     - uses: actions/checkout@v3
 
     - name: Install dependencies
@@ -106,8 +96,6 @@ jobs:
       run: mkdir -p ./generated_documentation/
 
     - name: Rewrite doxygen config
-      env:
-        VERSION_PREFIX: ${{ needs.build-n-test.outputs.VERSION_PREFIX }}
       run: |
         sed -i 's|PROJECT_NUMBER         = version|PROJECT_NUMBER         = ${{ env.VERSION_PREFIX }}|i' ./doxygen/doxygen.conf
 
@@ -133,6 +121,8 @@ jobs:
     # environment: preview
     if: ${{ github.run_attempt != 1 }}
     needs: [ build-n-test, build-documentation ] # wait for build to finish
+    env:
+      VERSION_PREFIX: ${{ needs.build-n-test.outputs.VERSION_PREFIX }}
     steps:
     - uses: actions/checkout@v3
 
@@ -148,7 +138,7 @@ jobs:
       run: dotnet build --no-restore --configuration release
 
     - name: set PACKAGE_VERSION environment
-      run: echo "PACKAGE_VERSION=${{ needs.build-n-test.outputs.VERSION_PREFIX }}-beta-${{ github.run_id }}" >> $GITHUB_ENV
+      run: echo "PACKAGE_VERSION=${{ env.VERSION_PREFIX }}-beta-${{ github.run_id }}" >> $GITHUB_ENV
 
     - name: Packaging
       run: dotnet pack --no-build --configuration release /p:version=${{ env.PACKAGE_VERSION }}
@@ -170,6 +160,8 @@ jobs:
     environment: production
     if: ${{ github.run_attempt != 1 }}
     needs: [ build-n-test, build-documentation ] # wait for build to finish
+    env:
+      VERSION_PREFIX: ${{ needs.build-n-test.outputs.VERSION_PREFIX }}
     steps:
     - uses: actions/checkout@v3
 
@@ -185,7 +177,7 @@ jobs:
       run: dotnet build --no-restore --configuration release
 
     - name: set PACKAGE_VERSION environment
-      run: echo "PACKAGE_VERSION=${{ needs.build-n-test.outputs.VERSION_PREFIX }}" >> $GITHUB_ENV
+      run: echo "PACKAGE_VERSION=${{ env.VERSION_PREFIX }}" >> $GITHUB_ENV
 
     - name: Packaging
       run: dotnet pack --no-build --configuration release /p:version=${{ env.PACKAGE_VERSION }}
