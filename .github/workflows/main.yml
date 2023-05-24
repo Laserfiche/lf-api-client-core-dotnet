@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     outputs:
-      VERSION_PREFIX: ${{ steps.get_version_prefix.outputs.VERSION_PREFIX }}
+      VERSION_PREFIX: ${{ steps.set_version_prefix.outputs.VERSION_PREFIX }}
     steps:
     - uses: actions/checkout@v3
 
@@ -31,49 +31,48 @@ jobs:
     - name: Build
       run: dotnet build --no-restore
 
-    - name: Get VERSION_PREFIX
-      id: get_version_prefix
+    - name: Set VERSION_PREFIX
+      id: set_version_prefix
       shell: pwsh
       run: |
         $dll = Get-Childitem -Path "./src/bin*" -Include "Laserfiche.Api.Client.Core.dll" -Recurse
         $productVersion = $dll[0].VersionInfo.ProductVersion
         echo "Found '$($dll[0].FullName)' with version '$productVersion'"
-        echo "::notice::VERSION_PREFIX=$productVersion"
-        echo "Summary: VERSION_PREFIX=$productVersion" >> $env:GITHUB_STEP_SUMMARY
+        echo "::notice::The version prefix is '$productVersion'. Verify this is correct before publishing."
         echo "VERSION_PREFIX=$productVersion" >> $env:GITHUB_OUTPUT
 
-    # - name: Run unit tests
-    #   run: dotnet test tests/unit/Laserfiche.Api.Client.UnitTest.csproj --no-build --verbosity normal --logger "trx;LogFileName=unit-test-results.trx"
+    - name: Run unit tests
+      run: dotnet test tests/unit/Laserfiche.Api.Client.UnitTest.csproj --no-build --verbosity normal --logger "trx;LogFileName=unit-test-results.trx"
 
-    # - name: Run integration tests
-    #   id: cloud-integration-test
-    #   env:
-    #     ACCESS_KEY: ${{ secrets.DEV_CA_PUBLIC_USE_INTEGRATION_TEST_ACCESS_KEY }}
-    #     SERVICE_PRINCIPAL_KEY:  ${{ secrets.DEV_CA_PUBLIC_USE_TESTOAUTHSERVICEPRINCIPAL_SERVICE_PRINCIPAL_KEY }}
-    #   run:
-    #     dotnet test tests/integration/Laserfiche.Api.Client.IntegrationTest.csproj --no-build --verbosity normal --logger "trx;LogFileName=integration-test-results.trx" --filter TestCategory=Cloud
+    - name: Run integration tests
+      id: cloud-integration-test
+      env:
+        ACCESS_KEY: ${{ secrets.DEV_CA_PUBLIC_USE_INTEGRATION_TEST_ACCESS_KEY }}
+        SERVICE_PRINCIPAL_KEY:  ${{ secrets.DEV_CA_PUBLIC_USE_TESTOAUTHSERVICEPRINCIPAL_SERVICE_PRINCIPAL_KEY }}
+      run:
+        dotnet test tests/integration/Laserfiche.Api.Client.IntegrationTest.csproj --no-build --verbosity normal --logger "trx;LogFileName=integration-test-results.trx" --filter TestCategory=Cloud
 
-    # - name: Run integration tests on API Server
-    #   if: always() && (steps.cloud-integration-test.outcome == 'success' || steps.cloud-integration-test.outcome == 'failure')
-    #   env:
-    #     REPOSITORY_ID: ${{ secrets.APISERVER_REPOSITORY_ID }}
-    #     APISERVER_USERNAME:  ${{ secrets.APISERVER_USERNAME }}
-    #     APISERVER_PASSWORD:  ${{ secrets.APISERVER_PASSWORD }}
-    #     APISERVER_REPOSITORY_API_BASE_URL:  ${{ secrets.APISERVER_REPOSITORY_API_BASE_URL }}
-    #     ACCESS_KEY: ${{ secrets.DEV_CA_PUBLIC_USE_INTEGRATION_TEST_ACCESS_KEY }}
-    #   run:
-    #     dotnet test tests/integration/Laserfiche.Api.Client.IntegrationTest.csproj --no-build --verbosity normal --logger "trx;LogFileName=integration-test-self-hosted-results.trx" --filter TestCategory=APIServer
+    - name: Run integration tests on API Server
+      if: always() && (steps.cloud-integration-test.outcome == 'success' || steps.cloud-integration-test.outcome == 'failure')
+      env:
+        REPOSITORY_ID: ${{ secrets.APISERVER_REPOSITORY_ID }}
+        APISERVER_USERNAME:  ${{ secrets.APISERVER_USERNAME }}
+        APISERVER_PASSWORD:  ${{ secrets.APISERVER_PASSWORD }}
+        APISERVER_REPOSITORY_API_BASE_URL:  ${{ secrets.APISERVER_REPOSITORY_API_BASE_URL }}
+        ACCESS_KEY: ${{ secrets.DEV_CA_PUBLIC_USE_INTEGRATION_TEST_ACCESS_KEY }}
+      run:
+        dotnet test tests/integration/Laserfiche.Api.Client.IntegrationTest.csproj --no-build --verbosity normal --logger "trx;LogFileName=integration-test-self-hosted-results.trx" --filter TestCategory=APIServer
 
-    # - name: Test Report
-    #   uses: dorny/test-reporter@v1
-    #   if: success() || failure()    # run this step even if previous step failed
-    #   with:
-    #     name: Test Results
-    #     path: '**/*.trx'
-    #     reporter: dotnet-trx
-    #     only-summary: 'false'
-    #     list-tests: 'failed'
-    #     fail-on-error: 'false'
+    - name: Test Report
+      uses: dorny/test-reporter@v1
+      if: success() || failure()    # run this step even if previous step failed
+      with:
+        name: Test Results
+        path: '**/*.trx'
+        reporter: dotnet-trx
+        only-summary: 'false'
+        list-tests: 'failed'
+        fail-on-error: 'false'
 
   build-documentation:
     runs-on: ubuntu-latest
@@ -120,7 +119,7 @@ jobs:
   publish-preview-package:
     runs-on: ubuntu-latest
     timeout-minutes: 10
-    # environment: preview
+    environment: preview
     if: ${{ github.run_attempt != 1 }}
     needs: [ build-n-test, build-documentation ] # wait for build to finish
     env:
@@ -145,15 +144,15 @@ jobs:
     - name: Packaging
       run: dotnet pack --no-build --configuration release /p:version=${{ env.PACKAGE_VERSION }}
 
-    # - name: Publish to Nuget.org
-    #   run: dotnet nuget push ./src/bin/Release/*.nupkg --api-key ${{ secrets.NUGET_KEY }} --source https://api.nuget.org/v3/index.json
+    - name: Publish to Nuget.org
+      run: dotnet nuget push ./src/bin/Release/*.nupkg --api-key ${{ secrets.NUGET_KEY }} --source https://api.nuget.org/v3/index.json
 
-    # - name: Tag commit
-    #   uses: rickstaa/action-create-tag@v1
-    #   with:
-    #     tag: ${{ env.PACKAGE_VERSION }}
-    #     commit_sha: ${{ github.sha }}
-    #     message: Workflow run ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+    - name: Tag commit
+      uses: rickstaa/action-create-tag@v1
+      with:
+        tag: ${{ env.PACKAGE_VERSION }}
+        commit_sha: ${{ github.sha }}
+        message: Workflow run ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
 
   publish-production-package:
