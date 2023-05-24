@@ -15,6 +15,8 @@ jobs:
   build-n-test:
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    outputs:
+      VERSION_PREFIX: ${{ steps.get_version_prefix.outputs.VERSION_PREFIX }}
     steps:
     - uses: actions/checkout@v3
 
@@ -30,12 +32,13 @@ jobs:
       run: dotnet build --no-restore
 
     - name: Get VERSION_PREFIX
+      id: get_version_prefix
       shell: pwsh
       run: |
         $dll = Get-Childitem -Path "./src/bin*" -Include "Laserfiche.Api.Client.Core.dll" -Recurse
         $productVersion = $dll[0].VersionInfo.ProductVersion
         echo "Found '$($dll[0].FullName)' with version '$productVersion'"
-        echo "VERSION_PREFIX=$productVersion" >> $GITHUB_ENV
+        echo "VERSION_PREFIX=$productVersion" >> $GITHUB_OUTPUT
 
     # - name: Run unit tests
     #   run: dotnet test tests/unit/Laserfiche.Api.Client.UnitTest.csproj --no-build --verbosity normal --logger "trx;LogFileName=unit-test-results.trx"
@@ -74,11 +77,10 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     needs: [ build-n-test ] # wait for build to finish
+    env:
+      VERSION_PREFIX: ${{ needs.build-n-test.outputs.VERSION_PREFIX }}
     steps:
     - uses: actions/checkout@v3
-
-    - name: get VERSION_PREFIX environment
-      run: echo ${{ env.VERSION_PREFIX }}
 
     - name: Install dependencies
       run: |
@@ -119,6 +121,8 @@ jobs:
     # environment: preview
     if: ${{ github.run_attempt != 1 }}
     needs: [ build-n-test, build-documentation ] # wait for build to finish
+    env:
+      VERSION_PREFIX: ${{ needs.build-n-test.outputs.VERSION_PREFIX }}
     steps:
     - uses: actions/checkout@v3
 
@@ -156,6 +160,8 @@ jobs:
     environment: production
     if: ${{ github.run_attempt != 1 }}
     needs: [ build-n-test, build-documentation ] # wait for build to finish
+    env:
+      VERSION_PREFIX: ${{ needs.build-n-test.outputs.VERSION_PREFIX }}
     steps:
     - uses: actions/checkout@v3
 
