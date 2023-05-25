@@ -38,7 +38,7 @@ jobs:
         $dll = Get-Childitem -Path "./src/bin*" -Include "Laserfiche.Api.Client.Core.dll" -Recurse
         $productVersion = $dll[0].VersionInfo.ProductVersion
         echo "Found '$($dll[0].FullName)' with version '$productVersion'"
-        echo "::notice::The version prefix is '$productVersion'. Verify this is correct before publishing."
+        echo "::notice::Please verify if the version prefix '$productVersion' is correct before publishing a new package from this workflow."
         echo "VERSION_PREFIX=$productVersion" >> $env:GITHUB_OUTPUT
 
     - name: Run unit tests
