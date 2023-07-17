@@ -27,7 +27,7 @@ jobs:
       run: dotnet restore --ignore-failed-sources
 
     - name: Publish solution
-      run: dotnet publish --no-restore
+      run: dotnet build --no-restore
 
     #- name: 'create an empty ./veracode folder'
     #  run: 'mkdir -p ./veracode'
