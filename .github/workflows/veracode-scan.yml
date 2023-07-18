@@ -43,7 +43,7 @@ jobs:
       with:
         appname: 'lf-api-client-core-dotnet'
         createprofile: true
-        filepath: '$(build.sourcesdirectory)/src/bin/Debug/netstandard2.0'
+        filepath: 'src/bin/Debug/netstandard2.0'
         vid: '${{ secrets.VERACODE_API_ID }}'
         vkey: '${{ secrets.VERACODE_API_KEY }}'
 
