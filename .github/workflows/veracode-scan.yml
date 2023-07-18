@@ -29,6 +29,9 @@ jobs:
     - name: Publish solution
       run: dotnet build --no-restore
 
+    - name: Print out current directory
+      run: pwd
+
     #- name: 'create an empty ./veracode folder'
     #  run: 'mkdir -p ./veracode'
       
