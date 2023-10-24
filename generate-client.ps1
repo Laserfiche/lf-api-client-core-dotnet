@@ -1,3 +1,5 @@
+# Copyright (c) Laserfiche
+# Licensed under the MIT License. See LICENSE in the project root for license information.
 # Generate the client
 nswag run apiserver-nswag.json
 nswag run oauth-nswag.json
