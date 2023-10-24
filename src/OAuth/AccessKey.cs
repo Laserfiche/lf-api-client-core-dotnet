@@ -1,4 +1,6 @@
-﻿using Microsoft.IdentityModel.Tokens;
+// Copyright (c) Laserfiche
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using System;
 using System.Text;

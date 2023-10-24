@@ -1,4 +1,6 @@
-﻿using Laserfiche.Api.Client.OAuth;
+// Copyright (c) Laserfiche
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+using Laserfiche.Api.Client.OAuth;
 using Laserfiche.Api.Client.Utils;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
