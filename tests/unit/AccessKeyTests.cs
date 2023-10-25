@@ -1,4 +1,6 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+// Copyright (c) Laserfiche.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.IdentityModel.Tokens;
 using Laserfiche.Api.Client.OAuth;
 using System;
@@ -35,10 +37,10 @@ namespace Laserfiche.Api.Client.UnitTest
         [ExpectedException(typeof(FormatException))]
         [DataTestMethod]
         [DataRow("YXNkYXNkYXNkYXNkYWQ=")]
-        [DataRow("你好你")]
+        [DataRow("???")]
         [DataRow("c\nc")]
         [DataRow("This is a \"string\" in C#.")]
-        [DataRow("😀 😃 😄 😁")]
+        [DataRow("?? ?? ?? ??")]
         public void CreateFromBase64EncodedAccessKey_InvalidBase64(string base64EncodedAccessKey)
         {
             AccessKey.CreateFromBase64EncodedAccessKey(base64EncodedAccessKey);
