@@ -93,17 +93,8 @@ namespace Laserfiche.Api.Client
 
         private static string GetHeaderValue(IReadOnlyDictionary<string, IEnumerable<string>> headers, string headerName)
         {
-            string value = null;
-            if (headers?.TryGetValue(headerName, out IEnumerable<string> values) == true)
-            {
-                value = WebUtility.UrlDecode(values.FirstOrDefault());
-            }
-            else if (headers?.TryGetValue(headerName.ToLower(), out IEnumerable<string> values2) == true)
-            {
-                value = WebUtility.UrlDecode(values2.FirstOrDefault());
-            }
-
-            return value;
+            var values = headers.FirstOrDefault(entry => entry.Key.Equals(headerName, System.StringComparison.OrdinalIgnoreCase)).Value;
+            return values?.FirstOrDefault();
         }
     }
 }
