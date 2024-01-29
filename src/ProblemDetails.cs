@@ -86,9 +86,24 @@ namespace Laserfiche.Api.Client
             return new ProblemDetails
             {
                 Status = statusCode,
-                Title = headers?.TryGetValue(API_SERVER_ERROR_HEADER, out IEnumerable<string> apiServerErrorHeader) == true ? WebUtility.UrlDecode(apiServerErrorHeader?.FirstOrDefault()) : $"HTTP status code {statusCode}.",
-                OperationId = headers?.TryGetValue(OPERATION_ID_HEADER, out IEnumerable<string> operationIdHeader) == true ? operationIdHeader.FirstOrDefault() : null
+                Title = GetHeaderValue(headers, API_SERVER_ERROR_HEADER) ?? $"HTTP status code {statusCode}.", 
+                OperationId = GetHeaderValue(headers, OPERATION_ID_HEADER)
             };
+        }
+
+        private static string GetHeaderValue(IReadOnlyDictionary<string, IEnumerable<string>> headers, string headerName)
+        {
+            string value = null;
+            if (headers?.TryGetValue(headerName, out IEnumerable<string> values) == true)
+            {
+                value = WebUtility.UrlDecode(values.FirstOrDefault());
+            }
+            else if (headers?.TryGetValue(headerName.ToLower(), out IEnumerable<string> values2) == true)
+            {
+                value = WebUtility.UrlDecode(values2.FirstOrDefault());
+            }
+
+            return value;
         }
     }
 }
