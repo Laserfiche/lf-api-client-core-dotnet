@@ -4,7 +4,6 @@
 
 ### Chore & Maintenance
 
-- Update `Newtonsoft.Json` to `13.0.3`
 - Update `Microsoft.IdentityModel.JsonWebTokens` to `7.3.1`
 
 ## 1.3.2
