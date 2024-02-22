@@ -31,7 +31,7 @@
                         <td id="projectlogo"><img alt="Logo" src="logo.png" /></td>
                         <td id="projectalign" style="padding-left: 0.5em;">
                             <div id="projectname">lf-api-client-core-dotnet
-                                &#160;<span id="projectnumber">1.3.3</span>
+                                &#160;<span id="projectnumber">1.3.4</span>
                             </div>
                         </td>
                     </tr>
@@ -90,34 +90,29 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
 <div class="title">Laserfiche API Client Core .NET </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="md_README"></a>.NET implementation of various foundational APIs for Laserfiche, including authorization APIs such as OAuth 2.0 flows for secure and easy access to Laserfiche APIs.</p>
-<p>Documentation <a href="https://developer.laserfiche.com/libraries.html">Laserfiche OAuth 2.0 Authorization Server API</a>.</p>
-<h1><a class="anchor" id="autotoc_md22"></a>
-Overview</h1>
+<div class="textblock"><p><a class="anchor" id="md_README"></a><a href="https://www.nuget.org/packages/Laserfiche.Api.Client.Core"><img src="https://img.shields.io/nuget/v/Laserfiche.Api.Client.Core.svg?style=flat-square" alt="NuGet version (Laserfiche.Api.Client.Core)" style="pointer-events: none;" class="inline"/></a></p>
+<p>.NET implementation of various foundational APIs for Laserfiche, including authorization APIs such as OAuth 2.0 flows for secure and easy access to Laserfiche APIs.</p>
+<h1><a class="anchor" id="autotoc_md24"></a>
+Documentation</h1>
 <ul>
-<li><code>src</code> contains the implementation of the foundational authentication/authorization related code for APIs of various Laserfiche products.</li>
-<li><code>src\APIServer</code> contains all Laserfiche Self-Hosted API Server authentication/authorization related client code.</li>
-<li><code>src\HttpHandlers</code> contains a client implementation of OAuth 2.0 Client Credentials Flow.</li>
-<li><code>src\OAuth</code> contains all Laserfiche Cloud OAuth related client code.</li>
-<li><code>src\Utils</code> contains all utility functions and classes for Laserfiche APIs.</li>
-<li><code>tests\integration</code> contains all integration tests. To run them, you either use GitHub Workflows, or you could provide the <code>.env</code> files in your file system and run them there.</li>
-<li><code>test\unit</code> contains all unit tests.</li>
+<li><a href="https://developer.laserfiche.com/">Laserfiche Developer Center</a></li>
+<li><a href="https://laserfiche.github.io/lf-api-client-core-dotnet/">Laserfiche API Client Core .NET Library Documentation</a></li>
 </ul>
-<h1><a class="anchor" id="autotoc_md23"></a>
+<h1><a class="anchor" id="autotoc_md25"></a>
+Change Log</h1>
+<p>See CHANGELOG <a href="https://github.com/Laserfiche/lf-api-client-core-dotnet/blob/HEAD/CHANGELOG.md">here</a>.</p>
+<h1><a class="anchor" id="autotoc_md26"></a>
 How to contribute</h1>
-<p>Technically you could use any editors you like. But it's more convenient if you are using either Visual Studio Code or Visual Studio. Here is a few useful commands for building and testing the app.</p>
-<h2><a class="anchor" id="autotoc_md24"></a>
-Generate the oauth client</h2>
+<p>Useful commands for building and testing the app.</p>
+<h2><a class="anchor" id="autotoc_md27"></a>
+Generate the client</h2>
 <ol type="1">
 <li>Download the <code>nswag</code> command line tool. Instructions can be found <a href="https://github.com/RicoSuter/NSwag/wiki/CommandLine">here</a>.</li>
 <li>From the root directory of this Git repository, run the command <code>pwsh generate-client.ps1</code></li>
 </ol>
-<h2><a class="anchor" id="autotoc_md25"></a>
+<h2><a class="anchor" id="autotoc_md28"></a>
 Build, Test, and Package</h2>
-<p>See the <a href="https://github.com/Laserfiche/lf-api-client-core-dotnet/blob/HEAD/.github/workflows/main.yml">.github/workflows/main.yml</a>.</p>
-<h2><a class="anchor" id="autotoc_md26"></a>
-Change Log</h2>
-<p>See CHANGELOG <a href="https://github.com/Laserfiche/lf-api-client-core-dotnet/blob/HEAD/CHANGELOG.md">here</a>. </p>
+<p>See the <a href="https://github.com/Laserfiche/lf-api-client-core-dotnet/blob/HEAD/.github/workflows/main.yml">.github/workflows/main.yml</a>. </p>
 </div></div><!-- PageDoc -->
 </div><!-- contents -->
 </div><!-- doc-content -->
