@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.3.5
+
+### Chore & Maintenance
+
+- Update `Moq`, `MsTest.TestAdapter`, and `MsTest.TestFramework` to update vulnerable dependencies
+
 ## 1.3.4
 
 ### Chore & Maintenance
