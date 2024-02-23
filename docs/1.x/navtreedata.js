@@ -26,40 +26,43 @@ var NAVTREE =
 [
   [ "lf-api-client-core-dotnet", "index.html", [
     [ "Laserfiche API Client Core .NET", "index.html", [
-      [ "Overview", "index.html#autotoc_md22", null ],
-      [ "How to contribute", "index.html#autotoc_md23", [
-        [ "Generate the oauth client", "index.html#autotoc_md24", null ],
-        [ "Build, Test, and Package", "index.html#autotoc_md25", null ],
-        [ "Change Log", "index.html#autotoc_md26", null ]
+      [ "Documentation", "index.html#autotoc_md24", null ],
+      [ "Change Log", "index.html#autotoc_md25", null ],
+      [ "How to contribute", "index.html#autotoc_md26", [
+        [ "Generate the client", "index.html#autotoc_md27", null ],
+        [ "Build, Test, and Package", "index.html#autotoc_md28", null ]
       ] ]
     ] ],
     [ "Changelog", "md__c_h_a_n_g_e_l_o_g.html", [
-      [ "1.3.2", "md__c_h_a_n_g_e_l_o_g.html#autotoc_md1", [
-        [ "Features", "md__c_h_a_n_g_e_l_o_g.html#autotoc_md2", null ]
+      [ "1.3.4", "md__c_h_a_n_g_e_l_o_g.html#autotoc_md1", [
+        [ "Chore & Maintenance", "md__c_h_a_n_g_e_l_o_g.html#autotoc_md2", null ]
       ] ],
-      [ "1.3.1", "md__c_h_a_n_g_e_l_o_g.html#autotoc_md3", [
+      [ "1.3.2", "md__c_h_a_n_g_e_l_o_g.html#autotoc_md3", [
         [ "Features", "md__c_h_a_n_g_e_l_o_g.html#autotoc_md4", null ]
       ] ],
-      [ "1.3.0", "md__c_h_a_n_g_e_l_o_g.html#autotoc_md5", [
-        [ "Fixes", "md__c_h_a_n_g_e_l_o_g.html#autotoc_md6", null ]
+      [ "1.3.1", "md__c_h_a_n_g_e_l_o_g.html#autotoc_md5", [
+        [ "Features", "md__c_h_a_n_g_e_l_o_g.html#autotoc_md6", null ]
       ] ],
-      [ "1.2.3", "md__c_h_a_n_g_e_l_o_g.html#autotoc_md7", [
+      [ "1.3.0", "md__c_h_a_n_g_e_l_o_g.html#autotoc_md7", [
         [ "Fixes", "md__c_h_a_n_g_e_l_o_g.html#autotoc_md8", null ]
+      ] ],
+      [ "1.2.3", "md__c_h_a_n_g_e_l_o_g.html#autotoc_md9", [
+        [ "Fixes", "md__c_h_a_n_g_e_l_o_g.html#autotoc_md10", null ]
       ] ]
     ] ],
     [ "Contributor Covenant Code of Conduct", "md__c_o_d_e__o_f__c_o_n_d_u_c_t.html", [
-      [ "Our Pledge", "md__c_o_d_e__o_f__c_o_n_d_u_c_t.html#autotoc_md10", null ],
-      [ "Our Standards", "md__c_o_d_e__o_f__c_o_n_d_u_c_t.html#autotoc_md11", null ],
-      [ "Enforcement Responsibilities", "md__c_o_d_e__o_f__c_o_n_d_u_c_t.html#autotoc_md12", null ],
-      [ "Scope", "md__c_o_d_e__o_f__c_o_n_d_u_c_t.html#autotoc_md13", null ],
-      [ "Enforcement", "md__c_o_d_e__o_f__c_o_n_d_u_c_t.html#autotoc_md14", null ],
-      [ "Enforcement Guidelines", "md__c_o_d_e__o_f__c_o_n_d_u_c_t.html#autotoc_md15", [
-        [ "1. Correction", "md__c_o_d_e__o_f__c_o_n_d_u_c_t.html#autotoc_md16", null ],
-        [ "2. Warning", "md__c_o_d_e__o_f__c_o_n_d_u_c_t.html#autotoc_md17", null ],
-        [ "3. Temporary Ban", "md__c_o_d_e__o_f__c_o_n_d_u_c_t.html#autotoc_md18", null ],
-        [ "4. Permanent Ban", "md__c_o_d_e__o_f__c_o_n_d_u_c_t.html#autotoc_md19", null ]
+      [ "Our Pledge", "md__c_o_d_e__o_f__c_o_n_d_u_c_t.html#autotoc_md12", null ],
+      [ "Our Standards", "md__c_o_d_e__o_f__c_o_n_d_u_c_t.html#autotoc_md13", null ],
+      [ "Enforcement Responsibilities", "md__c_o_d_e__o_f__c_o_n_d_u_c_t.html#autotoc_md14", null ],
+      [ "Scope", "md__c_o_d_e__o_f__c_o_n_d_u_c_t.html#autotoc_md15", null ],
+      [ "Enforcement", "md__c_o_d_e__o_f__c_o_n_d_u_c_t.html#autotoc_md16", null ],
+      [ "Enforcement Guidelines", "md__c_o_d_e__o_f__c_o_n_d_u_c_t.html#autotoc_md17", [
+        [ "1. Correction", "md__c_o_d_e__o_f__c_o_n_d_u_c_t.html#autotoc_md18", null ],
+        [ "2. Warning", "md__c_o_d_e__o_f__c_o_n_d_u_c_t.html#autotoc_md19", null ],
+        [ "3. Temporary Ban", "md__c_o_d_e__o_f__c_o_n_d_u_c_t.html#autotoc_md20", null ],
+        [ "4. Permanent Ban", "md__c_o_d_e__o_f__c_o_n_d_u_c_t.html#autotoc_md21", null ]
       ] ],
-      [ "Attribution", "md__c_o_d_e__o_f__c_o_n_d_u_c_t.html#autotoc_md20", null ]
+      [ "Attribution", "md__c_o_d_e__o_f__c_o_n_d_u_c_t.html#autotoc_md22", null ]
     ] ],
     [ "Namespaces", "namespaces.html", [
       [ "Namespace List", "namespaces.html", "namespaces_dup" ]
