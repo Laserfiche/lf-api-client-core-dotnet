@@ -12,8 +12,8 @@ namespace Laserfiche.Api.Client
     /// </summary>
     public partial class ProblemDetails
     {
-        internal const string OPERATION_ID_HEADER = "X-RequestId";
-        internal const string API_SERVER_ERROR_HEADER = "X-APIServer-Error";
+        internal const string OPERATION_ID_HEADER = "x-requestid";
+        internal const string API_SERVER_ERROR_HEADER = "x-apiserver-error";
 
         /// <summary>
         /// The problem type.
