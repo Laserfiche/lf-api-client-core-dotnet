@@ -3,6 +3,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Laserfiche.Api.Client
 {
@@ -90,6 +91,24 @@ namespace Laserfiche.Api.Client
         {
             ProblemDetails problemDetails = ProblemDetails.Create(statusCode, headers);
             return Create(statusCode, headers, problemDetails, innerException);
+        }
+
+        /// <summary>
+        /// Create an <see cref="ApiException"/>.
+        /// </summary>
+        /// <returns>ApiException</returns>
+        public static ApiException Create(IEnumerable<ProblemDetails> problemDetailsToConvert)
+        {
+            ProblemDetails firstProblemDetails = problemDetailsToConvert.FirstOrDefault();
+            if (firstProblemDetails == null) return null;
+
+            ApiException apiException = new ApiException(firstProblemDetails.Title, firstProblemDetails.Status, null, firstProblemDetails, null);
+            for (int i = 0; i < problemDetailsToConvert.Count(); i++)
+            {
+                ProblemDetails item = problemDetailsToConvert.ElementAt(i);
+                apiException.Data.Add($"ProblemDetails-{i}", item);
+            }
+            return apiException;
         }
     }
 }

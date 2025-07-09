@@ -4,6 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Net;
 
 namespace Laserfiche.Api.Client.UnitTest
 {
@@ -270,6 +271,88 @@ namespace Laserfiche.Api.Client.UnitTest
             Assert.AreEqual(headers, exception.Headers);
             Assert.AreEqual(innerException, exception.InnerException);
             AssertNullProblemDetailsOptionalProperties(exception.ProblemDetails);
+        }
+
+        [TestMethod]
+        public void Create_WithOneProblemDetails_PutsAsTopLevel_AndData()
+        {
+            // Arrange
+            List<ProblemDetails> problemDetails = new List<ProblemDetails> {
+                new ProblemDetails
+                {
+                    Status = 400,
+                    Title = "Test ProblemDetails1",
+                    OperationId = "12345"
+                }
+            };
+
+            // Act
+            ApiException exception = ApiException.Create(problemDetails);
+
+            // Assert
+            Assert.AreEqual("Test ProblemDetails1", exception.ProblemDetails.Title);
+            Assert.AreEqual(400, exception.ProblemDetails.Status);
+            Assert.AreEqual("12345", exception.ProblemDetails.OperationId);
+            Assert.AreEqual(0, exception.ProblemDetails.Extensions.Count);
+            Assert.AreEqual(exception.ProblemDetails.Status, exception.StatusCode);
+            Assert.AreEqual(exception.ProblemDetails.Title, exception.Message);
+            Assert.IsNull(exception.Headers);
+            Assert.IsNull(exception.InnerException);
+            AssertNullProblemDetailsOptionalProperties(exception.ProblemDetails);
+            System.Collections.IDictionary exceptionData = exception.Data;
+            Assert.AreEqual(exceptionData["ProblemDetails-0"], problemDetails[0]);
+        }
+
+        [TestMethod]
+        public void Create_WithMultipleProblemDetails_PutsFirstAsTopLevel_AllAsData()
+        {
+            // Arrange
+            List<ProblemDetails> problemDetails = new List<ProblemDetails> {
+                new ProblemDetails
+                {
+                    Status = 409,
+                    Title = "Test ProblemDetails1",
+                    OperationId = "12345"
+                },
+                new ProblemDetails
+                {
+                    Status = 500,
+                    Title = "Test ProblemDetails2",
+                    OperationId = "54321"
+                }
+            };
+
+            // Act
+            ApiException exception = ApiException.Create(problemDetails);
+
+            // Assert
+            Assert.AreEqual("Test ProblemDetails1", exception.ProblemDetails.Title);
+            Assert.AreEqual(409, exception.ProblemDetails.Status);
+            Assert.AreEqual("12345", exception.ProblemDetails.OperationId);
+            Assert.AreEqual(0, exception.ProblemDetails.Extensions.Count);
+            Assert.AreEqual(exception.ProblemDetails.Status, exception.StatusCode);
+            Assert.AreEqual(exception.ProblemDetails.Title, exception.Message);
+            Assert.IsNull(exception.Headers);
+            Assert.IsNull(exception.InnerException);
+            AssertNullProblemDetailsOptionalProperties(exception.ProblemDetails);
+            System.Collections.IDictionary exceptionData = exception.Data;
+            for (int i = 0; i < exceptionData.Count; i++)
+            {
+                Assert.AreEqual(exceptionData[$"ProblemDetails-{i}"], problemDetails[i]);
+            }
+        }
+
+        [TestMethod]
+        public void Create_WithNoProblemDetails_Returns_Null()
+        {
+            // Arrange
+            List<ProblemDetails> problemDetails = new List<ProblemDetails> { };
+
+            // Act
+            ApiException exception = ApiException.Create(problemDetails);
+
+            // Assert
+            Assert.IsNull(exception);
         }
     }
 }
