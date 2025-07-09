@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.3.7
+
+### Features
+
+- Added ability to create `ApiException` from a list of `ProblemDetails`
+
 ## 1.3.6
 
 ### Features
