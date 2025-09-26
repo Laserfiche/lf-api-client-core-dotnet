@@ -48,7 +48,15 @@ var menudata={children:[
 {text:"s",url:"functions.html#index_s"},
 {text:"t",url:"functions.html#index_t"},
 {text:"u",url:"functions.html#index_u"}]},
-{text:"Functions",url:"functions_func.html"},
+{text:"Functions",url:"functions_func.html",children:[
+{text:"a",url:"functions_func.html#index_a"},
+{text:"b",url:"functions_func.html#index_b"},
+{text:"c",url:"functions_func.html#index_c"},
+{text:"g",url:"functions_func.html#index_g"},
+{text:"o",url:"functions_func.html#index_o"},
+{text:"r",url:"functions_func.html#index_r"},
+{text:"t",url:"functions_func.html#index_t"},
+{text:"u",url:"functions_func.html#index_u"}]},
 {text:"Properties",url:"functions_prop.html",children:[
 {text:"a",url:"functions_prop.html#index_a"},
 {text:"c",url:"functions_prop.html#index_c"},
