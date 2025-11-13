@@ -26,7 +26,7 @@ jobs:
       run: dotnet publish src/Laserfiche.Api.Client.Core.csproj --no-restore
 
     - name: Veracode Upload And Scan (Static Application Security Testing)
-      uses: veracode/veracode-uploadandscan-action@0.2.6
+      uses: veracode/veracode-uploadandscan-action@0.2.10
       with:
         appname: 'lf-api-client-core-dotnet'
         createprofile: true
