@@ -88,13 +88,15 @@ namespace Laserfiche.Api.Client.HttpHandlers
             {
                 response = await base.SendAsync(request, cancellationToken).ConfigureAwait(false);
             }
-            catch when (returnNullIfRetriable && !cancellationToken.IsCancellationRequested)
+            catch when (returnNullIfRetriable && !cancellationToken.IsCancellationRequested && CanResend(request))
             {
-                // A transport failure: retried once, after a short random delay. A cancelled call is not retried.
+                // A transport failure: retried once, after a short random delay. A cancelled call is not retried, and neither
+                // is a non-idempotent one: the server may have acted on it before the connection failed.
                 return (null, TransientRetryDelay());
             }
 
-            if (returnNullIfRetriable && IsIdempotentHttpMethod(request.Method))
+            // Decided before the response is discarded, so a request that cannot be re-sent keeps its response.
+            if (returnNullIfRetriable && CanResend(request))
             {
                 TimeSpan? retryDelay = GetRetryDelay(response);
                 if (retryDelay.HasValue)
@@ -168,6 +170,15 @@ namespace Laserfiche.Api.Client.HttpHandlers
         private static bool IsIdempotentHttpMethod(HttpMethod method)
         {
             return method == HttpMethod.Get || method == HttpMethod.Put || method == HttpMethod.Options;
+        }
+
+        /// <summary>
+        /// Whether the request can be sent again: an idempotent method, and a body that is buffered in memory (or none).
+        /// A stream body may already have been read by the first attempt.
+        /// </summary>
+        private static bool CanResend(HttpRequestMessage request)
+        {
+            return IsIdempotentHttpMethod(request.Method) && (request.Content == null || request.Content is ByteArrayContent);
         }
     }
 }

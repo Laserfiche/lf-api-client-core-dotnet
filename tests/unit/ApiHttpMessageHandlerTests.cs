@@ -164,6 +164,57 @@ namespace Laserfiche.Api.Client.UnitTest
         }
 
         [TestMethod]
+        public async Task TransportFailure_Get_RetriedOnce()
+        {
+            var inner = new ScriptedHandler().Then(() => throw new HttpRequestException("reset")).Then(() => Status(HttpStatusCode.OK));
+            var (invoker, delays) = Create(inner);
+
+            var response = await invoker.SendAsync(Get(), CancellationToken.None).ConfigureAwait(false);
+
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+            Assert.AreEqual(1, delays.Count);
+        }
+
+        [TestMethod]
+        public async Task TransportFailure_Post_NotRetried()
+        {
+            // The server may have created the entry before the connection failed.
+            var inner = new ScriptedHandler().Then(() => throw new HttpRequestException("reset"));
+            var (invoker, _) = Create(inner);
+
+            await Assert.ThrowsExceptionAsync<HttpRequestException>(() =>
+                invoker.SendAsync(new HttpRequestMessage(HttpMethod.Post, BaseUri + "v2/x") { Content = new StringContent("{}") }, CancellationToken.None)).ConfigureAwait(false);
+            Assert.AreEqual(1, inner.Calls);
+        }
+
+        [TestMethod]
+        public async Task StreamBody_NotRetried_ResponseKept()
+        {
+            // A stream body may already have been read; the caller keeps the 503 and its problem details.
+            var inner = new ScriptedHandler().Then(() => Status(HttpStatusCode.ServiceUnavailable, TimeSpan.FromSeconds(1)));
+            var (invoker, delays) = Create(inner);
+            var put = new HttpRequestMessage(HttpMethod.Put, BaseUri + "v2/x") { Content = new StreamContent(new System.IO.MemoryStream(new byte[] { 1, 2, 3 })) };
+
+            var response = await invoker.SendAsync(put, CancellationToken.None).ConfigureAwait(false);
+
+            Assert.AreEqual(HttpStatusCode.ServiceUnavailable, response.StatusCode);
+            Assert.AreEqual(1, inner.Calls);
+            Assert.AreEqual(0, delays.Count);
+        }
+
+        [TestMethod]
+        public async Task BufferedBody_Put_Retried()
+        {
+            var inner = new ScriptedHandler().Then(() => Status(HttpStatusCode.ServiceUnavailable, TimeSpan.FromSeconds(1))).Then(() => Status(HttpStatusCode.OK));
+            var (invoker, _) = Create(inner);
+            var put = new HttpRequestMessage(HttpMethod.Put, BaseUri + "v2/x") { Content = new StringContent("{}") };
+
+            var response = await invoker.SendAsync(put, CancellationToken.None).ConfigureAwait(false);
+
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+        }
+
+        [TestMethod]
         public void GetRetryDelay_RetryAfterAsADate()
         {
             var response = new HttpResponseMessage(HttpStatusCode.ServiceUnavailable);
